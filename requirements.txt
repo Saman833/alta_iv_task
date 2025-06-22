@@ -4,4 +4,9 @@ google-api-python-client
 google-auth-oauthlib
 google-auth-httplib2
 python-jose[cryptography]   
-aioimaplib                  
+aioimaplib   
+alembic
+sqlalchemy[asyncio]
+aiosqlite
+pytest
+pytest-asyncio
