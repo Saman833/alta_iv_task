@@ -8,7 +8,6 @@ from db import SessionLocal
 
 app = FastAPI(title="Altair Code Backend", version="1.0.0")
 
-# Global variables
 email_poller_thread = None
 telegram_poller_thread = None
 email_poller = None
@@ -46,7 +45,7 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    """FastAPI shutdown event to stop both pollers."""
+    
     global email_poller, telegram_poller
     if email_poller:
         email_poller.is_running = False
@@ -55,12 +54,10 @@ async def shutdown_event():
 
 @app.get("/")
 async def root():
-    """Root endpoint."""
     return {"message": "Altair Code Backend API", "status": "running"}
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint."""
     global email_poller_thread, telegram_poller_thread
     
     email_status = "running" if email_poller_thread and email_poller_thread.is_alive() else "stopped"
