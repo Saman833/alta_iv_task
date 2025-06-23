@@ -1,20 +1,38 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from config import config
+from models import Base  # Add this import
 
-# Sync engine (used by Alembic or any legacy sync code)
-SYNC_DATABASE_URL = config.SQLALCHEMY_DATABASE_URI
-engine = create_engine(SYNC_DATABASE_URL, echo=False)
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+# Create synchronous engine
+sql_engine = create_engine(
+    config.SQL_URI, echo=False
+)
 
-# Async engine for application runtime
-ASYNC_DATABASE_URL = config.ASYNC_SQLALCHEMY_DATABASE_URI
-if ASYNC_DATABASE_URL and ASYNC_DATABASE_URL.startswith("postgresql://"):
-    ASYNC_DATABASE_URL = ASYNC_DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+# Create tables automatically in development
+Base.metadata.create_all(bind=sql_engine)
 
-if ASYNC_DATABASE_URL:
-    async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=False, isolation_level="REPEATABLE READ")
-    AsyncSessionLocal = sessionmaker(async_engine, class_=AsyncSession, expire_on_commit=False)
-else:
+SessionLocal = sessionmaker(
+    bind=sql_engine, expire_on_commit=False
+)
+
+# Add async engine and session for async tests (only if needed)
+try:
+    from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+    
+    # Convert sync URI to async URI for SQLite
+    if config.SQL_URI.startswith('sqlite:///'):
+        async_uri = config.SQL_URI.replace('sqlite:///', 'sqlite+aiosqlite:///')
+    else:
+        async_uri = config.SQL_URI
+    
+    async_engine = create_async_engine(
+        async_uri, echo=False
+    )
+    AsyncSessionLocal = sessionmaker(
+        bind=async_engine, class_=AsyncSession, expire_on_commit=False
+    )
+except ImportError:
+    # If aiosqlite is not installed, create dummy async session
+    async_engine = None
     AsyncSessionLocal = None
+

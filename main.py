@@ -1,15 +1,25 @@
 import threading
 import time
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sources.email.email_poller import EmailPoller
 from services.message_service import MessageService
 from sources.telegram.telegram_poller import TelegramPoller
 from db import SessionLocal
 from routes.content_table_router import router as content_table_router
-from config import config
 
 
 app = FastAPI(title="Altair Code Backend", version="1.0.0")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 app.include_router(content_table_router)
 
 
@@ -31,11 +41,6 @@ async def startup_event():
     
     global email_poller_thread, telegram_poller_thread, email_poller, telegram_poller, message_service
  
-    # Print database URL for debugging
-    print(f"🚀 Starting application with database URL: {config.SQL_URI}")
-    
-     
-    
     db = SessionLocal()
     message_service = MessageService(db)
     

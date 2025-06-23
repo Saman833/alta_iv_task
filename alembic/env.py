@@ -17,24 +17,8 @@ from models import Base, Content, Entity
 # access to the values within the .ini file in use.
 alembic_config = context.config
 
-# Override the sqlalchemy.url with your config using a robust converter
-from sqlalchemy.engine.url import make_url
-
-raw_url = config.SQL_URI  # as provided in environment / config
-
-try:
-    url_obj = make_url(raw_url)
-    # convert any postgres scheme to psycopg2 sync driver for Alembic
-    if url_obj.drivername.startswith("postgresql") and not url_obj.drivername.endswith("psycopg2"):
-        url_obj = url_obj.set(drivername="postgresql+psycopg2")
-    sync_url = str(url_obj)
-except Exception as e:
-    print(f"❌ Failed to parse SQL_URI ('{raw_url}') – fallback to SQLite. Error: {e}")
-    sync_url = "sqlite:///./test.db"
-
-print(f"🔧 Alembic will use: {sync_url}")
-
-alembic_config.set_main_option("sqlalchemy.url", sync_url)
+# Override the sqlalchemy.url with your config
+alembic_config.set_main_option("sqlalchemy.url", config.SQL_URI or "sqlite:///test.db")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

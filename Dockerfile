@@ -7,8 +7,7 @@ WORKDIR /app
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH=/app \
-    DOCKER_ENV=1
+    PYTHONPATH=/app
 
 # Install system dependencies
 RUN apt-get update \
@@ -16,7 +15,6 @@ RUN apt-get update \
         gcc \
         g++ \
         sqlite3 \
-        netcat-openbsd \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
@@ -34,17 +32,24 @@ RUN pip install --upgrade pip \
 # Copy application code
 COPY . .
 
-# Make entry script executable
-RUN chmod +x entry.sh
+# Create necessary directories
+RUN mkdir -p /app/data
 
-# Create directory for SQLite database if external wasnt there
-# RUN mkdir -p /app/data
+# Create startup script
+RUN echo '#!/bin/bash\n\
+# Run migrations\n\
+alembic upgrade head\n\
+\n\
+# Start the application\n\
+exec uvicorn main:app --host 0.0.0.0 --port 8000\n\
+' > /app/start.sh \
+    && chmod +x /app/start.sh
 
 EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/ || exit 1
+    CMD curl -f http://localhost:8000/health || exit 1
 
-# Run the entry script
-CMD ["./entry.sh"] 
+# Run the application using the startup script
+CMD ["/app/start.sh"] 

@@ -6,10 +6,7 @@ from dotenv import load_dotenv
 class Config:
     def __init__(self):
         load_dotenv()
-        load_dotenv()
-
-        self.SQL_URI = os.getenv("DATABASE_PUBLIC_URL")
-        self.ASYNC_SQL_URI = os.getenv("DATABASE_PUBLIC_URL")
+        self.SQL_URI = os.getenv("SQL_URI", "sqlite:///./test.db")
         self.TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
         self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
         self.config_json = json.load(open("config.json"))
@@ -52,21 +49,6 @@ class Config:
     }
         with open(self.config_json["email_poller_credentials_path"], "w") as f:
             json.dump(credentials, f)
-
-    @property
-    def SQLALCHEMY_DATABASE_URI(self) -> str:
-        """Convert asyncpg to psycopg2 for sync operations (Alembic)"""
-        if self.SQL_URI and "postgresql" in self.SQL_URI:
-            if "postgresql+asyncpg://" in self.SQL_URI:
-                return self.SQL_URI.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
-            elif "postgresql://" in self.SQL_URI:
-                return self.SQL_URI.replace("postgresql://", "postgresql+psycopg2://")
-        return self.SQL_URI
-
-    @property
-    def ASYNC_SQLALCHEMY_DATABASE_URI(self) -> str:
-        """Use asyncpg for async operations"""
-        return self.SQL_URI
 
 config = Config()
 config.create_token_json()
