@@ -6,7 +6,10 @@ from dotenv import load_dotenv
 class Config:
     def __init__(self):
         load_dotenv()
-        self.SQL_URL = os.getenv("SQL_URL", "sqlite:///./test.db")
+        load_dotenv()
+
+        self.SQL_URI = os.getenv("DATABASE_PUBLIC_URL")
+        self.ASYNC_SQL_URI = os.getenv("DATABASE_PUBLIC_URL")
         self.TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
         self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
         self.config_json = json.load(open("config.json"))
@@ -49,9 +52,6 @@ class Config:
     }
         with open(self.config_json["email_poller_credentials_path"], "w") as f:
             json.dump(credentials, f)
-
-    def setup_sql_url(self):
-        pass
 
 config = Config()
 config.create_token_json()
