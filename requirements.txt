@@ -10,3 +10,5 @@ sqlalchemy[asyncio]
 aiosqlite
 pytest
 pytest-asyncio
+python-telegram-bot
+requests
