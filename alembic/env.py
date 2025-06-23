@@ -11,7 +11,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from config import config
-from models import Base, Content, Sender, Entity, Classification, SourceMetadata, ContentSender
+from models import Base, Content, Entity
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

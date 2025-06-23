@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Text , Enum
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from . import Base
 from sqlalchemy import ForeignKey
 from enum import Enum as PyEnum
@@ -23,6 +24,9 @@ class Entity(Base):
     entity_type = Column(Enum(EntityType), nullable=False)  # 'PROJECT', 'CONTACT', 'DATE', 'KEYWORD'
     entity_value = Column(Text, nullable=False)
     created_at = Column(DateTime, default=func.now())
+    
+    # Relationship to content
+    content = relationship("Content", back_populates="entities")
     
     def __repr__(self):
         return f"<Entity(id={self.id}, type='{self.entity_type}', value='{self.entity_value}')>"

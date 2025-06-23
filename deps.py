@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from models import Base
-from fastapi import Depends, Annotated
+from fastapi import Depends
+from typing import Annotated
 from db import SessionLocal
 
 def get_db():

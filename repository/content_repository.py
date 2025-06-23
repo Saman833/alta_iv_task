@@ -1,7 +1,9 @@
 from sqlalchemy.orm import Session 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
-from models import Content, Source
+from sqlalchemy.orm import joinedload
+from models import Content, Source, Entity, Category
+import uuid
 
 class ContentRepository:
     """
@@ -49,4 +51,17 @@ class ContentRepository:
         except Exception as e:
             print(f"Error getting last source_id for {source}: {e}")
             return 0
+    def get_content_by_id(self, content_id: uuid.UUID) -> Content:
+        return self.db.query(Content).filter(Content.id == content_id).first()
+    def get_public_summary(self, content_id: str = None) -> list[Content]:
+        """Get contents with their entities in a single query to avoid N+1 problem"""
+        query = self.db.query(Content).options(
+            joinedload(Content.entities)
+        )
+        
+        if content_id:
+            query = query.filter(Content.id == content_id)
+        
+        contents = query.all()
+        return contents
         
