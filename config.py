@@ -1,21 +1,22 @@
 import os
 import json 
 from dotenv import load_dotenv
-from pydantic import PostgresDsn
-from pydantic_core import MultiHostUrl
 
-    
 class Config:
     def __init__(self):
         load_dotenv()
-        self.SQL_URL = os.getenv("SQL_URL", "sqlite:///./test.db")
         
-        # PostgreSQL connection details - using exact Railway variable names
-        self.POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
-        self.POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
-        self.POSTGRES_SERVER = os.getenv("PGHOST", "localhost")
-        self.POSTGRES_PORT = int(os.getenv("PGPORT", "5432"))
-        self.POSTGRES_DB = os.getenv("POSTGRES_DB", "railway")
+        # Use Railway's SQLAlchemy URIs directly
+        self.SQL_URI = os.getenv("SQL_URI", "sqlite:///./test.db")
+        self.SYNC_SQL_URI = os.getenv("SYNC_SQL_URI", "sqlite:///./test.db")
+        
+        # Fallback to individual components if URIs not provided
+        if not self.SQL_URI or self.SQL_URI == "sqlite:///./test.db":
+            self.POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
+            self.POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
+            self.POSTGRES_SERVER = os.getenv("PGHOST", "localhost")
+            self.POSTGRES_PORT = int(os.getenv("PGPORT", "5432"))
+            self.POSTGRES_DB = os.getenv("POSTGRES_DB", "railway")
         
         self.TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
         self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -41,44 +42,50 @@ class Config:
         self.TOKEN_GOOGLE_TOKEN_EXPIRY=os.getenv("TOKEN_GOOGLE_TOKEN_EXPIRY")
 
     @property
-    def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
-        """Build PostgreSQL URL using Pydantic for validation"""
+    def SQLALCHEMY_DATABASE_URI(self) -> str:
+        """Use Railway's sync SQL URI or build from components"""
+        # Debug: Print all relevant environment variables
+        print(f"🔧 Environment variables:")
+        print(f"   SQL_URI: {os.getenv('SQL_URI', 'NOT_SET')}")
+        print(f"   SYNC_SQL_URI: {os.getenv('SYNC_SQL_URI', 'NOT_SET')}")
+        print(f"   PGHOST: {os.getenv('PGHOST', 'NOT_SET')}")
+        
+        if self.SYNC_SQL_URI and self.SYNC_SQL_URI != "sqlite:///./test.db":
+            print(f"🔧 Using Railway sync URI: {self.SYNC_SQL_URI}")
+            return self.SYNC_SQL_URI
+        
+        # Fallback to building from components
         try:
-            # Debug: Show which environment variables are being used
-            print(f"🔧 Building PostgreSQL URL with:")
+            print(f"🔧 Building sync PostgreSQL URL with:")
             print(f"   User: {self.POSTGRES_USER}")
             print(f"   Host: {self.POSTGRES_SERVER}")
             print(f"   Port: {self.POSTGRES_PORT}")
             print(f"   Database: {self.POSTGRES_DB}")
             
-            return MultiHostUrl.build(
-                scheme="postgresql+psycopg2",  # Use psycopg2 for sync operations
-                username=self.POSTGRES_USER,
-                password=self.POSTGRES_PASSWORD,
-                host=self.POSTGRES_SERVER,
-                port=self.POSTGRES_PORT,
-                path=self.POSTGRES_DB,  # Remove the leading slash
+            return (
+                f"postgresql+psycopg2://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+                f"@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
             )
         except Exception as e:
             print(f"⚠️  Error building PostgreSQL URL: {e}")
-            print(f"   Using fallback SQL_URL: {self.SQL_URL}")
-            return self.SQL_URL
+            print(f"   Falling back to SQLite for local development")
+            return "sqlite:///./test.db"
 
     @property
-    def ASYNC_SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
-        """Build async PostgreSQL URL using Pydantic for validation"""
+    def ASYNC_SQLALCHEMY_DATABASE_URI(self) -> str:
+        """Use Railway's async SQL URI or build from components"""
+        if self.SQL_URI and self.SQL_URI != "sqlite:///./test.db":
+            print(f"🔧 Using Railway async URI: {self.SQL_URI}")
+            return self.SQL_URI
+        
+        # Fallback to building from components
         try:
-            return MultiHostUrl.build(
-                scheme="postgresql+asyncpg",  # Use asyncpg for async operations
-                username=self.POSTGRES_USER,
-                password=self.POSTGRES_PASSWORD,
-                host=self.POSTGRES_SERVER,
-                port=self.POSTGRES_PORT,
-                path=self.POSTGRES_DB,
+            return (
+                f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+                f"@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
             )
         except Exception as e:
             print(f"⚠️  Error building async PostgreSQL URL: {e}")
-            # Fallback to sync URL if async fails
             return self.SQLALCHEMY_DATABASE_URI
 
     def create_token_json(self):
