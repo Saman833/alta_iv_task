@@ -32,7 +32,7 @@ async def startup_event():
     global email_poller_thread, telegram_poller_thread, email_poller, telegram_poller, message_service
  
     # Print database URL for debugging
-    print(f"🚀 Starting application with database URL: {config.SQL_URL}")
+    print(f"🚀 Starting application with database URL: {config.SQL_URI}")
     
      
     
