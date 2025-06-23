@@ -6,28 +6,28 @@ class EmailTextParser:
     def __init__(self):
         pass 
     def convert_to_timestamp(self, internal_date: str) -> datetime:
-        """Convert internal date to datetime."""
+        """
+        add this later to utils as it would be used in other parsers too with a good chance
+        
+        """
         return datetime.fromtimestamp(int(internal_date) / 1000)
     
     def parse(self, raw_data: dict) -> dict:
         """Parse Gmail API response and return structured data."""
         
-        # Extract basic email info
-        gmail_id = raw_data.get('id')  # Original Gmail ID
+
+        gmail_id = raw_data.get('id') 
         snippet = raw_data.get('snippet', '')
         internal_date = raw_data.get('internalDate')
         
-        # Convert internal date to datetime
         timestamp = self.convert_to_timestamp(internal_date)
 
         content_data, html_content = self._extract_content(raw_data)
         
-        # Use text content as primary, fallback to snippet if no text content
         final_content_data = content_data if content_data else snippet
         
-        # Create Content object (id will be auto-generated as UUID)
         content_data ={ 
-            'source_id': gmail_id,        # Original Gmail ID
+            'source_id': gmail_id,       
             'content_type': ContentType.TEXT,
             'content_data': final_content_data,
             'content_html': html_content,
@@ -93,47 +93,4 @@ class EmailTextParser:
             print(f"Error decoding base64 data: {e}")
             return ""
 
-"""
-example of raw data for email : 
-{ 'historyId': '3118',
-  'id': '197982890e12e974',
-  'internalDate': '1750604461000',
-  'labelIds': ['UNREAD', 'INBOX'],
-  'snippet': 'Test for the whole Json',
-  'threadId': '197982890e12e974',
-  'sizeEstimate': 5662,
-  'payload': { 
-    'partId': '',
-    'mimeType': 'multipart/alternative',
-    'filename': '',
-    'headers': [ 
-      { 'name': 'Delivered-To', 'value': 'saman.interview.task@gmail.com'},
-      { 'name': 'Received', 'value': 'by 2002:a05:7208:13c6:b0:a2:b3d9:5ed2 with SMTP id r6csp14867rbe;        Sun, 22 Jun 2025 08:01:25 -0700 (PDT)'},
-      { 'name': 'X-Received', 'value': 'by 2002:a05:6808:2202:b0:406:d4d2:ac06 with SMTP id 5614622812f47-40ac6f5f00emr7685795b6e.9.1750604485104;        Sun, 22 Jun 2025 08:01:25 -0700 (PDT)'},
-      { 'name': 'ARC-Seal', 'value': 'i=1; a=rsa-sha256; t=1750604485; cv=none; d=google.com; s=arc-20240605; b=c1h8bbkariSwNOst...'},
-      { 'name': 'ARC-Message-Signature', 'value': 'i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605; h=to:subject:message-id:date:from:mime-version:dkim-signature; bh=bYWwV33Y87CznJrfH79CLq9Bp6XWQP1v4tORnypYHn4=; b=...'},
-      { 'name': 'From', 'value': 'saman ahmadifar <s.ahmadifar2005@gmail.com>'},
-      { 'name': 'Date', 'value': 'Sun, 22 Jun 2025 17:01:01 +0200'},
-      { 'name': 'Subject', 'value': 'Test for the whole json'},
-      { 'name': 'To', 'value': '"saman.interview.task@gmail.com" <saman.interview.task@gmail.com>'},
-      { 'name': 'Content-Type', 'value': 'multipart/alternative; boundary="000000000000c8e6d206382a5d2e"'}
-    ],
-    'body': {'size': 0},
-    'parts': [ 
-      { 'partId': '0',
-        'mimeType': 'text/plain',
-        'filename': '',
-        'headers': [{'name': 'Content-Type', 'value': 'text/plain; charset="UTF-8"'}],
-        'body': {'size': 25, 'data': 'VGVzdCBmb3IgdGhlIHdob2xlIEpzb24NCg=='} 
-      },
-      { 'partId': '1',
-        'mimeType': 'text/html',
-        'filename': '',
-        'headers': [{'name': 'Content-Type', 'value': 'text/html; charset="UTF-8"'}],
-        'body': {'size': 47, 'data': 'PGRpdiBkaXI9ImF1dG8iPlRlc3QgZm9yIHRoZSB3aG9sZSBKc29uPC9kaXY-DQo='} 
-      }
-    ]
-  }
-}
 
-"""

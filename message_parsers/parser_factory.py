@@ -6,7 +6,9 @@ class ParserFactory:
     def __init__(self):
         pass 
     def get_parser(self, source: str, raw_data: dict):
-        """Get appropriate parser based on source."""
+        """
+        simply choose the right parser 
+        """
         try : 
             if source == 'email':
                 return EmailTextParser()

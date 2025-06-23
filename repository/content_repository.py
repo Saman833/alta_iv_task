@@ -2,6 +2,9 @@ from sqlalchemy.orm import Session
 from models import Content, Source
 
 class ContentRepository:
+    """
+    I should change name of this model and its classses to message/message_repository if I get time later 
+    """
     def __init__(self, db: Session):
         self.db = db
 

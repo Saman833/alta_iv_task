@@ -56,35 +56,3 @@ class TelegramTextParser:
         
         return parsed_data
 
-
-"""
-example of telegram text raw_message :
-{
-    "update_id": 700929842,
-    "message": {
-      "message_id": 9,
-      "from": {
-        "id": 1021474158,
-        "is_bot": false,
-        "first_name": "saman",
-        "username": "S_sa_f_ss_A",
-        "language_code": "en"
-      },
-      "chat": {
-        "id": 1021474158,
-        "first_name": "saman",
-        "username": "S_sa_f_ss_A",
-        "type": "private"
-      },
-      "date": 1750635741,
-      "text": "A text"
-    }
-  }
-
-
-
-
-
-
-
-"""

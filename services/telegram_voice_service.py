@@ -5,11 +5,21 @@ import ffmpeg
 import imageio_ffmpeg
 
 class TelegramVoiceService:
+    """
+        this service isresponsible for processing voice messages from telegram 
+        what it does is :
+        using telegram voice client to get real voice message from telegram server 
+        and then convert it to mp3 format 
+        the mp3 converted voice message is then passed to openai client to transcribe it to text
+        making the final content data with the transcribed text  
+        and then return the content data 
+    """
     def __init__(self):
         self.telegram_voice_client = TelegramVoiceClient()
         self.openai_client = OpenAIClient()
 
     def process_voice_message(self, parsed_data: dict):
+       
         if not parsed_data['content_data']['source'] == Source.TELEGRAM:
             raise ValueError(f"Unsupported source: {parsed_data['content_data']['source']}")
         

@@ -7,6 +7,15 @@ from clients.telegram_voice_client import TelegramVoiceClient
 from clients.openai_client import OpenAIClient
 
 class MessageService:
+    """
+        this function is the core of the message processing pipeline 
+        what it does is :
+        1- get first polled message from sources 
+        2-passing the message to parser factory to get the parsed data
+        3-passing the parsed data to telegram voice service if its a voice message response from telegram 
+        4- when the process of different services on message is over it will save them via content repository
+       
+    """
     def __init__(self, db: Session):
         self.db = db
         self.parser_factory = ParserFactory()
@@ -14,7 +23,6 @@ class MessageService:
         self.telegram_voice_service = TelegramVoiceService()
 
     def process_message(self, source: str, raw_data: dict):
-        """ This function process a message from any source."""
         parser = self.parser_factory.get_parser(source, raw_data)
         
         if not parser:
@@ -34,7 +42,11 @@ class MessageService:
         return self.content_repository.create_content(content) 
 
     def get_first_unread_source_id_telegram(self):
-        """Get the next offset for Telegram by adding 1 to the last processed source_id."""
+        """
+        Get the next offset for Telegram by adding 1 to the last processed source_id
+        this way telegram poller will get the next message to process and avoid processing the same message again 
+        this approach works even if platform shut down and restart 
+        """
         last_source_id = self.content_repository.get_last_source_id(source=Source.TELEGRAM)
         return last_source_id + 1 if last_source_id else 0
         
