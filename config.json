@@ -6,4 +6,5 @@
     "telegram_poller_sleep_time": 10,
     "telegram_api_url": "https://api.telegram.org/bot",
     "telegram_file_api_url": "https://api.telegram.org/file/bot"
+    
 }
