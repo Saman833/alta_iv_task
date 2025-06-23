@@ -29,14 +29,14 @@ async def startup_event():
     message_service = MessageService(db)
     
  
-    email_poller = EmailPoller(message_service)
-    email_poller_thread = threading.Thread(
-        target=email_poller.start_polling,
-        daemon=True
-    )
-    email_poller_thread.start()
+    # email_poller = EmailPoller(message_service)
+    # email_poller_thread = threading.Thread(
+    #     target=email_poller.start_polling,
+    #     daemon=True
+    # )
+    # email_poller_thread.start()
     
-    # Initialize telegram poller
+    
     telegram_poller = TelegramPoller(message_service)
     telegram_poller_thread = threading.Thread(
         target=telegram_poller.start_polling,

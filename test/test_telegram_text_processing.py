@@ -47,12 +47,10 @@ class TestTelegramTextParser:
         """Test parsing a valid Telegram text message."""
         result = parser.parse(sample_telegram_text_data)
         
-        # Check structure
         assert result['type'] == 'text'
         assert 'content_data' in result
         assert 'sender_data' in result
         
-        # Check content data
         content_data = result['content_data']
         assert content_data['source_id'] == '9'
         assert content_data['content_type'] == ContentType.TEXT
@@ -61,7 +59,6 @@ class TestTelegramTextParser:
         assert content_data['source'] == Source.TELEGRAM
         assert isinstance(content_data['timestamp'], datetime)
         
-        # Check sender data
         sender_data = result['sender_data']
         assert sender_data['source_id'] == '1021474158'
         assert sender_data['username'] == 'S_sa_f_ss_A'
@@ -78,7 +75,6 @@ class TestTelegramTextParser:
                 "from": {"id": 1021474158},
                 "chat": {"id": 1021474158},
                 "date": 1750635741
-                # No text field
             }
         }
         
@@ -89,7 +85,6 @@ class TestTelegramTextParser:
         """Test parsing data without message field."""
         data_without_message = {
             "update_id": 700929842
-            # No message field
         }
         
         with pytest.raises(ValueError, match="No message found in raw_data"):
@@ -104,11 +99,9 @@ class TestTelegramTextParser:
                 "from": {
                     "id": 1021474158,
                     "first_name": "saman"
-                    # No username, last_name
                 },
                 "chat": {
                     "id": 1021474158
-                    # No other chat fields
                 },
                 "date": 1750635741,
                 "text": "Simple message"
@@ -216,11 +209,9 @@ class TestMessageService:
         mock_parser.parse.return_value = sample_parsed_data
         message_service.parser_factory.get_parser = Mock(return_value=mock_parser)
         
-        # Mock the content repository
         mock_content = Mock(spec=Content)
         message_service.content_repository.create_content = Mock(return_value=mock_content)
         
-        # Test data
         raw_data = {
             "message": {
                 "message_id": 9,
@@ -231,14 +222,11 @@ class TestMessageService:
             }
         }
         
-        # Process the message
         result = message_service.process_message('telegram', raw_data)
         
-        # Verify parser was called
         message_service.parser_factory.get_parser.assert_called_once_with('telegram', raw_data)
         mock_parser.parse.assert_called_once_with(raw_data)
         
-        # Verify content was created
         message_service.content_repository.create_content.assert_called_once()
         call_args = message_service.content_repository.create_content.call_args[0][0]
         assert call_args.source_id == '9'
@@ -246,7 +234,6 @@ class TestMessageService:
         assert call_args.content_data == 'Hello, this is a test message!'
         assert call_args.source == Source.TELEGRAM
         
-        # Verify result
         assert result == mock_content
 
 
@@ -276,11 +263,9 @@ class TestTelegramPoller:
     @patch('config.config')
     def test_get_updates(self, mock_config, mock_get, mock_message_service):
         """Test getting updates from Telegram API."""
-        # Mock config
         mock_config.config_json = {"telegram_poller_sleep_time": 30}
         mock_config.TELEGRAM_BOT_TOKEN = "test_token"
         
-        # Mock API response
         mock_response = Mock()
         mock_response.json.return_value = {
             "ok": True,
@@ -323,7 +308,6 @@ class TestTelegramIntegration:
         from sqlalchemy.orm import sessionmaker
         from models import Base
         
-        # Create in-memory database
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(engine)
         
