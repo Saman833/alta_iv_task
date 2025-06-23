@@ -14,6 +14,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         gcc \
         g++ \
+        curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
@@ -30,11 +31,18 @@ RUN pip install --upgrade pip \
 # Copy application code
 COPY . .
 
+# Create startup script
+RUN echo '#!/bin/bash\n\
+echo "🚀 Starting database migrations..."\n\
+alembic upgrade head\n\
+echo "✅ Migrations completed"\n\
+echo "🚀 Starting application..."\n\
+exec uvicorn main:app --host 0.0.0.0 --port 8000\n\
+' > /app/start.sh && chmod +x /app/start.sh
+
 EXPOSE 8000
+ 
+ 
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/ || exit 1
-
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] 
+# Run the startup script
+CMD ["/app/start.sh"] 

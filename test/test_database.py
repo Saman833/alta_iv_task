@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 
 # Set a test database URL (SQLite for testing)
-os.environ["SQL_URI"] = "sqlite+aiosqlite:///./test.db"
+os.environ["SQL_URL"] = "sqlite+aiosqlite:///./test.db"
 
 from db import sql_engine, AsyncSessionLocal
 
