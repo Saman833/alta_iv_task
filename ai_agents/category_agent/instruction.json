@@ -1,0 +1,9 @@
+{
+    "instruction": "Classify the message into one of the following categories: SPAM, MEETING, TASK, INFORMATION, IDEA, OTHER",
+    "roles": [
+        {
+            "name": "choose only one category from the list",
+            "description":"each text or message might have mutliple categories, choose only one category from the list"
+        }
+    ]
+}

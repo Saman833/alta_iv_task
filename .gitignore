@@ -7,7 +7,7 @@ __pycache__/
 *$py.class
 *.so
 
-
+*credentials.json
 # Distribution / packaging
 .Python
 build/
