@@ -21,8 +21,7 @@ class TelegramVoiceParser:
         voice = message.get('voice')
         if not voice:
             raise ValueError("No voice content found in message")
-        
-        # Extract message metadata
+
         message_id = message.get('message_id')
         user_info = message.get('from', {})
         user_id = user_info.get('id')

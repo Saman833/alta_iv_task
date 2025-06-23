@@ -11,14 +11,12 @@ class TelegramTextParser:
         if not message:
             raise ValueError("No message found in raw_data")
         
-        # Extract text content
+        
         text = message.get('text')
         if not text:
             raise ValueError("No text content found in message")
         
-        # Extract message metadata
         message_id = message.get('message_id')
-        chat_id = message.get('chat', {}).get('id')
         user_info = message.get('from', {})
         user_id = user_info.get('id')
         username = user_info.get('username')
@@ -26,7 +24,7 @@ class TelegramTextParser:
         last_name = user_info.get('last_name')
         date_timestamp = message.get('date')
         
-        # Convert timestamp to datetime
+
         timestamp = datetime.fromtimestamp(date_timestamp)
         
     
