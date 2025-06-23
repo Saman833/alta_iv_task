@@ -8,18 +8,6 @@ class Config:
         load_dotenv()
         self.SQL_URL = os.getenv("SQL_URL", "sqlite:///./test.db")
         
-        # Validate PostgreSQL URL format
-        if self.SQL_URL.startswith('postgresql://'):
-            if ':' not in self.SQL_URL.split('@')[1].split('/')[0]:
-                # Add default port if missing
-                parts = self.SQL_URL.split('@')
-                if len(parts) == 2:
-                    host_part = parts[1]
-                    if '/' in host_part:
-                        host, db = host_part.split('/', 1)
-                        if ':' not in host:
-                            self.SQL_URL = f"{parts[0]}@{host}:5432/{db}"
-                            print(f"⚠️  Added default port 5432 to PostgreSQL URL")
         
         self.TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
         self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
