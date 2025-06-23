@@ -16,3 +16,13 @@ class OpenAIClient:
             response_format="text"
         )
         return resp  
+    def request_agent(self, system_prompt: str, user_message: str , output_schema: dict):
+        response = self.client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            response_format={"type": "json_object"}
+        )
+        return response.choices[0].message.content

@@ -1,5 +1,6 @@
 from datetime import datetime
 from models import Source, ContentType
+from utils.text_utils import clean_text
 
 class TelegramTextParser:
     def __init__(self):
@@ -15,6 +16,9 @@ class TelegramTextParser:
         text = message.get('text')
         if not text:
             raise ValueError("No text content found in message")
+        
+        # Clean the text to handle encoding issues
+        text = clean_text(text)
         
         message_id = message.get('message_id')
         user_info = message.get('from', {})
