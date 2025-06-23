@@ -17,20 +17,8 @@ AsyncSessionLocal = None
 try:
     from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
     
-    # Build async URL from scratch using the same connection details
-    database_url = str(config.SQLALCHEMY_DATABASE_URI)
-    
-    if database_url.startswith('sqlite:///'):
-        async_url = database_url.replace('sqlite:///', 'sqlite+aiosqlite:///')
-    elif database_url.startswith('postgresql://') or database_url.startswith('postgresql+psycopg2://'):
-        # Extract connection details and build async URL from scratch
-        from urllib.parse import urlparse
-        parsed = urlparse(database_url)
-        
-        # Build async URL with asyncpg scheme
-        async_url = f"postgresql+asyncpg://{parsed.username}:{parsed.password}@{parsed.hostname}:{parsed.port}{parsed.path}"
-    else:
-        async_url = database_url
+    # Use the dedicated async URL property
+    async_url = str(config.ASYNC_SQLALCHEMY_DATABASE_URI)
     
     print(f"🔧 Creating async engine with URL: {async_url}")
     

@@ -1,6 +1,7 @@
 import threading
 import time
 from fastapi import FastAPI
+from sqlalchemy import text
 from sources.email.email_poller import EmailPoller
 from services.message_service import MessageService
 from sources.telegram.telegram_poller import TelegramPoller
@@ -38,7 +39,7 @@ async def startup_event():
     try:
         db = SessionLocal()
         # Try to execute a simple query to test connection
-        result = db.execute("SELECT 1").fetchone()
+        result = db.execute(text("SELECT 1")).fetchone()
         print(f"✅ Database connection successful: {result}")
         db.close()
     except Exception as e:
