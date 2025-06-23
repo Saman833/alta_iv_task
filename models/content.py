@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, DateTime, Text, Integer, Enum
+from sqlalchemy import Column, String, DateTime, Text, Integer, Enum, UniqueConstraint
 from sqlalchemy.sql import func
 from datetime import datetime
 from . import Base
@@ -35,6 +35,11 @@ class Content(Base):
     timestamp = Column(DateTime, nullable=False)        # message date/time
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    
+    # Add unique constraint to prevent duplicate messages from same source
+    __table_args__ = (
+        UniqueConstraint('source_id', 'source', name='uq_source_id_source'),
+    )
     
     def __repr__(self):
         return f"<Content(id='{self.id}', source_id='{self.source_id}', type='{self.content_type}', source='{self.source}')>"
