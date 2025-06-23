@@ -1,11 +1,16 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import config
+from models import Base  # Add this import
 
 # Create synchronous engine
 sql_engine = create_engine(
     config.SQL_URI, echo=False
 )
+
+# Create tables automatically in development
+Base.metadata.create_all(bind=sql_engine)
+
 SessionLocal = sessionmaker(
     bind=sql_engine, expire_on_commit=False
 )
