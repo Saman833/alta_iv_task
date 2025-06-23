@@ -14,7 +14,6 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         gcc \
         g++ \
-        sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
@@ -30,10 +29,6 @@ RUN pip install --upgrade pip \
 
 # Copy application code
 COPY . .
-
-# Create directory for SQLite database if external wasnt there
-# RUN mkdir -p /app/data
-
 
 EXPOSE 8000
 
