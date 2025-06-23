@@ -1,9 +1,11 @@
-#email to send messages : 
-   saman.interview.task@gmail.com
+# sources information : 
 
-#telegram_bot_id : 
-      @AltaIR_task_bot
+- **Email to send messages:**  
+  [saman.interview.task@gmail.com](mailto:saman.interview.task@gmail.com)
 
+- **Telegram Bot ID:**  
+  [@AltaIR_task_bot](https://t.me/AltaIR_task_bot)
 
+---
 
- ### thank you for the opportunity :)      
+### Thank you for the opportunity 🙂
