@@ -1,6 +1,6 @@
 """
 Utility functions for handling text encoding and processing 
-Suggest you not to change anything here 
+Suggest you not to change anything here :) 
 """
 
 import unicodedata

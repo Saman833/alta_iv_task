@@ -8,12 +8,12 @@ class AgentService:
         self.openai_client = OpenAIClient()
     
     def run_agent(self, agent_name: str, input_data: dict):
-        # Clean the input data to handle encoding issues
+        
         cleaned_input_data = self._clean_input_data(input_data)
         
         system_prompt, user_message , output_schema = self.create_agent_prompt(agent_name, cleaned_input_data)
         response = self.openai_client.request_agent(system_prompt, user_message, output_schema)
-        # Parse the JSON response string into a dictionary
+        
         try:
             return json.loads(response)
         except json.JSONDecodeError as e:
