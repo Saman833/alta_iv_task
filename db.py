@@ -14,9 +14,11 @@ SessionLocal = sessionmaker(
 try:
     from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
     
-    # Convert sync URL to async URL for SQLite
+    # Convert sync URL to async URL
     if config.SQL_URL.startswith('sqlite:///'):
         async_url = config.SQL_URL.replace('sqlite:///', 'sqlite+aiosqlite:///')
+    elif config.SQL_URL.startswith('postgresql://'):
+        async_url = config.SQL_URL.replace('postgresql://', 'postgresql+asyncpg://')
     else:
         async_url = config.SQL_URL
     
@@ -27,7 +29,7 @@ try:
         bind=async_engine, class_=AsyncSession, expire_on_commit=False
     )
 except ImportError:
-    # If aiosqlite is not installed, create dummy async session
+    # If async drivers are not installed, create dummy async session
     async_engine = None
     AsyncSessionLocal = None
 
