@@ -18,17 +18,9 @@ from models import Base, Content, Entity
 alembic_config = context.config
 
 # Override the sqlalchemy.url with your config
-# Convert to psycopg2 for sync operations (Alembic)
-if config.SQL_URI and "postgresql" in config.SQL_URI:
-    if "postgresql+asyncpg://" in config.SQL_URI:
-        sync_url = config.SQL_URI.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
-    elif "postgresql://" in config.SQL_URI:
-        sync_url = config.SQL_URI.replace("postgresql://", "postgresql+psycopg2://")
-    else:
-        sync_url = config.SQL_URI
-else:
-    sync_url = config.SQL_URI
-
+# Use the sync URL property that handles driver conversion
+sync_url = config.SQLALCHEMY_DATABASE_URI
+print(f"🔧 Using sync URL for Alembic: {sync_url}")
 alembic_config.set_main_option("sqlalchemy.url", sync_url or "sqlite:///test.db")
 
 # Interpret the config file for Python logging.
