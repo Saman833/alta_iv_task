@@ -32,9 +32,18 @@ async def startup_event():
     global email_poller_thread, telegram_poller_thread, email_poller, telegram_poller, message_service
  
     # Print database URL for debugging
-    print(f"🚀 Starting application with database URL: {config.SQL_URL}")
+    print(f"🚀 Starting application with database URL: {str(config.SQLALCHEMY_DATABASE_URI)}")
     
-     
+    # Test database connection
+    try:
+        db = SessionLocal()
+        # Try to execute a simple query to test connection
+        result = db.execute("SELECT 1").fetchone()
+        print(f"✅ Database connection successful: {result}")
+        db.close()
+    except Exception as e:
+        print(f"❌ Database connection failed: {e}")
+        print("⚠️  Application will continue but database operations may fail")
     
     db = SessionLocal()
     message_service = MessageService(db)

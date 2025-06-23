@@ -1,6 +1,8 @@
 import os
 import json 
 from dotenv import load_dotenv
+from pydantic import PostgresDsn
+from pydantic_core import MultiHostUrl
 
     
 class Config:
@@ -8,6 +10,12 @@ class Config:
         load_dotenv()
         self.SQL_URL = os.getenv("SQL_URL", "sqlite:///./test.db")
         
+        # PostgreSQL connection details
+        self.POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
+        self.POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
+        self.POSTGRES_SERVER = os.getenv("PGHOST", os.getenv("RAILWAY_TCP_PROXY_DOMAIN", "localhost"))
+        self.POSTGRES_PORT = int(os.getenv("PGPORT", os.getenv("RAILWAY_TCP_PROXY_PORT", "5432")))
+        self.POSTGRES_DB = os.getenv("PGDATABASE", os.getenv("POSTGRES_DB", "railway"))
         
         self.TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
         self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -31,6 +39,24 @@ class Config:
         self.TOKEN_GOOGLE_TOKEN_URI=os.getenv("TOKEN_GOOGLE_TOKEN_URI")
         self.TOKEN_GOOGLE_SCOPES=os.getenv("TOKEN_GOOGLE_SCOPES")
         self.TOKEN_GOOGLE_TOKEN_EXPIRY=os.getenv("TOKEN_GOOGLE_TOKEN_EXPIRY")
+
+    @property
+    def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
+        """Build PostgreSQL URL using Pydantic for validation"""
+        try:
+            return MultiHostUrl.build(
+                scheme="postgresql+psycopg2",
+                username=self.POSTGRES_USER,
+                password=self.POSTGRES_PASSWORD,
+                host=self.POSTGRES_SERVER,
+                port=self.POSTGRES_PORT,
+                path=f"/{self.POSTGRES_DB}",
+            )
+        except Exception as e:
+            print(f"⚠️  Error building PostgreSQL URL: {e}")
+            print(f"   Using fallback SQL_URL: {self.SQL_URL}")
+            return self.SQL_URL
+
     def create_token_json(self):
         token_js={"token": self.TOKEN_GOOGLE_ACCESS_TOKEN, "refresh_token": self.TOKEN_GOOGLE_REFRESH_TOKEN, "token_uri": self.TOKEN_GOOGLE_TOKEN_URI, "client_id": self.TOKEN_GOOGLE_CLIENT_ID, "client_secret": self.TOKEN_GOOGLE_CLIENT_SECRET, 
               "scopes": [self.TOKEN_GOOGLE_SCOPES], "universe_domain": "googleapis.com", "account": "", "expiry": self.TOKEN_GOOGLE_TOKEN_EXPIRY}

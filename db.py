@@ -2,9 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import config
 
-# Create synchronous engine
+# Create synchronous engine using the validated PostgreSQL URL
 sql_engine = create_engine(
-    config.SQL_URL, echo=False
+    str(config.SQLALCHEMY_DATABASE_URI), echo=False
 )
 SessionLocal = sessionmaker(
     bind=sql_engine, expire_on_commit=False
@@ -17,20 +17,29 @@ AsyncSessionLocal = None
 try:
     from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
     
-    # Convert sync URL to async URL
-    if config.SQL_URL.startswith('sqlite:///'):
-        async_url = config.SQL_URL.replace('sqlite:///', 'sqlite+aiosqlite:///')
-    elif config.SQL_URL.startswith('postgresql://'):
-        async_url = config.SQL_URL.replace('postgresql://', 'postgresql+asyncpg://')
-    elif config.SQL_URL.startswith('postgresql+psycopg2://'):
-        async_url = config.SQL_URL.replace('postgresql+psycopg2://', 'postgresql+asyncpg://')
+    # Build async URL from scratch using the same connection details
+    database_url = str(config.SQLALCHEMY_DATABASE_URI)
+    
+    if database_url.startswith('sqlite:///'):
+        async_url = database_url.replace('sqlite:///', 'sqlite+aiosqlite:///')
+    elif database_url.startswith('postgresql://') or database_url.startswith('postgresql+psycopg2://'):
+        # Extract connection details and build async URL from scratch
+        from urllib.parse import urlparse
+        parsed = urlparse(database_url)
+        
+        # Build async URL with asyncpg scheme
+        async_url = f"postgresql+asyncpg://{parsed.username}:{parsed.password}@{parsed.hostname}:{parsed.port}{parsed.path}"
     else:
-        async_url = config.SQL_URL
+        async_url = database_url
     
     print(f"🔧 Creating async engine with URL: {async_url}")
     
+    # Try to create async engine with timeout
     async_engine = create_async_engine(
-        async_url, echo=False
+        async_url, 
+        echo=False,
+        pool_pre_ping=True,
+        pool_recycle=300
     )
     AsyncSessionLocal = sessionmaker(
         bind=async_engine, class_=AsyncSession, expire_on_commit=False
@@ -43,4 +52,5 @@ except ImportError as e:
 except Exception as e:
     print(f"❌ Error creating async engine: {e}")
     print("⚠️  Continuing without async engine support")
+    print(f"🔧 Sync URL being used: {str(config.SQLALCHEMY_DATABASE_URI)}")
 
