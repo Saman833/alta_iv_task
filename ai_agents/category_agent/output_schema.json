@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+        "category": {
+            "type": "string",
+            "description": "send lowercase of the any of the following categories , so yes just one word",
+            "enum": ["spam", "meeting", "task", "information", "idea", "other"]
+        }
+    },
+    "required": ["category"]
+}

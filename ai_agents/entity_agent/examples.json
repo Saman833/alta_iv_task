@@ -1,0 +1,33 @@
+[
+    {
+      "user": {
+        "source": "email",
+        "id": "abc-123",
+        "content_type": "text",
+        "content_data": "Hi team, the sprint demo is next Friday. Ping me at jane.doe@example.com if anything is blocked.",
+        "timestamp": "2025-06-23T09:00:00Z",
+        "subject": "Sprint demo"
+      },
+      "assistant": [
+        { "content_id": "abc-123", "entity_type": "DATE",    "entity_value": "2025-06-27" },
+        { "content_id": "abc-123", "entity_type": "EMAIL",   "entity_value": "jane.doe@example.com" },
+        { "content_id": "abc-123", "entity_type": "KEYWORD", "entity_value": "sprint demo" }
+      ]
+    },
+    {
+      "user": {
+        "source": "telegram",
+        "id": "msg-001",
+        "content_type": "voice",
+        "content_data": "Remember to call Bob on +44 7700 900123 tomorrow morning about budget approvals",
+        "timestamp": "2025-06-23T15:12:00Z",
+        "subject": ""
+      },
+      "assistant": [
+        { "content_id": "msg-001", "entity_type": "CONTACT", "entity_value": "+447700900123" },
+        { "content_id": "msg-001", "entity_type": "DATE",    "entity_value": "2025-06-24" },
+        { "content_id": "msg-001", "entity_type": "KEYWORD", "entity_value": "budget approvals" }
+      ]
+    }
+  ]
+  

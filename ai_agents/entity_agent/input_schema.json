@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "properties": {
+      "source":        { "type": "string", "description": "email or telegram" },
+      "id":            { "type": "string", "description": "content id" },
+      "source_id":     { "type": "string", "description": "ignore this field" },
+      "content_type":  { "type": "string", "description": "voice or text" },
+      "content_data":  { "type": "string", "description": "parsed text content" },
+      "content_html":  { "type": "string", "description": "HTML version" },
+      "timestamp":     { "type": "string", "description": "ISO timestamp" },
+      "subject":       { "type": "string", "description": "email subject" }
+    },
+    "required": ["source","id","content_data"]
+  }
+  

@@ -1,4 +1,6 @@
 from sqlalchemy.orm import Session 
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import text
 from models import Content, Source
 
 class ContentRepository:
@@ -13,20 +15,35 @@ class ContentRepository:
             self.db.add(content)
             self.db.commit()
             return content 
+        except IntegrityError as e:
+            self.db.rollback()
+            if "UNIQUE constraint failed: content.source_id, content.source" in str(e):
+                print(f"Duplicate message detected: source_id={content.source_id}, source={content.source}")
+                return None
+            else:
+                raise e
         except Exception as e:
             self.db.rollback()
             raise e
-    
+    def update_content(self, content: Content) -> Content:
+        try : 
+            self.db.add(content)
+            self.db.commit()
+            return content 
+        except Exception as e:
+            self.db.rollback()
+            raise ValueError(f"Error updating content: {e}")
     def get_last_source_id(self, source: Source):
-        """Get the last processed source_id for a given source."""
+        """To get the last processed source_id for a given source."""
         try:
-            last_content = self.db.query(Content)\
-                .filter(Content.source == source)\
-                .order_by(Content.source_id.desc())\
-                .first()
+            # Use raw SQL to avoid enum validation issues
+            result = self.db.execute(
+                text("SELECT source_id FROM content WHERE source = :source ORDER BY source_id DESC LIMIT 1"),
+                {"source": source.value}
+            ).fetchone()
             
-            if last_content:
-                return int(last_content.source_id)
+            if result:
+                return int(result[0])
             else:
                 return 0
         except Exception as e:
