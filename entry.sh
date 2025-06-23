@@ -29,25 +29,43 @@ if [[ "$SQL_URI" == *"postgresql"* ]]; then
     fi
 fi
 
-# Remove existing Alembic migrations
-echo "🗑️  Removing existing Alembic migrations..."
-rm -rf alembic/versions/*.py || handle_error "Failed to remove existing migrations"
+# AGGRESSIVE CLEANUP - Remove everything
+echo "🗑️  AGGRESSIVE CLEANUP - Removing all existing data..."
 
-# Remove existing database file (for SQLite)
-if [[ "$SQL_URI" == *"sqlite"* ]]; then
-    echo "🗑️  Removing existing SQLite database..."
-    rm -f *.db || true
-fi
+# Remove ALL Alembic migrations (not just .py files)
+echo "🗑️  Removing ALL Alembic migrations..."
+rm -rf alembic/versions/* || true
+rm -f alembic/versions/.gitkeep || true
 
-# Create new migration
-echo "📝 Creating new Alembic migration..."
-alembic revision --autogenerate -m "Auto-generated migration" || handle_error "Failed to create migration"
+# Remove ALL database files
+echo "🗑️  Removing ALL database files..."
+rm -f *.db || true
+rm -f test.db || true
+rm -f database.db || true
+rm -f app.db || true
+
+# Remove Python cache files
+echo "🗑️  Removing Python cache files..."
+find . -type d -name "__pycache__" -exec rm -rf {} + || true
+find . -name "*.pyc" -delete || true
+
+# Remove Alembic cache
+echo "🗑️  Removing Alembic cache..."
+rm -rf alembic/__pycache__ || true
+
+# Initialize fresh Alembic (if needed)
+echo "🔄 Initializing fresh Alembic..."
+alembic init alembic --template generic || true
+
+# Create new migration from current models
+echo "📝 Creating new Alembic migration from current models..."
+alembic revision --autogenerate -m "Fresh auto-generated migration" || handle_error "Failed to create migration"
 
 # Apply migration
 echo "🔄 Applying migration..."
 alembic upgrade head || handle_error "Failed to apply migration"
 
-echo "✅ Database setup completed"
+echo "✅ Complete database reset and setup completed!"
 
 # Start the application
 echo "🚀 Starting FastAPI application..."

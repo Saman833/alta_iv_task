@@ -1,23 +1,39 @@
 #!/bin/bash
 
-echo "🔄 Resetting database and migrations..."
+echo "🔄 AGGRESSIVE DATABASE RESET - Removing everything and starting fresh..."
 
-# Remove existing Alembic migrations
-echo "🗑️  Removing existing Alembic migrations..."
-rm -rf alembic/versions/*.py
+# Remove ALL Alembic migrations
+echo "🗑️  Removing ALL Alembic migrations..."
+rm -rf alembic/versions/* || true
+rm -f alembic/versions/.gitkeep || true
 
-# Remove existing database files
-echo "🗑️  Removing existing database files..."
-rm -f *.db
-rm -f test.db
+# Remove ALL database files
+echo "🗑️  Removing ALL database files..."
+rm -f *.db || true
+rm -f test.db || true
+rm -f database.db || true
+rm -f app.db || true
 
-# Create new migration
-echo "📝 Creating new Alembic migration..."
-alembic revision --autogenerate -m "Fresh migration"
+# Remove Python cache files
+echo "🗑️  Removing Python cache files..."
+find . -type d -name "__pycache__" -exec rm -rf {} + || true
+find . -name "*.pyc" -delete || true
+
+# Remove Alembic cache
+echo "🗑️  Removing Alembic cache..."
+rm -rf alembic/__pycache__ || true
+
+# Initialize fresh Alembic (if needed)
+echo "🔄 Initializing fresh Alembic..."
+alembic init alembic --template generic || true
+
+# Create new migration from current models
+echo "📝 Creating new Alembic migration from current models..."
+alembic revision --autogenerate -m "Fresh auto-generated migration"
 
 # Apply migration
 echo "🔄 Applying migration..."
 alembic upgrade head
 
-echo "✅ Database reset completed!"
+echo "✅ Complete database reset completed!"
 echo "🚀 You can now run: python main.py" 
