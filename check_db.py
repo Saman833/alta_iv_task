@@ -29,7 +29,7 @@ def check_database():
         print(f"Content table has {count} records")
         
         if count > 0:
-            cursor.execute("SELECT id, source_id, content_type, content_data, content_html, source, timestamp FROM content LIMIT 5;")
+            cursor.execute("SELECT id, source_id, content_type, content_data, content_html, source, timestamp FROM content LIMIT 12;")
             rows = cursor.fetchall()
             print("\nRecent content records:")
             for row in rows:
