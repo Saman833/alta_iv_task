@@ -1,6 +1,7 @@
 import threading
 import time
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sources.email.email_poller import EmailPoller
 from services.message_service import MessageService
 from sources.telegram.telegram_poller import TelegramPoller
@@ -9,6 +10,16 @@ from routes.content_table_router import router as content_table_router
 
 
 app = FastAPI(title="Altair Code Backend", version="1.0.0")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 app.include_router(content_table_router)
 
 
