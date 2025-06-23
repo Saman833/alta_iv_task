@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String, DateTime, Text, Integer, Enum, UniqueConstraint
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from . import Base
 from enum import Enum as PyEnum
 import uuid
@@ -48,6 +49,9 @@ class Content(Base):
     timestamp = Column(DateTime, nullable=False)        # this is the timestamp of the message 
     created_at = Column(DateTime, default=func.now())   
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    
+    # Relationship to entities
+    entities = relationship("Entity", back_populates="content", cascade="all, delete-orphan")
     
     # Add unique constraint to prevent duplicate messages from same source
     __table_args__ = (

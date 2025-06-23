@@ -12,7 +12,8 @@ class MessageService:
         1- get first polled message from sources 
         2-passing the message to parser factory to get the parsed data
         3-passing the parsed data to telegram voice service if its a voice message response from telegram 
-        4- when the process of different services on message is over it will save them via content repository
+        4- passing to classification service to extract category and entities
+        5- saving the content and entities to the database
        
     """
     def __init__(self, db: Session):
@@ -45,8 +46,7 @@ class MessageService:
         content = self.update_content(content, {'category': category})
         entities = self.classification_service.extract_entities(**parsed_data['content_data'])
         if entities:
-            # Ensure each entity gets the real content.id
-            for entity in entities:
+            for entity in entities: 
                 entity.content_id = content.id
             self.entity_repository.create_entities(entities)
 
