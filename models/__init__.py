@@ -4,11 +4,7 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 from .content import Content, ContentType, Source, Category
-from .sender import Sender
 from .entity import Entity, EntityType
-from .classification import Classification
-from .metadata import SourceMetadata
-from .content_sender import ContentSender
 
 __all__ = [
     'Base',
@@ -17,9 +13,5 @@ __all__ = [
     'EntityType',
     'Source',
     'Category',
-    'Sender',
-    'Entity', 
-    'Classification',
-    'SourceMetadata',
-    'ContentSender'
+    'Entity'
 ] 
