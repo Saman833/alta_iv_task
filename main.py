@@ -36,7 +36,7 @@ async def startup_event():
     )
     email_poller_thread.start()
     
-    # Initialize telegram poller
+
     telegram_poller = TelegramPoller(message_service)
     telegram_poller_thread = threading.Thread(
         target=telegram_poller.start_polling,
