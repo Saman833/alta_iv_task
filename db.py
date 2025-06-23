@@ -4,7 +4,7 @@ from config import config
 
 # Create synchronous engine
 sql_engine = create_engine(
-    config.SQL_URI, echo=False
+    config.SQL_URL, echo=False
 )
 SessionLocal = sessionmaker(
     bind=sql_engine, expire_on_commit=False
@@ -14,14 +14,14 @@ SessionLocal = sessionmaker(
 try:
     from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
     
-    # Convert sync URI to async URI for SQLite
-    if config.SQL_URI.startswith('sqlite:///'):
-        async_uri = config.SQL_URI.replace('sqlite:///', 'sqlite+aiosqlite:///')
+    # Convert sync URL to async URL for SQLite
+    if config.SQL_URL.startswith('sqlite:///'):
+        async_url = config.SQL_URL.replace('sqlite:///', 'sqlite+aiosqlite:///')
     else:
-        async_uri = config.SQL_URI
+        async_url = config.SQL_URL
     
     async_engine = create_async_engine(
-        async_uri, echo=False
+        async_url, echo=False
     )
     AsyncSessionLocal = sessionmaker(
         bind=async_engine, class_=AsyncSession, expire_on_commit=False
