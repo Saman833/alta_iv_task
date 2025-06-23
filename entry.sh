@@ -16,16 +16,26 @@ fi
 # Wait for database to be ready (if using PostgreSQL)
 if [[ "$SQL_URI" == *"postgresql"* ]]; then
     echo "⏳ Waiting for PostgreSQL to be ready..."
-    # Extract host and port from SQL_URI
-    DB_HOST=$(echo $SQL_URI | sed -n 's/.*@\([^:]*\):.*/\1/p')
-    DB_PORT=$(echo $SQL_URI | sed -n 's/.*:\([0-9]*\)\/.*/\1/p')
+    echo "🔧 SQL_URI: $SQL_URI"
     
-    if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ]; then
-        until nc -z $DB_HOST $DB_PORT; do
-            echo "Waiting for database connection..."
-            sleep 2
-        done
-        echo "✅ Database is ready"
+    # More robust URL parsing
+    if [[ "$SQL_URI" =~ postgresql://[^:]+:[^@]+@([^:]+):([0-9]+)/ ]]; then
+        DB_HOST="${BASH_REMATCH[1]}"
+        DB_PORT="${BASH_REMATCH[2]}"
+        echo "🔧 Extracted - Host: $DB_HOST, Port: $DB_PORT"
+        
+        if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ]; then
+            echo "⏳ Waiting for database connection to $DB_HOST:$DB_PORT..."
+            until nc -z $DB_HOST $DB_PORT; do
+                echo "Waiting for database connection..."
+                sleep 2
+            done
+            echo "✅ Database is ready"
+        else
+            echo "⚠️  Could not extract host/port from SQL_URI, skipping wait"
+        fi
+    else
+        echo "⚠️  Could not parse PostgreSQL URL, skipping wait"
     fi
 fi
 
@@ -52,10 +62,6 @@ find . -name "*.pyc" -delete || true
 # Remove Alembic cache
 echo "🗑️  Removing Alembic cache..."
 rm -rf alembic/__pycache__ || true
-
-# Initialize fresh Alembic (if needed)
-echo "🔄 Initializing fresh Alembic..."
-alembic init alembic --template generic || true
 
 # Create new migration from current models
 echo "📝 Creating new Alembic migration from current models..."

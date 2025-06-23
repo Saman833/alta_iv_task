@@ -23,10 +23,6 @@ find . -name "*.pyc" -delete || true
 echo "🗑️  Removing Alembic cache..."
 rm -rf alembic/__pycache__ || true
 
-# Initialize fresh Alembic (if needed)
-echo "🔄 Initializing fresh Alembic..."
-alembic init alembic --template generic || true
-
 # Create new migration from current models
 echo "📝 Creating new Alembic migration from current models..."
 alembic revision --autogenerate -m "Fresh auto-generated migration"
