@@ -1,0 +1,52 @@
+[
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "Meeting tomorrow at 3 PM to discuss the project",
+            "subject": null
+        },
+        "output": {
+            "category": "meeting"
+        }
+    },
+    {
+        "input": {
+            "source": "email",
+            "content_data": "Please complete the report by Friday",
+            "subject": "Task Assignment"
+        },
+        "output": {
+            "category": "task"
+        }
+    },
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "Check out this new feature I found",
+            "subject": null
+        },
+        "output": {
+            "category": "information"
+        }
+    },
+    {
+        "input": {
+            "source": "email",
+            "content_data": "What if we built an AI-powered assistant?",
+            "subject": "Innovation Idea"
+        },
+        "output": {
+            "category": "idea"
+        }
+    },
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "Buy now! Limited time offer! 50% off!",
+            "subject": null
+        },
+        "output": {
+            "category": "spam"
+        }
+    }
+]

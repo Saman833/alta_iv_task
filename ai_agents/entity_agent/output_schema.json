@@ -1,0 +1,14 @@
+{
+    "type": "array",
+    "description": "List of entities extracted from the message",
+    "items": {
+      "type": "object",
+      "properties": {
+        "content_id":   { "type": "string" },
+        "entity_type":  { "type": "string", "enum": ["EMAIL","CONTACT","DATE","KEYWORD"] },
+        "entity_value": { "type": "string" }
+      },
+      "required": ["content_id","entity_type","entity_value"]
+    }
+  }
+  

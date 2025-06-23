@@ -1,4 +1,3 @@
-
 """
 
 
@@ -10,6 +9,7 @@ do not use it in production
 
 import sqlite3
 from datetime import datetime
+import html
 
 def check_database():
     conn = sqlite3.connect('test.db')
@@ -29,17 +29,22 @@ def check_database():
         print(f"Content table has {count} records")
         
         if count > 0:
-            cursor.execute("SELECT id, source_id, content_type, content_data, content_html, source, timestamp FROM content LIMIT 12;")
+            cursor.execute("SELECT id, source_id, content_type, content_data, content_html, source,category, timestamp FROM content LIMIT 12;")
             rows = cursor.fetchall()
             print("\nRecent content records:")
             for row in rows:
                 print(f"  ID: {row[0]}")
                 print(f"  Source ID: {row[1]}")
                 print(f"  Type: {row[2]}")
-                print(f"  Content Data: '{row[3]}'")
-                print(f"  Content HTML: '{row[4]}'")
+                # Decode HTML entities in content_data
+                decoded_content = html.unescape(row[3]) if row[3] else ""
+                print(f"  Content Data: '{decoded_content}'")
+                # Decode HTML entities in content_html
+                decoded_html = html.unescape(row[4]) if row[4] else ""
+                print(f"  Content HTML: '{decoded_html}'")
                 print(f"  Source: {row[5]}")
-                print(f"  Timestamp: {row[6]}")
+                print(f"  Category: {row[6]}")
+                print(f"  Timestamp: {row[7]}")
                 print("  " + "-"*30)
     except sqlite3.OperationalError as e:
         print(f"Error reading content table: {e}")
