@@ -8,6 +8,7 @@ __pycache__/
 *.so
 
 *credentials.json
+*token.json
 # Distribution / packaging
 .Python
 build/
