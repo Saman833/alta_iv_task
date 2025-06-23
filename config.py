@@ -45,7 +45,7 @@ class Config:
         """Build PostgreSQL URL using Pydantic for validation"""
         try:
             return MultiHostUrl.build(
-                scheme="postgresql+psycopg2",
+                scheme="postgresql+asyncpg",
                 username=self.POSTGRES_USER,
                 password=self.POSTGRES_PASSWORD,
                 host=self.POSTGRES_SERVER,
