@@ -18,7 +18,7 @@ from models import Base, Content, Entity
 alembic_config = context.config
 
 # Override the sqlalchemy.url with your config
-alembic_config.set_main_option("sqlalchemy.url", config.SQL_URL or "sqlite:///test.db")
+alembic_config.set_main_option("sqlalchemy.url", config.SQL_URI or "sqlite:///test.db")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
