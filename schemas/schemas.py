@@ -46,11 +46,11 @@ class Public_Summary(BaseModel):
     entities: Entities
 class SearchQuery(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    category: Optional[Category] = None
-    keywords: Optional[List[str]] = None
-    source: Optional[Source] = None
-    start_date_duration: Optional[int] = None
-    end_date_duration: Optional[int] = None
+    category: Optional[Category | None] = None
+    keywords: Optional[List[str]|None] = None
+    source: Optional[Source|None] = None
+    start_date_duration: Optional[datetime|None] = None
+    end_date_duration: Optional[datetime|None] = None
 class ContentSearchContent(BaseModel):
       keywords : Optional[List[str]] = None
 class ISearchQuery(BaseModel):
