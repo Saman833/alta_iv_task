@@ -1,12 +1,15 @@
 from sqlalchemy.orm import Session
 from repository.content_repository import ContentRepository   
-from schemas.schemas import ContentResponse, EntityResponse, SearchQuery
+from repository.entity_repository import EntityRepository
+from schemas.schemas import ContentResponse, EntityResponse, SearchQuery, CreateContentRequest, CreateEntityRequest
+from models import Content, Entity
 from typing import List
 
 class ContentTableService:
     def __init__(self, db: Session):
         self.db = db
         self.content_repository = ContentRepository(db)
+        self.entity_repository = EntityRepository(db)
     
     def get_public_summary(self) -> List[ContentResponse]:
         contents = self.content_repository.get_public_summary()
@@ -79,4 +82,70 @@ class ContentTableService:
             content_responses.append(content_response)
         
         return content_responses
+    
+    def create_content_manually(self, content_request: CreateContentRequest) -> ContentResponse:
+        """Manually create a new content entry"""
+        # Create content object
+        content = Content(
+            source_id=content_request.source_id,
+            content_type=content_request.content_type,
+            content_data=content_request.content_data,
+            content_html=content_request.content_html,
+            source=content_request.source,
+            category=content_request.category,
+            subject=content_request.subject,
+            timestamp=content_request.timestamp
+        )
+        
+        # Save to database
+        saved_content = self.content_repository.create_content(content)
+        
+        if not saved_content:
+            raise ValueError("Failed to create content. Possible duplicate source_id and source combination.")
+        
+        # Convert to response format
+        content_response = ContentResponse(
+            id=saved_content.id,
+            source_id=saved_content.source_id,
+            content_type=saved_content.content_type.value if saved_content.content_type else str(saved_content.content_type),
+            content_data=saved_content.content_data,
+            content_html=saved_content.content_html,
+            source=saved_content.source.value if saved_content.source else str(saved_content.source),
+            category=saved_content.category.value if saved_content.category else str(saved_content.category),
+            subject=saved_content.subject,
+            timestamp=saved_content.timestamp,
+            created_at=saved_content.created_at,
+            updated_at=saved_content.updated_at,
+            entities=[]
+        )
+        
+        return content_response
+    
+    def create_entity_manually(self, entity_request: CreateEntityRequest) -> EntityResponse:
+        """Manually create a new entity entry"""
+        # Validate that content exists
+        content = self.content_repository.get_content_by_id(entity_request.content_id)
+        if not content:
+            raise ValueError(f"Content with id {entity_request.content_id} not found")
+        
+        # Create entity object
+        entity = Entity(
+            content_id=entity_request.content_id,
+            entity_type=entity_request.entity_type,
+            entity_value=entity_request.entity_value
+        )
+        
+        # Save to database
+        saved_entity = self.entity_repository.create_entity(entity)
+        
+        # Convert to response format
+        entity_response = EntityResponse(
+            id=saved_entity.id,
+            content_id=saved_entity.content_id,
+            entity_type=saved_entity.entity_type.value if saved_entity.entity_type else str(saved_entity.entity_type),
+            entity_value=saved_entity.entity_value,
+            created_at=saved_entity.created_at
+        )
+        
+        return entity_response
 
