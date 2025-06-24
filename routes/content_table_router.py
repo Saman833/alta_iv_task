@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from deps import SessionDep
-from schemas.schemas import ContentResponse
+from schemas.schemas import ContentResponse, SearchQuery
 from services.content_table_service import ContentTableService
 from typing import List
 from sqlalchemy.exc import SQLAlchemyError
@@ -35,5 +35,15 @@ async def get_public_summary(db: SessionDep) -> List[ContentResponse]:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Database error: {str(e)}"
         )
-
+@router.post("/search_query") 
+async def search_contents(search_query: SearchQuery, db: SessionDep) -> List[ContentResponse]:
+    try:
+        content_table_service = ContentTableService(db)
+        contents = content_table_service.search_contents(search_query)
+        return contents
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
 

@@ -49,6 +49,8 @@ class MessageService:
             for entity in entities: 
                 entity.content_id = content.id
             self.entity_repository.create_entities(entities)
+        
+        return content
 
     def create_content_message(self, parsed_data: dict):
         content = Content(**parsed_data['content_data'])

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 from datetime import datetime
+from models import Category , Source
 
 
 class EntityResponse(BaseModel):
@@ -38,12 +39,21 @@ class Entities(BaseModel):
     entities: List[EntityResponse]
     count: int = 10 
 
-
 class Public_Summary(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     
     content: ContentResponse
     entities: Entities
-    
+class SearchQuery(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    category: Optional[Category] = None
+    keywords: Optional[List[str]] = None
+    source: Optional[Source] = None
+    start_date_duration: Optional[int] = None
+    end_date_duration: Optional[int] = None
+class ContentSearchContent(BaseModel):
+      keywords : Optional[List[str]] = None
+class ISearchQuery(BaseModel):
+    query_text:str 
 
 
