@@ -17,13 +17,12 @@ class ContentTableService:
         # Convert SQLAlchemy objects to Pydantic models
         content_responses = []
         for content in contents:
-            # Convert entities to EntityResponse objects
             entity_responses = []
             for entity in content.entities:
                 entity_response = EntityResponse(
                     id=entity.id,
                     content_id=entity.content_id,
-                    entity_type=entity.entity_type.value if hasattr(entity.entity_type, 'value') else str(entity.entity_type),
+                    entity_type=entity.entity_type.value if entity.entity_type else str(entity.entity_type),
                     entity_value=entity.entity_value,
                     created_at=entity.created_at
                 )
@@ -33,16 +32,16 @@ class ContentTableService:
             content_response = ContentResponse(
                 id=content.id,
                 source_id=content.source_id,
-                content_type=content.content_type.value if hasattr(content.content_type, 'value') else str(content.content_type),
+                content_type=content.content_type.value if content.content_type else str(content.content_type),
                 content_data=content.content_data,
                 content_html=content.content_html,
-                source=content.source.value if hasattr(content.source, 'value') else str(content.source),
-                category=content.category.value if hasattr(content.category, 'value') else str(content.category),
+                source=content.source.value if content.source else str(content.source),
+                category=content.category.value if content.category else str(content.category),
                 subject=content.subject,
                 timestamp=content.timestamp,
                 created_at=content.created_at,
                 updated_at=content.updated_at,
-                entities=entity_responses  # Include the entities
+                entities=entity_responses   
             )
             content_responses.append(content_response)
         
@@ -54,13 +53,12 @@ class ContentTableService:
         # Convert SQLAlchemy objects to Pydantic models
         content_responses = []
         for content in contents:
-            # Convert entities to EntityResponse objects
             entity_responses = []
             for entity in content.entities:
                 entity_response = EntityResponse(
                     id=entity.id,
                     content_id=entity.content_id,
-                    entity_type=entity.entity_type.value if hasattr(entity.entity_type, 'value') else str(entity.entity_type),
+                    entity_type=entity.entity_type.value if entity.entity_type else str(entity.entity_type),
                     entity_value=entity.entity_value,
                     created_at=entity.created_at
                 )
@@ -70,16 +68,16 @@ class ContentTableService:
             content_response = ContentResponse(
                 id=content.id,
                 source_id=content.source_id,
-                content_type=content.content_type.value if hasattr(content.content_type, 'value') else str(content.content_type),
+                content_type=content.content_type.value if content.content_type else str(content.content_type),
                 content_data=content.content_data,
                 content_html=content.content_html,
-                source=content.source.value if hasattr(content.source, 'value') else str(content.source),
-                category=content.category.value if hasattr(content.category, 'value') else str(content.category),
+                source=content.source.value if content.source else str(content.source),
+                category=content.category.value if content.category else str(content.category),
                 subject=content.subject,
                 timestamp=content.timestamp,
                 created_at=content.created_at,
                 updated_at=content.updated_at,
-                entities=entity_responses  # Include the entities
+                entities=entity_responses   
             )
             content_responses.append(content_response)
         
