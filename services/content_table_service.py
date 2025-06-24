@@ -17,12 +17,13 @@ class ContentTableService:
         # Convert SQLAlchemy objects to Pydantic models
         content_responses = []
         for content in contents:
+            # Convert entities to EntityResponse objects
             entity_responses = []
             for entity in content.entities:
                 entity_response = EntityResponse(
                     id=entity.id,
                     content_id=entity.content_id,
-                    entity_type=entity.entity_type.value if entity.entity_type else str(entity.entity_type),
+                    entity_type=entity.entity_type.value if hasattr(entity.entity_type, 'value') else str(entity.entity_type),
                     entity_value=entity.entity_value,
                     created_at=entity.created_at
                 )
@@ -32,16 +33,16 @@ class ContentTableService:
             content_response = ContentResponse(
                 id=content.id,
                 source_id=content.source_id,
-                content_type=content.content_type.value if content.content_type else str(content.content_type),
+                content_type=content.content_type.value if hasattr(content.content_type, 'value') else str(content.content_type),
                 content_data=content.content_data,
                 content_html=content.content_html,
-                source=content.source.value if content.source else str(content.source),
-                category=content.category.value if content.category else str(content.category),
+                source=content.source.value if hasattr(content.source, 'value') else str(content.source),
+                category=content.category.value if hasattr(content.category, 'value') else str(content.category),
                 subject=content.subject,
                 timestamp=content.timestamp,
                 created_at=content.created_at,
                 updated_at=content.updated_at,
-                entities=entity_responses   
+                entities=entity_responses  # Include the entities
             )
             content_responses.append(content_response)
         
@@ -53,12 +54,13 @@ class ContentTableService:
         # Convert SQLAlchemy objects to Pydantic models
         content_responses = []
         for content in contents:
+            # Convert entities to EntityResponse objects
             entity_responses = []
             for entity in content.entities:
                 entity_response = EntityResponse(
                     id=entity.id,
                     content_id=entity.content_id,
-                    entity_type=entity.entity_type.value if entity.entity_type else str(entity.entity_type),
+                    entity_type=entity.entity_type.value if hasattr(entity.entity_type, 'value') else str(entity.entity_type),
                     entity_value=entity.entity_value,
                     created_at=entity.created_at
                 )
@@ -68,16 +70,16 @@ class ContentTableService:
             content_response = ContentResponse(
                 id=content.id,
                 source_id=content.source_id,
-                content_type=content.content_type.value if content.content_type else str(content.content_type),
+                content_type=content.content_type.value if hasattr(content.content_type, 'value') else str(content.content_type),
                 content_data=content.content_data,
                 content_html=content.content_html,
-                source=content.source.value if content.source else str(content.source),
-                category=content.category.value if content.category else str(content.category),
+                source=content.source.value if hasattr(content.source, 'value') else str(content.source),
+                category=content.category.value if hasattr(content.category, 'value') else str(content.category),
                 subject=content.subject,
                 timestamp=content.timestamp,
                 created_at=content.created_at,
                 updated_at=content.updated_at,
-                entities=entity_responses   
+                entities=entity_responses  # Include the entities
             )
             content_responses.append(content_response)
         
@@ -103,15 +105,15 @@ class ContentTableService:
         if not saved_content:
             raise ValueError("Failed to create content. Possible duplicate source_id and source combination.")
         
-        # Convert to response format
+        # Convert to response format with safe enum handling
         content_response = ContentResponse(
             id=saved_content.id,
             source_id=saved_content.source_id,
-            content_type=saved_content.content_type.value if saved_content.content_type else str(saved_content.content_type),
+            content_type=saved_content.content_type.value if hasattr(saved_content.content_type, 'value') else str(saved_content.content_type),
             content_data=saved_content.content_data,
             content_html=saved_content.content_html,
-            source=saved_content.source.value if saved_content.source else str(saved_content.source),
-            category=saved_content.category.value if saved_content.category else str(saved_content.category),
+            source=saved_content.source.value if hasattr(saved_content.source, 'value') else str(saved_content.source),
+            category=saved_content.category.value if hasattr(saved_content.category, 'value') else str(saved_content.category),
             subject=saved_content.subject,
             timestamp=saved_content.timestamp,
             created_at=saved_content.created_at,
@@ -138,11 +140,11 @@ class ContentTableService:
         # Save to database
         saved_entity = self.entity_repository.create_entity(entity)
         
-        # Convert to response format
+        # Convert to response format with safe enum handling
         entity_response = EntityResponse(
             id=saved_entity.id,
             content_id=saved_entity.content_id,
-            entity_type=saved_entity.entity_type.value if saved_entity.entity_type else str(saved_entity.entity_type),
+            entity_type=saved_entity.entity_type.value if hasattr(saved_entity.entity_type, 'value') else str(saved_entity.entity_type),
             entity_value=saved_entity.entity_value,
             created_at=saved_entity.created_at
         )
