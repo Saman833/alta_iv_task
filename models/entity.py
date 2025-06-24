@@ -11,6 +11,7 @@ class EntityType(PyEnum):
     DATE = 'DATE'
     KEYWORD = 'KEYWORD'
 
+from .content import FlexibleEnum
 
 class Entity(Base):
     """Entities from content (names, emails, phone numbers, etc.).
@@ -21,7 +22,7 @@ class Entity(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     content_id = Column(String(36), ForeignKey('content.id'), nullable=False)
-    entity_type = Column(Enum(EntityType), nullable=False)  # 'PROJECT', 'CONTACT', 'DATE', 'KEYWORD'
+    entity_type = Column(FlexibleEnum(EntityType), nullable=False)  # 'PROJECT', 'CONTACT', 'DATE', 'KEYWORD'
     entity_value = Column(Text, nullable=False)
     created_at = Column(DateTime, default=func.now())
     
