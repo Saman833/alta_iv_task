@@ -12,10 +12,22 @@ class ParserFactory:
         try : 
             if source == 'email':
                 return EmailTextParser()
-            elif source == 'telegram' and raw_data['message'].get("voice"):
-                return TelegramVoiceParser()
-            elif source == 'telegram' and raw_data['message'].get("text"):
-                return TelegramTextParser()
+            elif source == 'telegram':
+                # Check if message exists in the update
+                message = raw_data.get('message')
+                if not message:
+                    print(f"No message found in Telegram update: {raw_data}")
+                    return None
+                
+                # Check for voice message first
+                if message.get("voice"):
+                    return TelegramVoiceParser()
+                # Check for text message
+                elif message.get("text"):
+                    return TelegramTextParser()
+                else:
+                    print(f"Unsupported message type in Telegram update: {message}")
+                    return None
             return None 
         except Exception as e:
             print(f"Error in get_parser: {e}")
