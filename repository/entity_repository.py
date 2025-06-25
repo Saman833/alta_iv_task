@@ -12,6 +12,17 @@ class EntityRepository:
         except Exception as e:
             self.db.rollback()
             raise ValueError(f"Error creating entities: {e}")
+    
+    def create_entity(self, entity: Entity) -> Entity:
+        """Create a single entity"""
+        try:
+            self.db.add(entity)
+            self.db.commit()
+            self.db.refresh(entity)
+            return entity
+        except Exception as e:
+            self.db.rollback()
+            raise ValueError(f"Error creating entity: {e}")
         
         
         

@@ -4,6 +4,10 @@ from sqlalchemy import text
 from sqlalchemy.orm import joinedload
 from models import Content, Source, Entity, Category
 import uuid
+from schemas.schemas import Public_Summary, SearchQuery
+from typing import List
+from sqlalchemy import and_, or_
+from datetime import datetime, timedelta
 
 class ContentRepository:
     """
@@ -64,4 +68,55 @@ class ContentRepository:
         
         contents = query.all()
         return contents
+    def search_contents(self, search_query: SearchQuery) -> List[Content]:
+        """
+        Search contents based on the provided search query conditions:
+        - Filter by keywords (search in entity values)
+        - Filter by category
+        - Filter by source
+        - Filter by date range (start_date_duration and end_date_duration)
+        """
+        # Start with base query including entities to avoid N+1 problem
+        query = self.db.query(Content).options(
+            joinedload(Content.entities)
+        )
         
+        # Build filter conditions
+        conditions = []
+        
+        # Filter by keywords (search in entity values)
+        if search_query.keywords and len(search_query.keywords) > 0:
+            keyword_conditions = []
+            for keyword in search_query.keywords:
+                # Search in entity values using LIKE for partial matches
+                keyword_conditions.append(
+                    Content.entities.any(Entity.entity_value.ilike(f"%{keyword}%"))
+                )
+            if keyword_conditions:
+                conditions.append(or_(*keyword_conditions))
+        
+        # Filter by category
+        if search_query.category:
+            conditions.append(Content.category == search_query.category)
+        
+        # Filter by source
+        if search_query.source:
+            conditions.append(Content.source == search_query.source)
+        
+        # Filter by start date (content timestamp >= start_date_duration)
+        if search_query.start_date_duration:
+            start_date = datetime.now() - timedelta(days=search_query.start_date_duration)
+            conditions.append(Content.timestamp >= start_date)
+        
+        # Filter by end date (content timestamp <= end_date_duration)
+        if search_query.end_date_duration:
+            end_date = datetime.now() - timedelta(days=search_query.end_date_duration)
+            conditions.append(Content.timestamp <= end_date)
+        
+        # Apply all conditions if any exist
+        if conditions:
+            query = query.filter(and_(*conditions))
+        
+        # Execute query and return results
+        contents = query.all()
+        return contents

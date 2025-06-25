@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from deps import SessionDep
-from schemas.schemas import ContentResponse
+from schemas.schemas import ContentResponse, SearchQuery, CreateContentRequest, CreateEntityRequest, EntityResponse
 from services.content_table_service import ContentTableService
 from typing import List
 from sqlalchemy.exc import SQLAlchemyError
@@ -36,4 +36,49 @@ async def get_public_summary(db: SessionDep) -> List[ContentResponse]:
             detail=f"Database error: {str(e)}"
         )
 
+@router.post("/search_query") 
+async def search_contents(search_query: SearchQuery, db: SessionDep) -> List[ContentResponse]:
+    try:
+        content_table_service = ContentTableService(db)
+        contents = content_table_service.search_contents(search_query)
+        return contents
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
+
+@router.post("/create", response_model=ContentResponse)
+async def create_content_manually(content_request: CreateContentRequest, db: SessionDep) -> ContentResponse:
+    """Manually create a new content entry"""
+    try:
+        content_table_service = ContentTableService(db)
+        return content_table_service.create_content_manually(content_request)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
+
+@router.post("/entities/create", response_model=EntityResponse)
+async def create_entity_manually(entity_request: CreateEntityRequest, db: SessionDep) -> EntityResponse:
+    """Manually create a new entity entry"""
+    try:
+        content_table_service = ContentTableService(db)
+        return content_table_service.create_entity_manually(entity_request)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        )
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
 
