@@ -88,28 +88,40 @@ class ContentRepository:
         if search_query.keywords and len(search_query.keywords) > 0:
             keyword_conditions = []
             for keyword in search_query.keywords:
-                # Search in entity values using LIKE for partial matches
-                keyword_conditions.append(
-                    Content.entities.any(Entity.entity_value.ilike(f"%{keyword}%"))
-                )
+                # Skip empty keywords
+                if keyword and keyword.strip():
+                    # Search in entity values using LIKE for partial matches
+                    keyword_conditions.append(
+                        Content.entities.any(Entity.entity_value.ilike(f"%{keyword}%"))
+                    )
             if keyword_conditions:
                 conditions.append(or_(*keyword_conditions))
         
-        # Filter by category
-        if search_query.category:
-            conditions.append(Content.category == search_query.category)
+        # Filter by category (convert string to enum if not empty)
+        if search_query.category and search_query.category.strip():
+            try:
+                category_enum = Category(search_query.category.lower())
+                conditions.append(Content.category == category_enum)
+            except ValueError:
+                # If invalid category, skip this filter
+                pass
         
-        # Filter by source
-        if search_query.source:
-            conditions.append(Content.source == search_query.source)
+        # Filter by source (convert string to enum if not empty)
+        if search_query.source and search_query.source.strip():
+            try:
+                source_enum = Source(search_query.source.lower())
+                conditions.append(Content.source == source_enum)
+            except ValueError:
+                # If invalid source, skip this filter
+                pass
         
         # Filter by start date (content timestamp >= start_date_duration)
-        if search_query.start_date_duration:
+        if search_query.start_date_duration is not None:
             start_date = datetime.now() - timedelta(days=search_query.start_date_duration)
             conditions.append(Content.timestamp >= start_date)
         
         # Filter by end date (content timestamp <= end_date_duration)
-        if search_query.end_date_duration:
+        if search_query.end_date_duration is not None:
             end_date = datetime.now() - timedelta(days=search_query.end_date_duration)
             conditions.append(Content.timestamp <= end_date)
         
