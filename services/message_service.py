@@ -79,7 +79,7 @@ class MessageService:
         this approach works even if platform shut down and restart 
         """
         last_source_id = self.content_repository.get_last_source_id(source=Source.TELEGRAM)
-        return last_source_id + 1 if last_source_id else 30
+        return last_source_id + 1 if last_source_id else 70
         
         
         

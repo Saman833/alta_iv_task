@@ -18,11 +18,9 @@ class ParserFactory:
                 if not message:
                     print(f"No message found in Telegram update: {raw_data}")
                     return None
-                
-                # Check for voice message first
+                    
                 if message.get("voice"):
                     return TelegramVoiceParser()
-                # Check for text message
                 elif message.get("text"):
                     return TelegramTextParser()
                 else:

@@ -36,7 +36,14 @@ class TelegramPoller:
                 updates = self.get_updates(self.offset)
                 
                 for update in updates:
-                    self.message_service.process_message(source='telegram', raw_data=update)
+                    # Only process updates that contain actual messages
+                    if 'message' in update:
+                        self.message_service.process_message(source='telegram', raw_data=update)
+                    else:
+                        # Skip non-message updates (like my_chat_member, channel_post, etc.)
+                        print(f"Skipping non-message update: {list(update.keys())}")
+                    
+                    # Always update the offset to avoid processing the same update again
                     self.offset = update["update_id"] + 1
                 
                 time.sleep(self.sleep_time)
