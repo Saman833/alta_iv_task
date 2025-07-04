@@ -1,0 +1,134 @@
+[
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "URGENT: Server is down! All services are failing. Need immediate assistance!",
+            "subject": null,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        "output": {
+            "requires_call": 1
+        }
+    },
+    {
+        "input": {
+            "source": "email",
+            "content_data": "Emergency: Client meeting has been moved to 2 PM today. We need to discuss strategy immediately.",
+            "subject": "URGENT: Meeting Change",
+            "timestamp": "2024-01-15T12:45:00Z"
+        },
+        "output": {
+            "requires_call": 1
+        }
+    },
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "Help! I'm locked out of the system and have a deadline in 1 hour. Can you call me please?",
+            "subject": null,
+            "timestamp": "2024-01-15T14:20:00Z"
+        },
+        "output": {
+            "requires_call": 1
+        }
+    },
+    {
+        "input": {
+            "source": "email",
+            "content_data": "There's been a security breach in our database. We need to discuss the incident response plan immediately.",
+            "subject": "CRITICAL: Security Incident",
+            "timestamp": "2024-01-15T09:15:00Z"
+        },
+        "output": {
+            "requires_call": 1
+        }
+    },
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "I'm really confused about this complex project requirements. Can we talk it through? It's quite urgent.",
+            "subject": null,
+            "timestamp": "2024-01-15T16:00:00Z"
+        },
+        "output": {
+            "requires_call": 1
+        }
+    },
+    {
+        "input": {
+            "source": "email",
+            "content_data": "Please review the attached document when you have time. No rush on this one.",
+            "subject": "Document Review",
+            "timestamp": "2024-01-15T11:00:00Z"
+        },
+        "output": {
+            "requires_call": 0
+        }
+    },
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "Thanks for the update. Everything looks good on my end.",
+            "subject": null,
+            "timestamp": "2024-01-15T13:30:00Z"
+        },
+        "output": {
+            "requires_call": 0
+        }
+    },
+    {
+        "input": {
+            "source": "email",
+            "content_data": "Here's the weekly report. Let me know if you have any questions.",
+            "subject": "Weekly Report - January 15",
+            "timestamp": "2024-01-15T08:00:00Z"
+        },
+        "output": {
+            "requires_call": 0
+        }
+    },
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "Meeting scheduled for next week. I'll send the agenda tomorrow.",
+            "subject": null,
+            "timestamp": "2024-01-15T15:45:00Z"
+        },
+        "output": {
+            "requires_call": 0
+        }
+    },
+    {
+        "input": {
+            "source": "email",
+            "content_data": "FYI: The new policy will be effective next month. Please read when convenient.",
+            "subject": "Policy Update",
+            "timestamp": "2024-01-15T07:30:00Z"
+        },
+        "output": {
+            "requires_call": 0
+        }
+    },
+    {
+        "input": {
+            "source": "telegram",
+            "content_data": "I need to cancel our appointment tomorrow. Family emergency. Please call me ASAP.",
+            "subject": null,
+            "timestamp": "2024-01-15T18:00:00Z"
+        },
+        "output": {
+            "requires_call": 1
+        }
+    },
+    {
+        "input": {
+            "source": "email",
+            "content_data": "The client is very upset about the project delay. We need to have a call to discuss damage control strategies now.",
+            "subject": "Client Issue - Immediate Action Required",
+            "timestamp": "2024-01-15T17:30:00Z"
+        },
+        "output": {
+            "requires_call": 1
+        }
+    }
+]

@@ -1,0 +1,33 @@
+{
+    "type": "object",
+    "properties": {
+        "source": {
+            "type": "string",
+            "description": "consider the source it might be email or telegram"
+        },
+        "source_id": {
+            "type": "string",
+            "description": "ignore this field"
+        },
+        "content_type": {
+            "type": "string",
+            "description": "it shows that the initial message was a voice or text , although the content_data is the text after parsing so dont worry about it"
+        },
+        "content_data": {
+            "type": "string",
+            "description": "content of the message - analyze this for urgency and call necessity"
+        },
+        "content_html": {
+            "type": "string",
+            "description": "The HTML content of the message"
+        },
+        "timestamp": {
+            "type": "string",
+            "description": "The timestamp of the message - consider recency for urgency assessment"
+        },
+        "subject": {
+            "type": "string",
+            "description": "The subject of the message - may contain urgency indicators"
+        }
+    }
+}

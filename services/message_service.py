@@ -5,6 +5,8 @@ from repository.content_repository import ContentRepository
 from repository.entity_repository import EntityRepository
 from services.telegram_voice_service import TelegramVoiceService
 from services.classification_service import ClassificationService
+from services.agent_service import AgentService
+from clients.elevenlabs_client import ElevenLabsClient
 class MessageService:
     """
         this function is the core of the message processing pipeline 
@@ -23,6 +25,8 @@ class MessageService:
         self.entity_repository = EntityRepository(self.db)
         self.telegram_voice_service = TelegramVoiceService()
         self.classification_service = ClassificationService()
+        self.agent_service = AgentService()
+        self.elevenlabs_client = ElevenLabsClient()
 
     def process_message(self, source: str, raw_data: dict):
         parser = self.parser_factory.get_parser(source, raw_data)
@@ -49,7 +53,16 @@ class MessageService:
             for entity in entities: 
                 entity.content_id = content.id
             self.entity_repository.create_entities(entities)
-        
+        call_requires=self.agent_service.run_agent("call_recognizer", parsed_data['content_data'])['requires_call']
+        if call_requires == 1:
+            message = parsed_data['content_data']
+            template_for_agent = f"""
+            you are an assitant , if something urgent happens , you need to call the user and inform them about the urgency.
+            now that something bad happened , you need to call the user and inform them about the urgency.
+            in belew is the message that the user sent to you and you need to inform Saman which is your boss so call him and explina to him the message content and why did you thinked you need to call him. 
+            the message is : {message}
+            """
+            self.start_a_call("", template_for_agent)
         return content
 
     def create_content_message(self, parsed_data: dict):
@@ -80,7 +93,13 @@ class MessageService:
         """
         last_source_id = self.content_repository.get_last_source_id(source=Source.TELEGRAM)
         return last_source_id + 1 if last_source_id else 30
-        
+    def start_a_call(self, agent_prompt : str , prompt_for_agent : str):
+        from config import config
+        to_number = config.ELEVENLABS_TO_NUMBER
+        phone_number_id = config.ELEVENLABS_PHONE_NUMBER_ID
+        agent_id =self.elevenlabs_client.create_elevenlabs_agent(prompt_for_agent)
+        self.elevenlabs_client.connect_phone_number_to_agent_elevenlabs(phone_number_id, agent_id)
+        return self.elevenlabs_client.start_a_call(agent_id, phone_number_id, to_number)
         
         
     

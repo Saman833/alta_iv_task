@@ -1,0 +1,13 @@
+{
+    "instruction": "Analyze the message content to determine if it requires an urgent phone call response. Return 1 if the message indicates urgency, emergency, or requires immediate verbal communication, otherwise return 0.",
+    "roles": [
+        {
+            "name": "urgency_detector",
+            "description": "Identify messages that contain urgent language, emergency situations, time-sensitive requests, or complex discussions that would benefit from direct verbal communication"
+        },
+        {
+            "name": "call_necessity_evaluator", 
+            "description": "Determine if the message type and content would be better handled through a phone call rather than written response, considering factors like complexity, emotional context, and immediacy"
+        }
+    ]
+}

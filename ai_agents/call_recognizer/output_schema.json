@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+        "requires_call": {
+            "type": "integer",
+            "description": "1 if the message requires an urgent call response, 0 otherwise",
+            "enum": [0, 1]
+        }
+    },
+    "required": ["requires_call"]
+}
