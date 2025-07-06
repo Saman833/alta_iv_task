@@ -113,30 +113,37 @@ class ConversationalAIService:
                 print("❌ ElevenLabs client not initialized")
                 return ""
             
-            # Use ElevenLabs text-to-speech
-            audio_generator = self.elevenlabs_client.client.generate(
-                text=text,
-                voice="Rachel",
-                model="eleven_multilingual_v1"
-            )
+            # Use ElevenLabs text-to-speech with correct API
+            print("🔧 Using ElevenLabs TTS API...")
             
-            # Collect all audio chunks from the generator
-            audio_chunks = []
-            chunk_count = 0
-            for chunk in audio_generator:
-                audio_chunks.append(chunk)
-                chunk_count += 1
+            # Get available voices first
+            try:
+                voices = self.elevenlabs_client.client.voices.get_all()
+                print(f"📋 Available voices: {len(voices)} found")
+                
+                # Use the first available voice or a specific one
+                voice_id = "21m00Tcm4TlvDq8ikWAM"  # Rachel voice ID
+                print(f"🎙️ Using voice ID: {voice_id}")
+                
+                # Generate audio using the correct API method
+                audio = self.elevenlabs_client.client.generate(
+                    text=text,
+                    voice=voice_id,
+                    model="eleven_multilingual_v1"
+                )
+                
+                print(f"🔊 Audio generated successfully, size: {len(audio)} bytes")
+                
+                # Convert to base64
+                audio_base64 = base64.b64encode(audio).decode()
+                print(f"✅ TTS generation successful, base64 length: {len(audio_base64)}")
+                return audio_base64
+                
+            except Exception as voice_error:
+                print(f"❌ Voice generation error: {voice_error}")
+                print(f"Voice error details: {type(voice_error).__name__}: {voice_error}")
+                return ""
             
-            print(f"📦 Collected {chunk_count} audio chunks")
-            
-            # Combine all chunks into a single bytes object
-            audio = b''.join(audio_chunks)
-            print(f"🔊 Total audio size: {len(audio)} bytes")
-            
-            # Convert to base64
-            audio_base64 = base64.b64encode(audio).decode()
-            print(f"✅ TTS generation successful, base64 length: {len(audio_base64)}")
-            return audio_base64
         except Exception as e:
             print(f"❌ TTS error: {e}")
             print(f"Error details: {type(e).__name__}: {e}")
