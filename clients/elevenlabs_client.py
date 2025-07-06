@@ -13,9 +13,27 @@ except ImportError:
 class ElevenLabsClient:
     def __init__(self):
         self.elevenlabs_api_key = config.ELEVENLABS_API_KEY
+        print(f"🔧 ElevenLabsClient initialization:")
+        print(f"   - ELEVENLABS_AVAILABLE: {ELEVENLABS_AVAILABLE}")
+        print(f"   - API Key present: {'✅ Yes' if self.elevenlabs_api_key else '❌ No'}")
+        print(f"   - API Key length: {len(self.elevenlabs_api_key) if self.elevenlabs_api_key else 0}")
+        if self.elevenlabs_api_key:
+            print(f"   - API Key starts with: {self.elevenlabs_api_key[:10]}...")
+        
         if ELEVENLABS_AVAILABLE and self.elevenlabs_api_key:
-            self.client = ElevenLabs(api_key=self.elevenlabs_api_key)
+            try:
+                print(f"   - Attempting to create ElevenLabs client...")
+                self.client = ElevenLabs(api_key=self.elevenlabs_api_key)
+                print("✅ ElevenLabs client initialized successfully")
+            except Exception as e:
+                print(f"❌ Failed to initialize ElevenLabs client: {e}")
+                print(f"   - Error type: {type(e).__name__}")
+                self.client = None
         else:
+            if not ELEVENLABS_AVAILABLE:
+                print("❌ ElevenLabs module not available")
+            if not self.elevenlabs_api_key:
+                print("❌ ElevenLabs API key not found in config")
             self.client = None
         
     def start_a_call(self, agent_id : str , phone_number_id : str , to_number : str):
