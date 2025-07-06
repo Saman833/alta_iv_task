@@ -116,15 +116,11 @@ class ConversationalAIService:
             # Use ElevenLabs text-to-speech with correct API
             print("🔧 Using ElevenLabs TTS API...")
             
-            # Get available voices first
+            # Use a hardcoded voice ID to avoid permission issues
+            voice_id = "21m00Tcm4TlvDq8ikWAM"  # Rachel voice ID
+            print(f"🎙️ Using voice ID: {voice_id}")
+            
             try:
-                voices = self.elevenlabs_client.client.voices.get_all()
-                print(f"📋 Available voices: {len(voices)} found")
-                
-                # Use the first available voice or a specific one
-                voice_id = "21m00Tcm4TlvDq8ikWAM"  # Rachel voice ID
-                print(f"🎙️ Using voice ID: {voice_id}")
-                
                 # Generate audio using the correct API method
                 audio = self.elevenlabs_client.client.generate(
                     text=text,
@@ -142,7 +138,25 @@ class ConversationalAIService:
             except Exception as voice_error:
                 print(f"❌ Voice generation error: {voice_error}")
                 print(f"Voice error details: {type(voice_error).__name__}: {voice_error}")
-                return ""
+                
+                # Try with a different voice ID as fallback
+                try:
+                    print("🔄 Trying fallback voice ID...")
+                    fallback_voice_id = "pNInz6obpgDQGcFmaJgB"  # Adam voice
+                    audio = self.elevenlabs_client.client.generate(
+                        text=text,
+                        voice=fallback_voice_id,
+                        model="eleven_multilingual_v1"
+                    )
+                    
+                    print(f"🔊 Audio generated with fallback voice, size: {len(audio)} bytes")
+                    audio_base64 = base64.b64encode(audio).decode()
+                    print(f"✅ TTS generation successful with fallback, base64 length: {len(audio_base64)}")
+                    return audio_base64
+                    
+                except Exception as fallback_error:
+                    print(f"❌ Fallback voice generation also failed: {fallback_error}")
+                    return ""
             
         except Exception as e:
             print(f"❌ TTS error: {e}")
