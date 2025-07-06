@@ -40,11 +40,19 @@ def test_api_permissions():
         # Test 2: Try to generate audio (requires text_to_speech permission)
         print("\n2️⃣ Testing text_to_speech permission...")
         try:
-            audio = client.client.text_to_speech.generate(
+            audio_generator = client.client.generate(
                 text="Hello, this is a test.",
-                voice="21m00Tcm4TlvDq8ikWAM",
+                voice="Rachel",
                 model="eleven_multilingual_v1"
             )
+            
+            # Collect all audio chunks from the generator
+            audio_chunks = []
+            for chunk in audio_generator:
+                audio_chunks.append(chunk)
+            
+            # Combine all chunks into a single bytes object
+            audio = b''.join(audio_chunks)
             print(f"✅ text_to_speech permission: OK - Generated {len(audio)} bytes")
         except Exception as e:
             print(f"❌ text_to_speech permission: FAILED - {e}")

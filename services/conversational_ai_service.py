@@ -116,47 +116,30 @@ class ConversationalAIService:
             # Use ElevenLabs text-to-speech with correct API
             print("🔧 Using ElevenLabs TTS API...")
             
-            # Use a hardcoded voice ID to avoid permission issues
-            voice_id = "21m00Tcm4TlvDq8ikWAM"  # Rachel voice ID
-            print(f"🎙️ Using voice ID: {voice_id}")
+            # Use the working approach from the tested code
+            audio_generator = self.elevenlabs_client.client.generate(
+                text=text,
+                voice="Rachel",
+                model="eleven_multilingual_v1"
+            )
             
-            try:
-                # Generate audio using the correct API method
-                audio = self.elevenlabs_client.client.text_to_speech.generate(
-                    text=text,
-                    voice=voice_id,
-                    model="eleven_multilingual_v1"
-                )
-                
-                print(f"🔊 Audio generated successfully, size: {len(audio)} bytes")
-                
-                # Convert to base64
-                audio_base64 = base64.b64encode(audio).decode()
-                print(f"✅ TTS generation successful, base64 length: {len(audio_base64)}")
-                return audio_base64
-                
-            except Exception as voice_error:
-                print(f"❌ Voice generation error: {voice_error}")
-                print(f"Voice error details: {type(voice_error).__name__}: {voice_error}")
-                
-                # Try with a different voice ID as fallback
-                try:
-                    print("🔄 Trying fallback voice ID...")
-                    fallback_voice_id = "pNInz6obpgDQGcFmaJgB"  # Adam voice
-                    audio = self.elevenlabs_client.client.text_to_speech.generate(
-                        text=text,
-                        voice=fallback_voice_id,
-                        model="eleven_multilingual_v1"
-                    )
-                    
-                    print(f"🔊 Audio generated with fallback voice, size: {len(audio)} bytes")
-                    audio_base64 = base64.b64encode(audio).decode()
-                    print(f"✅ TTS generation successful with fallback, base64 length: {len(audio_base64)}")
-                    return audio_base64
-                    
-                except Exception as fallback_error:
-                    print(f"❌ Fallback voice generation also failed: {fallback_error}")
-                    return ""
+            # Collect all audio chunks from the generator
+            audio_chunks = []
+            chunk_count = 0
+            for chunk in audio_generator:
+                audio_chunks.append(chunk)
+                chunk_count += 1
+            
+            print(f"📦 Collected {chunk_count} audio chunks")
+            
+            # Combine all chunks into a single bytes object
+            audio = b''.join(audio_chunks)
+            print(f"🔊 Total audio size: {len(audio)} bytes")
+            
+            # Convert to base64
+            audio_base64 = base64.b64encode(audio).decode()
+            print(f"✅ TTS generation successful, base64 length: {len(audio_base64)}")
+            return audio_base64
             
         except Exception as e:
             print(f"❌ TTS error: {e}")
