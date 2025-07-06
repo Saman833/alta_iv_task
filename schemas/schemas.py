@@ -49,8 +49,8 @@ class SearchQuery(BaseModel):
     category: Optional[Category | None] = None
     keywords: Optional[List[str]|None] = None
     source: Optional[Source|None] = None
-    start_date_duration: Optional[datetime|None] = None
-    end_date_duration: Optional[datetime|None] = None
+    start_date_duration: Optional[int|None] = None  # Number of days , it has been changed be arefull about it 
+    end_date_duration: Optional[int|None] = None    # Number of days , it has been changed be arefull about it 
 class ContentSearchContent(BaseModel):
       keywords : Optional[List[str]] = None
 class ISearchQuery(BaseModel):

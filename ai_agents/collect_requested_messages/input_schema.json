@@ -1,0 +1,63 @@
+{
+    "type": "object",
+    "properties": {
+        "user_request": {
+            "type": "string",
+            "description": "The user's filtering request (e.g., 'give me the ones that are for today', 'show urgent messages', 'emails from yesterday')"
+        },
+        "messages": {
+            "type": "array",
+            "description": "List of message objects to filter through",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique identifier for the message"
+                    },
+                    "source_id": {
+                        "type": "string",
+                        "description": "Source-specific identifier for the message"
+                    },
+                    "content_type": {
+                        "type": "string",
+                        "description": "Type of content (text or voice)"
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "Category of the message (spam, meeting, task, information, idea, other)"
+                    },
+                    "subject": {
+                        "type": "string",
+                        "description": "Subject line (for emails)"
+                    },
+                    "content_data": {
+                        "type": "string",
+                        "description": "The actual message content"
+                    },
+                    "content_html": {
+                        "type": "string",
+                        "description": "HTML version of the message content"
+                    },
+                    "source": {
+                        "type": "string",
+                        "description": "Source of the message (email or telegram)"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "description": "ISO timestamp of when the message was sent"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "description": "ISO timestamp of when the message was created in the database"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "description": "ISO timestamp of when the message was last updated"
+                    }
+                }
+            }
+        }
+    },
+    "required": ["user_request", "messages"]
+} 

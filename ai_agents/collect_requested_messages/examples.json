@@ -1,0 +1,402 @@
+[
+    {
+        "input": {
+            "user_request": "give me the ones that are for today",
+            "messages": [
+                {
+                    "id": "msg-001",
+                    "source_id": "email-123",
+                    "content_type": "text",
+                    "category": "meeting",
+                    "subject": "Meeting Reminder",
+                    "content_data": "Meeting tomorrow at 3 PM",
+                    "content_html": "<p>Meeting tomorrow at 3 PM</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T10:00:00Z",
+                    "created_at": "2024-01-15T10:00:00Z",
+                    "updated_at": "2024-01-15T10:00:00Z"
+                },
+                {
+                    "id": "msg-002",
+                    "source_id": "telegram-456",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "URGENT: Server down!",
+                    "content_html": "<p>URGENT: Server down!</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-15T14:30:00Z",
+                    "created_at": "2024-01-15T14:30:00Z",
+                    "updated_at": "2024-01-15T14:30:00Z"
+                },
+                {
+                    "id": "msg-003",
+                    "source_id": "email-789",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": "Weekly Report",
+                    "content_data": "Weekly report from last week",
+                    "content_html": "<p>Weekly report from last week</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-10T09:00:00Z",
+                    "created_at": "2024-01-10T09:00:00Z",
+                    "updated_at": "2024-01-10T09:00:00Z"
+                }
+            ]
+        },
+        "output": {
+            "matching_indices": [0, 1],
+            "total_matches": 2
+        }
+    },
+    {
+        "input": {
+            "user_request": "show me urgent messages",
+            "messages": [
+                {
+                    "id": "msg-004",
+                    "source_id": "telegram-789",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "URGENT: Server down!",
+                    "content_html": "<p>URGENT: Server down!</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-15T14:30:00Z",
+                    "created_at": "2024-01-15T14:30:00Z",
+                    "updated_at": "2024-01-15T14:30:00Z"
+                },
+                {
+                    "id": "msg-005",
+                    "source_id": "email-101",
+                    "content_type": "text",
+                    "category": "task",
+                    "subject": "Document Review",
+                    "content_data": "Please review this document",
+                    "content_html": "<p>Please review this document</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T11:00:00Z",
+                    "created_at": "2024-01-15T11:00:00Z",
+                    "updated_at": "2024-01-15T11:00:00Z"
+                },
+                {
+                    "id": "msg-006",
+                    "source_id": "telegram-102",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "CRITICAL: Security breach detected!",
+                    "content_html": "<p>CRITICAL: Security breach detected!</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-15T16:45:00Z",
+                    "created_at": "2024-01-15T16:45:00Z",
+                    "updated_at": "2024-01-15T16:45:00Z"
+                }
+            ]
+        },
+        "output": {
+            "matching_indices": [0, 2],
+            "total_matches": 2
+        }
+    },
+    {
+        "input": {
+            "user_request": "emails from yesterday",
+            "messages": [
+                {
+                    "id": "msg-007",
+                    "source_id": "email-201",
+                    "content_type": "text",
+                    "category": "meeting",
+                    "subject": "Meeting Reminder",
+                    "content_data": "Meeting reminder",
+                    "content_html": "<p>Meeting reminder</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-14T15:00:00Z",
+                    "created_at": "2024-01-14T15:00:00Z",
+                    "updated_at": "2024-01-14T15:00:00Z"
+                },
+                {
+                    "id": "msg-008",
+                    "source_id": "telegram-202",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "Quick update",
+                    "content_html": "<p>Quick update</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-15T10:00:00Z",
+                    "created_at": "2024-01-15T10:00:00Z",
+                    "updated_at": "2024-01-15T10:00:00Z"
+                },
+                {
+                    "id": "msg-009",
+                    "source_id": "email-203",
+                    "content_type": "text",
+                    "category": "task",
+                    "subject": "Project Status",
+                    "content_data": "Project status",
+                    "content_html": "<p>Project status</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-14T09:30:00Z",
+                    "created_at": "2024-01-14T09:30:00Z",
+                    "updated_at": "2024-01-14T09:30:00Z"
+                }
+            ]
+        },
+        "output": {
+            "matching_indices": [0, 2],
+            "total_matches": 2
+        }
+    },
+    {
+        "input": {
+            "user_request": "show me meeting messages",
+            "messages": [
+                {
+                    "id": "msg-010",
+                    "source_id": "email-301",
+                    "content_type": "text",
+                    "category": "meeting",
+                    "subject": "Meeting Tomorrow",
+                    "content_data": "Meeting tomorrow at 3 PM",
+                    "content_html": "<p>Meeting tomorrow at 3 PM</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T10:00:00Z",
+                    "created_at": "2024-01-15T10:00:00Z",
+                    "updated_at": "2024-01-15T10:00:00Z"
+                },
+                {
+                    "id": "msg-011",
+                    "source_id": "telegram-302",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "Quick update",
+                    "content_html": "<p>Quick update</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-15T10:00:00Z",
+                    "created_at": "2024-01-15T10:00:00Z",
+                    "updated_at": "2024-01-15T10:00:00Z"
+                },
+                {
+                    "id": "msg-012",
+                    "source_id": "email-303",
+                    "content_type": "text",
+                    "category": "meeting",
+                    "subject": "Team Sync",
+                    "content_data": "Team sync meeting",
+                    "content_html": "<p>Team sync meeting</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T14:00:00Z",
+                    "created_at": "2024-01-15T14:00:00Z",
+                    "updated_at": "2024-01-15T14:00:00Z"
+                }
+            ]
+        },
+        "output": {
+            "matching_indices": [0, 2],
+            "total_matches": 2
+        }
+    },
+    {
+        "input": {
+            "user_request": "telegram messages from this week",
+            "messages": [
+                {
+                    "id": "msg-013",
+                    "source_id": "telegram-401",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "Weekly update",
+                    "content_html": "<p>Weekly update</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-15T10:00:00Z",
+                    "created_at": "2024-01-15T10:00:00Z",
+                    "updated_at": "2024-01-15T10:00:00Z"
+                },
+                {
+                    "id": "msg-014",
+                    "source_id": "email-402",
+                    "content_type": "text",
+                    "category": "meeting",
+                    "subject": "Meeting Reminder",
+                    "content_data": "Meeting reminder",
+                    "content_html": "<p>Meeting reminder</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T11:00:00Z",
+                    "created_at": "2024-01-15T11:00:00Z",
+                    "updated_at": "2024-01-15T11:00:00Z"
+                },
+                {
+                    "id": "msg-015",
+                    "source_id": "telegram-403",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "Project update",
+                    "content_html": "<p>Project update</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-16T09:00:00Z",
+                    "created_at": "2024-01-16T09:00:00Z",
+                    "updated_at": "2024-01-16T09:00:00Z"
+                },
+                {
+                    "id": "msg-016",
+                    "source_id": "telegram-404",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "Old message",
+                    "content_html": "<p>Old message</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-08T10:00:00Z",
+                    "created_at": "2024-01-08T10:00:00Z",
+                    "updated_at": "2024-01-08T10:00:00Z"
+                }
+            ]
+        },
+        "output": {
+            "matching_indices": [0, 2],
+            "total_matches": 2
+        }
+    },
+    {
+        "input": {
+            "user_request": "show me spam messages",
+            "messages": [
+                {
+                    "id": "msg-017",
+                    "source_id": "email-501",
+                    "content_type": "text",
+                    "category": "spam",
+                    "subject": "Special Offer!",
+                    "content_data": "Buy now! 50% off!",
+                    "content_html": "<p>Buy now! 50% off!</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T10:00:00Z",
+                    "created_at": "2024-01-15T10:00:00Z",
+                    "updated_at": "2024-01-15T10:00:00Z"
+                },
+                {
+                    "id": "msg-018",
+                    "source_id": "email-502",
+                    "content_type": "text",
+                    "category": "meeting",
+                    "subject": "Meeting Reminder",
+                    "content_data": "Meeting reminder",
+                    "content_html": "<p>Meeting reminder</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T11:00:00Z",
+                    "created_at": "2024-01-15T11:00:00Z",
+                    "updated_at": "2024-01-15T11:00:00Z"
+                },
+                {
+                    "id": "msg-019",
+                    "source_id": "email-503",
+                    "content_type": "text",
+                    "category": "spam",
+                    "subject": "FREE MONEY!",
+                    "content_data": "FREE MONEY! CLICK HERE!",
+                    "content_html": "<p>FREE MONEY! CLICK HERE!</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T12:00:00Z",
+                    "created_at": "2024-01-15T12:00:00Z",
+                    "updated_at": "2024-01-15T12:00:00Z"
+                }
+            ]
+        },
+        "output": {
+            "matching_indices": [0, 2],
+            "total_matches": 2
+        }
+    },
+    {
+        "input": {
+            "user_request": "tasks from today",
+            "messages": [
+                {
+                    "id": "msg-020",
+                    "source_id": "email-601",
+                    "content_type": "text",
+                    "category": "task",
+                    "subject": "Report Completion",
+                    "content_data": "Please complete the report",
+                    "content_html": "<p>Please complete the report</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T09:00:00Z",
+                    "created_at": "2024-01-15T09:00:00Z",
+                    "updated_at": "2024-01-15T09:00:00Z"
+                },
+                {
+                    "id": "msg-021",
+                    "source_id": "telegram-602",
+                    "content_type": "text",
+                    "category": "meeting",
+                    "subject": null,
+                    "content_data": "Meeting reminder",
+                    "content_html": "<p>Meeting reminder</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-15T10:00:00Z",
+                    "created_at": "2024-01-15T10:00:00Z",
+                    "updated_at": "2024-01-15T10:00:00Z"
+                },
+                {
+                    "id": "msg-022",
+                    "source_id": "email-603",
+                    "content_type": "text",
+                    "category": "task",
+                    "subject": "Code Review",
+                    "content_data": "Review the code changes",
+                    "content_html": "<p>Review the code changes</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T14:00:00Z",
+                    "created_at": "2024-01-15T14:00:00Z",
+                    "updated_at": "2024-01-15T14:00:00Z"
+                }
+            ]
+        },
+        "output": {
+            "matching_indices": [0, 2],
+            "total_matches": 2
+        }
+    },
+    {
+        "input": {
+            "user_request": "no matches found",
+            "messages": [
+                {
+                    "id": "msg-023",
+                    "source_id": "email-701",
+                    "content_type": "text",
+                    "category": "meeting",
+                    "subject": "Meeting Reminder",
+                    "content_data": "Meeting reminder",
+                    "content_html": "<p>Meeting reminder</p>",
+                    "source": "email",
+                    "timestamp": "2024-01-15T10:00:00Z",
+                    "created_at": "2024-01-15T10:00:00Z",
+                    "updated_at": "2024-01-15T10:00:00Z"
+                },
+                {
+                    "id": "msg-024",
+                    "source_id": "telegram-702",
+                    "content_type": "text",
+                    "category": "information",
+                    "subject": null,
+                    "content_data": "Quick update",
+                    "content_html": "<p>Quick update</p>",
+                    "source": "telegram",
+                    "timestamp": "2024-01-15T11:00:00Z",
+                    "created_at": "2024-01-15T11:00:00Z",
+                    "updated_at": "2024-01-15T11:00:00Z"
+                }
+            ]
+        },
+        "output": {
+            "matching_indices": [],
+            "total_matches": 0
+        }
+    }
+] 

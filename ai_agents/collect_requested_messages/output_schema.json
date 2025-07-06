@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "matching_indices": {
+            "type": "array",
+            "description": "Array of indices (0-based) of messages that match the user's request criteria",
+            "items": {
+                "type": "integer"
+            }
+        },
+        "total_matches": {
+            "type": "integer",
+            "description": "Total number of messages that match the criteria"
+        }
+    },
+    "required": ["matching_indices", "total_matches"]
+} 

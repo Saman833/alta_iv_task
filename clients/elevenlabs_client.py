@@ -2,9 +2,21 @@ from config import config
 from fastapi import HTTPException
 import requests
 
+# Try to import ElevenLabs, but make it optional for testing
+try:
+    from elevenlabs.client import ElevenLabs
+    ELEVENLABS_AVAILABLE = True
+except ImportError:
+    ELEVENLABS_AVAILABLE = False
+    print("⚠️  ElevenLabs not available - voice features will be disabled")
+
 class ElevenLabsClient:
     def __init__(self):
         self.elevenlabs_api_key = config.ELEVENLABS_API_KEY
+        if ELEVENLABS_AVAILABLE and self.elevenlabs_api_key:
+            self.client = ElevenLabs(api_key=self.elevenlabs_api_key)
+        else:
+            self.client = None
         
     def start_a_call(self, agent_id : str , phone_number_id : str , to_number : str):
         call_payload = {

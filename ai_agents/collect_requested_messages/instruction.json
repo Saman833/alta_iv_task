@@ -1,0 +1,13 @@
+{
+    "instruction": "Analyze the user's request and filter the provided list of messages to return only the relevant ones. Return the indices of messages that match the user's criteria.",
+    "roles": [
+        {
+            "name": "request_analyzer",
+            "description": "Understand the user's filtering request and identify what criteria to apply (date, category, source, urgency, etc.)"
+        },
+        {
+            "name": "message_filter",
+            "description": "Apply the identified criteria to filter through the message list and return only matching message indices"
+        }
+    ]
+} 

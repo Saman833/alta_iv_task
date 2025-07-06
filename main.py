@@ -7,6 +7,7 @@ from services.message_service import MessageService
 from sources.telegram.telegram_poller import TelegramPoller
 from db import SessionLocal
 from routes.content_table_router import router as content_table_router
+from routes.conversational_ai_router import router as conversational_ai_router
 
 
 app = FastAPI(title="Altair Code Backend", version="1.0.0")
@@ -21,6 +22,7 @@ app.add_middleware(
 )
 
 app.include_router(content_table_router)
+app.include_router(conversational_ai_router)
 
 
 
