@@ -122,7 +122,7 @@ class ConversationalAIService:
             
             try:
                 # Generate audio using the correct API method
-                audio = self.elevenlabs_client.client.generate(
+                audio = self.elevenlabs_client.client.text_to_speech.generate(
                     text=text,
                     voice=voice_id,
                     model="eleven_multilingual_v1"
@@ -143,7 +143,7 @@ class ConversationalAIService:
                 try:
                     print("🔄 Trying fallback voice ID...")
                     fallback_voice_id = "pNInz6obpgDQGcFmaJgB"  # Adam voice
-                    audio = self.elevenlabs_client.client.generate(
+                    audio = self.elevenlabs_client.client.text_to_speech.generate(
                         text=text,
                         voice=fallback_voice_id,
                         model="eleven_multilingual_v1"

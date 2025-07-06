@@ -40,7 +40,7 @@ def test_api_permissions():
         # Test 2: Try to generate audio (requires text_to_speech permission)
         print("\n2️⃣ Testing text_to_speech permission...")
         try:
-            audio = client.client.generate(
+            audio = client.client.text_to_speech.generate(
                 text="Hello, this is a test.",
                 voice="21m00Tcm4TlvDq8ikWAM",
                 model="eleven_multilingual_v1"
