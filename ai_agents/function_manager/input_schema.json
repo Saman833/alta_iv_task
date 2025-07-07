@@ -1,0 +1,49 @@
+{
+    "type": "object",
+    "properties": {
+        "user_request": {
+            "type": "string",
+            "description": "The user's request or query that needs to be processed"
+        },
+        "available_functions": {
+            "type": "array",
+            "description": "List of available functions that can be called",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "function_name": {
+                        "type": "string",
+                        "description": "Name of the function"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of what the function does"
+                    },
+                    "parameters": {
+                        "type": "object",
+                        "description": "Expected parameters for the function",
+                        "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "description": "Data type of the parameter"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description of what the parameter should contain"
+                                },
+                                "required": {
+                                    "type": "boolean",
+                                    "description": "Whether the parameter is required"
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": ["function_name", "description"]
+            }
+        }
+    },
+    "required": ["user_request", "available_functions"]
+} 

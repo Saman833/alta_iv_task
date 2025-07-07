@@ -1,0 +1,128 @@
+[
+  {
+    "input": {
+      "user_request": "Give me a summary of all recent messages",
+      "messages": [
+        {
+          "id": 1,
+          "content": "Meeting scheduled for tomorrow at 2 PM with the development team",
+          "category": "email",
+          "timestamp": "2024-01-15T10:30:00Z",
+          "entities": [
+            {
+              "name": "meeting",
+              "type": "EVENT",
+              "value": "development team meeting"
+            },
+            {
+              "name": "time",
+              "type": "TIME",
+              "value": "tomorrow at 2 PM"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "content": "Project deadline extended to next Friday",
+          "category": "telegram",
+          "timestamp": "2024-01-15T11:45:00Z",
+          "entities": [
+            {
+              "name": "deadline",
+              "type": "DATE",
+              "value": "next Friday"
+            }
+          ]
+        }
+      ]
+    },
+    "output": {
+      "summary": "Recent messages indicate important updates: a development team meeting is scheduled for tomorrow at 2 PM, and the project deadline has been extended to next Friday. These changes affect both immediate scheduling and long-term project planning.",
+      "key_points": [
+        "Development team meeting tomorrow at 2 PM",
+        "Project deadline extended to next Friday"
+      ],
+      "message_count": 2
+    }
+  },
+  {
+    "input": {
+      "user_request": "Summarize urgent messages only",
+      "messages": [
+        {
+          "id": 3,
+          "content": "System outage reported in production environment",
+          "category": "email",
+          "timestamp": "2024-01-15T14:20:00Z",
+          "entities": [
+            {
+              "name": "system",
+              "type": "SYSTEM",
+              "value": "production environment"
+            },
+            {
+              "name": "status",
+              "type": "STATUS",
+              "value": "outage"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "content": "Weekly newsletter - new features released",
+          "category": "email",
+          "timestamp": "2024-01-15T15:00:00Z",
+          "entities": []
+        }
+      ]
+    },
+    "output": {
+      "summary": "URGENT: Production system outage has been reported. This requires immediate attention as it affects the live environment.",
+      "key_points": [
+        "Production system outage - immediate action required"
+      ],
+      "message_count": 1
+    }
+  },
+  {
+    "input": {
+      "user_request": "What are the main topics discussed in the messages?",
+      "messages": [
+        {
+          "id": 5,
+          "content": "Budget approval needed for Q1 marketing campaign",
+          "category": "email",
+          "timestamp": "2024-01-15T09:15:00Z",
+          "entities": [
+            {
+              "name": "budget",
+              "type": "FINANCIAL",
+              "value": "Q1 marketing campaign"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "content": "New team member onboarding scheduled for next week",
+          "category": "telegram",
+          "timestamp": "2024-01-15T16:30:00Z",
+          "entities": [
+            {
+              "name": "onboarding",
+              "type": "PROCESS",
+              "value": "new team member"
+            }
+          ]
+        }
+      ]
+    },
+    "output": {
+      "summary": "The main topics discussed include budget approval for Q1 marketing campaign and new team member onboarding scheduled for next week. These cover both financial planning and human resources activities.",
+      "key_points": [
+        "Budget approval needed for Q1 marketing campaign",
+        "New team member onboarding next week"
+      ],
+      "message_count": 2
+    }
+  }
+] 

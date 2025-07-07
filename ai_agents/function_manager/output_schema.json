@@ -1,0 +1,29 @@
+{
+    "type": "object",
+    "properties": {
+        "selected_functions": {
+            "type": "array",
+            "description": "List of functions that should be called to fulfill the user's request",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "function_name": {
+                        "type": "string",
+                        "description": "Name of the function to call"
+                    },
+                    "parameters": {
+                        "type": "object",
+                        "description": "Input parameters for the function",
+                        "additionalProperties": true
+                    },
+                    "reasoning": {
+                        "type": "string",
+                        "description": "Brief explanation of why this function was selected"
+                    }
+                },
+                "required": ["function_name", "parameters"]
+            }
+        }
+    },
+    "required": ["selected_functions"]
+} 

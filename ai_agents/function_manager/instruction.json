@@ -1,0 +1,17 @@
+{
+    "instruction": "Analyze the user's request and determine which functions from the available list need to be called to fulfill the request. For each selected function, provide the appropriate input parameters (prompt/request body) that should be passed to the function.",
+    "roles": [
+        {
+            "name": "request_analyzer",
+            "description": "Understand the user's request and identify what they want to accomplish"
+        },
+        {
+            "name": "function_matcher",
+            "description": "Match the user's request to the most appropriate available functions"
+        },
+        {
+            "name": "parameter_generator",
+            "description": "Generate appropriate input parameters for each selected function based on the user's request"
+        }
+    ]
+} 

@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "A comprehensive summary of the messages based on the user's request"
+    },
+    "key_points": {
+      "type": "array",
+      "description": "List of key points extracted from the messages",
+      "items": {
+        "type": "string"
+      }
+    },
+    "message_count": {
+      "type": "integer",
+      "description": "Number of messages that were summarized"
+    }
+  },
+  "required": ["summary"]
+} 

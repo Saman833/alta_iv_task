@@ -1,0 +1,13 @@
+{
+    "function_name": "search_on_database",
+    "description": "Search through the database of messages based on user request. The function will find messages that match the user's search criteria and return the relevant messages.",
+    "parameters": {
+        "user_request": {
+            "type": "string",
+            "description": "The user's search request describing what they want to find (e.g., 'find messages about meetings', 'search for urgent emails', 'look for messages from John')",
+            "required": true
+        }
+    },
+    "tags": ["search", "database", "messages", "query"],
+    "version": "1.0"
+} 

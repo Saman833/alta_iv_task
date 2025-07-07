@@ -8,6 +8,8 @@ from fastapi import WebSocket
 from clients.openai_client import OpenAIClient
 from clients.elevenlabs_client import ElevenLabsClient, ELEVENLABS_AVAILABLE
 from config import config
+from services.assistant_service import AssistantService
+from db import SessionLocal
 
 class ConversationalAIService:
     """
@@ -18,6 +20,10 @@ class ConversationalAIService:
     def __init__(self):
         self.openai_client = OpenAIClient()
         self.elevenlabs_client = ElevenLabsClient()
+        
+        # Initialize AssistantService for smart function handling
+        self.db = SessionLocal()
+        self.assistant_service = AssistantService(self.db)
         
         # Global conversation history
         self.conversation_history = [
@@ -63,39 +69,64 @@ class ConversationalAIService:
             return ""
     
     async def generate_response(self, text: str) -> str:
-        """Generate AI response using OpenAI GPT with conversation history"""
+        """Generate AI response using smart assistant manager with function capabilities"""
         try:
-            # Add user message to history
-            self.conversation_history.append({"role": "user", "content": text})
+            print(f"🤖 Processing user request: '{text}'")
             
-            # Keep only last 10 messages to prevent context from getting too long
-            if len(self.conversation_history) > 11:  # 1 system + 10 conversation messages
-                # Keep system message and last 10 conversation messages
-                self.conversation_history = [self.conversation_history[0]] + self.conversation_history[-10:]
+            # First, try to use the smart assistant manager
+            assistant_response = self.assistant_service.agent_manager(text)
             
-            print(f"💬 Sending conversation to AI (history length: {len(self.conversation_history)})")
-            
-            # Check if OpenAI client is available
-            if not hasattr(self.openai_client, 'client') or not self.openai_client.client:
-                print("❌ OpenAI client not initialized")
-                return "I'm having trouble connecting to my AI services right now."
-            
-            response = self.openai_client.client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=self.conversation_history,
-                max_tokens=100,
-                temperature=0.7
-            )
-            
-            ai_response = response.choices[0].message.content.strip()
-            
-            # Add AI response to history
-            self.conversation_history.append({"role": "assistant", "content": ai_response})
-            
-            print(f"🤖 AI response: '{ai_response}'")
-            return ai_response
+            if assistant_response["type"] == "function_response":
+                # Function was called successfully
+                response_content = assistant_response["content"]
+                print(f"🔧 Function response: '{response_content}'")
+                
+                # Add to conversation history
+                self.conversation_history.append({"role": "user", "content": text})
+                self.conversation_history.append({"role": "assistant", "content": response_content})
+                
+                return response_content
+                
+            elif assistant_response["type"] == "conversational":
+                # No functions matched, fallback to conversational response
+                print("💬 No functions matched, using conversational fallback")
+                
+                # Add user message to history
+                self.conversation_history.append({"role": "user", "content": text})
+                
+                # Keep only last 10 messages to prevent context from getting too long
+                if len(self.conversation_history) > 11:  # 1 system + 10 conversation messages
+                    # Keep system message and last 10 conversation messages
+                    self.conversation_history = [self.conversation_history[0]] + self.conversation_history[-10:]
+                
+                # Check if OpenAI client is available
+                if not hasattr(self.openai_client, 'client') or not self.openai_client.client:
+                    print("❌ OpenAI client not initialized")
+                    return "I'm having trouble connecting to my AI services right now."
+                
+                response = self.openai_client.client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=self.conversation_history,
+                    max_tokens=100,
+                    temperature=0.7
+                )
+                
+                ai_response = response.choices[0].message.content.strip()
+                
+                # Add AI response to history
+                self.conversation_history.append({"role": "assistant", "content": ai_response})
+                
+                print(f"💬 Conversational response: '{ai_response}'")
+                return ai_response
+                
+            else:
+                # Error occurred
+                error_message = assistant_response["content"]
+                print(f"❌ Assistant error: {error_message}")
+                return f"I encountered an issue: {error_message}"
+                
         except Exception as e:
-            print(f"❌ GPT error: {e}")
+            print(f"❌ Generate response error: {e}")
             return "I'm having some trouble right now, but I'm here to chat!"
     
     async def text_to_speech(self, text: str) -> str:

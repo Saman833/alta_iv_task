@@ -1,0 +1,13 @@
+{
+    "function_name": "get_summary_of_messages",
+    "description": "Generate a summary of messages based on user request. The function will analyze all available messages and provide a summary according to the user's specific request (e.g., urgent messages, recent conversations, specific topics, etc.)",
+    "parameters": {
+        "user_request": {
+            "type": "string",
+            "description": "The user's request describing what type of summary they want (e.g., 'summarize urgent messages', 'give me a summary of recent conversations', 'what are the main topics discussed?')",
+            "required": true
+        }
+    },
+    "tags": ["summarization", "ai", "messages", "analysis"],
+    "version": "1.0"
+} 

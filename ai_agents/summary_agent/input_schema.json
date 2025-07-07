@@ -1,0 +1,53 @@
+{
+  "type": "object",
+  "properties": {
+    "user_request": {
+      "type": "string",
+      "description": "The user's request for a summary, including what type of summary they want"
+    },
+    "messages": {
+      "type": "array",
+      "description": "Array of message objects containing the messages to be summarized",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the message"
+          },
+          "content": {
+            "type": "string",
+            "description": "The text content of the message"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the message (e.g., email, telegram, etc.)"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "When the message was received"
+          },
+          "entities": {
+            "type": "array",
+            "description": "Entities extracted from the message",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["user_request", "messages"]
+} 

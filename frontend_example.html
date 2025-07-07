@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant Frontend</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .chat-container {
+            height: 500px;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .assistant-message {
+            justify-content: flex-start;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+        }
+        
+        .user-bubble {
+            background: #667eea;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .assistant-bubble {
+            background: #f8f9fa;
+            color: #333;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .input-container {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-field {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .input-field:focus {
+            border-color: #667eea;
+        }
+        
+        .send-btn {
+            padding: 15px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .send-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        /* Response Type Styles */
+        .summary-response {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #2196f3;
+        }
+        
+        .search-response {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .function-response {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            border-left: 4px solid #4caf50;
+        }
+        
+        .voice-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .play-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .key-points {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+        }
+        
+        .key-points h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        .key-points ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .search-results {
+            margin-top: 15px;
+        }
+        
+        .search-item {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border-left: 3px solid #9c27b0;
+        }
+        
+        .function-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .action-btn:hover {
+            background: #45a049;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Assistant</h1>
+            <p>Ask me anything - I can search, summarize, and help you manage your messages</p>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <div class="message assistant-message">
+                <div class="message-bubble assistant-bubble">
+                    Hello! I'm your AI assistant. I can help you:
+                    <ul>
+                        <li>Search through your messages</li>
+                        <li>Summarize conversations</li>
+                        <li>Extract important information</li>
+                        <li>Manage your tasks and calendar</li>
+                    </ul>
+                    What would you like me to help you with?
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <input type="text" class="input-field" id="messageInput" placeholder="Type your message here..." />
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let isProcessing = false;
+        
+        function addMessage(content, isUser = false, responseType = null) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = `message-bubble ${isUser ? 'user-bubble' : 'assistant-bubble'}`;
+            
+            if (responseType) {
+                bubbleDiv.classList.add(`${responseType}-response`);
+            }
+            
+            bubbleDiv.innerHTML = content;
+            messageDiv.appendChild(bubbleDiv);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function addSummaryResponse(data) {
+            const content = `
+                <div>
+                    <h3>📋 Summary</h3>
+                    <p>${data.summary}</p>
+                    <div class="voice-controls">
+                        <button class="play-btn" onclick="playAudio('${data.audio_base64}')">▶️</button>
+                        <span>Listen to summary</span>
+                    </div>
+                    ${data.key_points ? `
+                        <div class="key-points">
+                            <h4>Key Points:</h4>
+                            <ul>
+                                ${data.key_points.map(point => `<li>${point}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            addMessage(content, false, 'summary');
+        }
+        
+        function addSearchResponse(data) {
+            const content = `
+                <div>
+                    <h3>🔍 Search Results</h3>
+                    <p>Found ${data.messages.length} messages matching your query.</p>
+                    <div class="voice-controls">
+                        <button class="play-btn" onclick="playAudio('${data.audio_base64}')">▶️</button>
+                        <span>Listen to results</span>
+                    </div>
+                    <div class="search-results">
+                        ${data.messages.map(msg => `
+                            <div class="search-item">
+                                <strong>${msg.category}</strong> - ${msg.timestamp}
+                                <p>${msg.content}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            addMessage(content, false, 'search');
+        }
+        
+        function addFunctionResponse(data) {
+            const content = `
+                <div>
+                    <h3>⚙️ Function Manager</h3>
+                    <p>I've identified the following functions to call:</p>
+                    <div class="voice-controls">
+                        <button class="play-btn" onclick="playAudio('${data.audio_base64}')">▶️</button>
+                        <span>Listen to explanation</span>
+                    </div>
+                    <div class="function-actions">
+                        ${data.functions.map(func => `
+                            <button class="action-btn" onclick="executeFunction('${func.name}', ${JSON.stringify(func.parameters)})">
+                                Execute ${func.name}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            addMessage(content, false, 'function');
+        }
+        
+        function showLoading() {
+            const content = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Processing your request...</p>
+                </div>
+            `;
+            addMessage(content, false);
+        }
+        
+        function playAudio(base64Audio) {
+            const audio = new Audio(`data:audio/mp3;base64,${base64Audio}`);
+            audio.play();
+        }
+        
+        function executeFunction(functionName, parameters) {
+            console.log(`Executing ${functionName} with parameters:`, parameters);
+            // Here you would make an API call to execute the function
+            alert(`Executing ${functionName}...`);
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || isProcessing) return;
+            
+            // Add user message
+            addMessage(message, true);
+            input.value = '';
+            
+            // Show loading
+            showLoading();
+            isProcessing = true;
+            
+            try {
+                // Determine request type and call appropriate endpoint
+                let endpoint = '/chat';
+                let requestData = { message: message };
+                
+                if (message.toLowerCase().includes('search') || message.toLowerCase().includes('find')) {
+                    endpoint = '/search';
+                    requestData = { query: message };
+                } else if (message.toLowerCase().includes('summary') || message.toLowerCase().includes('summarize')) {
+                    endpoint = '/summary';
+                    requestData = { request: message };
+                }
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const data = await response.json();
+                
+                // Remove loading message
+                const chatContainer = document.getElementById('chatContainer');
+                chatContainer.removeChild(chatContainer.lastChild);
+                
+                // Add response based on type
+                if (data.type === 'summary') {
+                    addSummaryResponse(data);
+                } else if (data.type === 'search') {
+                    addSearchResponse(data);
+                } else if (data.type === 'function') {
+                    addFunctionResponse(data);
+                } else {
+                    addMessage(data.response || data.message);
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                const chatContainer = document.getElementById('chatContainer');
+                chatContainer.removeChild(chatContainer.lastChild);
+                addMessage('Sorry, I encountered an error. Please try again.');
+            } finally {
+                isProcessing = false;
+            }
+        }
+        
+        // Allow Enter key to send message
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,319 @@
+[
+    {
+        "input": {
+            "user_request": "I need to search for all emails from last week",
+            "available_functions": [
+                {
+                    "function_name": "search_messages",
+                    "description": "Search for messages based on various criteria like date, source, category, etc.",
+                    "parameters": {
+                        "query": {
+                            "type": "string",
+                            "description": "Search query or criteria",
+                            "required": true
+                        },
+                        "date_range": {
+                            "type": "object",
+                            "description": "Date range for filtering",
+                            "required": false
+                        },
+                        "source": {
+                            "type": "string",
+                            "description": "Filter by source (email, telegram)",
+                            "required": false
+                        }
+                    }
+                },
+                {
+                    "function_name": "get_message_summary",
+                    "description": "Get a summary of messages",
+                    "parameters": {
+                        "message_ids": {
+                            "type": "array",
+                            "description": "List of message IDs to summarize",
+                            "required": true
+                        }
+                    }
+                }
+            ]
+        },
+        "output": {
+            "selected_functions": [
+                {
+                    "function_name": "search_messages",
+                    "parameters": {
+                        "query": "emails from last week",
+                        "date_range": {
+                            "start": "2024-01-08",
+                            "end": "2024-01-14"
+                        },
+                        "source": "email"
+                    },
+                    "reasoning": "User wants to find emails from last week, so we need to search messages with date filtering and email source"
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "user_request": "Can you categorize this message and extract any important entities?",
+            "available_functions": [
+                {
+                    "function_name": "categorize_message",
+                    "description": "Categorize a message into predefined categories",
+                    "parameters": {
+                        "message_content": {
+                            "type": "string",
+                            "description": "The content of the message to categorize",
+                            "required": true
+                        },
+                        "subject": {
+                            "type": "string",
+                            "description": "Subject line of the message",
+                            "required": false
+                        }
+                    }
+                },
+                {
+                    "function_name": "extract_entities",
+                    "description": "Extract entities like emails, contacts, dates, and keywords from a message",
+                    "parameters": {
+                        "message_content": {
+                            "type": "string",
+                            "description": "The content of the message to extract entities from",
+                            "required": true
+                        },
+                        "content_id": {
+                            "type": "string",
+                            "description": "ID of the content for entity association",
+                            "required": true
+                        }
+                    }
+                }
+            ]
+        },
+        "output": {
+            "selected_functions": [
+                {
+                    "function_name": "categorize_message",
+                    "parameters": {
+                        "message_content": "This message needs to be categorized and entities extracted"
+                    },
+                    "reasoning": "User wants to categorize the message"
+                },
+                {
+                    "function_name": "extract_entities",
+                    "parameters": {
+                        "message_content": "This message needs to be categorized and entities extracted",
+                        "content_id": "msg-123"
+                    },
+                    "reasoning": "User also wants to extract entities from the same message"
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "user_request": "Send me a summary of urgent messages from today",
+            "available_functions": [
+                {
+                    "function_name": "search_messages",
+                    "description": "Search for messages based on various criteria",
+                    "parameters": {
+                        "query": {
+                            "type": "string",
+                            "description": "Search query",
+                            "required": true
+                        },
+                        "urgency_filter": {
+                            "type": "boolean",
+                            "description": "Filter for urgent messages only",
+                            "required": false
+                        }
+                    }
+                },
+                {
+                    "function_name": "generate_summary",
+                    "description": "Generate a summary of selected messages",
+                    "parameters": {
+                        "message_ids": {
+                            "type": "array",
+                            "description": "List of message IDs to summarize",
+                            "required": true
+                        },
+                        "summary_type": {
+                            "type": "string",
+                            "description": "Type of summary to generate",
+                            "required": false
+                        }
+                    }
+                },
+                {
+                    "function_name": "send_notification",
+                    "description": "Send a notification with the summary",
+                    "parameters": {
+                        "content": {
+                            "type": "string",
+                            "description": "Content to send",
+                            "required": true
+                        },
+                        "recipient": {
+                            "type": "string",
+                            "description": "Recipient of the notification",
+                            "required": true
+                        }
+                    }
+                }
+            ]
+        },
+        "output": {
+            "selected_functions": [
+                {
+                    "function_name": "search_messages",
+                    "parameters": {
+                        "query": "urgent messages from today",
+                        "urgency_filter": true
+                    },
+                    "reasoning": "First, we need to find urgent messages from today"
+                },
+                {
+                    "function_name": "generate_summary",
+                    "parameters": {
+                        "message_ids": ["msg-001", "msg-002", "msg-003"],
+                        "summary_type": "urgent_summary"
+                    },
+                    "reasoning": "Then generate a summary of the found urgent messages"
+                },
+                {
+                    "function_name": "send_notification",
+                    "parameters": {
+                        "content": "Summary of urgent messages from today",
+                        "recipient": "user@example.com"
+                    },
+                    "reasoning": "Finally, send the summary to the user"
+                }
+            ]
+        }
+    },
+    {
+        "input": {
+            "user_request": "I don't need any functions right now, just checking the system",
+            "available_functions": [
+                {
+                    "function_name": "search_messages",
+                    "description": "Search for messages",
+                    "parameters": {
+                        "query": {
+                            "type": "string",
+                            "description": "Search query",
+                            "required": true
+                        }
+                    }
+                },
+                {
+                    "function_name": "categorize_message",
+                    "description": "Categorize a message",
+                    "parameters": {
+                        "message_content": {
+                            "type": "string",
+                            "description": "Message content",
+                            "required": true
+                        }
+                    }
+                }
+            ]
+        },
+        "output": {
+            "selected_functions": []
+        }
+    },
+    {
+        "input": {
+            "user_request": "Find all meeting-related messages and create a calendar event for each one",
+            "available_functions": [
+                {
+                    "function_name": "search_messages",
+                    "description": "Search for messages by category or content",
+                    "parameters": {
+                        "query": {
+                            "type": "string",
+                            "description": "Search query",
+                            "required": true
+                        },
+                        "category": {
+                            "type": "string",
+                            "description": "Filter by message category",
+                            "required": false
+                        }
+                    }
+                },
+                {
+                    "function_name": "extract_meeting_details",
+                    "description": "Extract meeting details like date, time, participants from messages",
+                    "parameters": {
+                        "message_content": {
+                            "type": "string",
+                            "description": "Message content to analyze",
+                            "required": true
+                        }
+                    }
+                },
+                {
+                    "function_name": "create_calendar_event",
+                    "description": "Create a calendar event with the provided details",
+                    "parameters": {
+                        "title": {
+                            "type": "string",
+                            "description": "Event title",
+                            "required": true
+                        },
+                        "date_time": {
+                            "type": "string",
+                            "description": "Event date and time",
+                            "required": true
+                        },
+                        "participants": {
+                            "type": "array",
+                            "description": "List of participant emails",
+                            "required": false
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Event description",
+                            "required": false
+                        }
+                    }
+                }
+            ]
+        },
+        "output": {
+            "selected_functions": [
+                {
+                    "function_name": "search_messages",
+                    "parameters": {
+                        "query": "meeting-related messages",
+                        "category": "meeting"
+                    },
+                    "reasoning": "First, find all meeting-related messages"
+                },
+                {
+                    "function_name": "extract_meeting_details",
+                    "parameters": {
+                        "message_content": "Meeting tomorrow at 3 PM with the team"
+                    },
+                    "reasoning": "Extract meeting details from each message"
+                },
+                {
+                    "function_name": "create_calendar_event",
+                    "parameters": {
+                        "title": "Team Meeting",
+                        "date_time": "2024-01-16T15:00:00",
+                        "participants": ["team@example.com"],
+                        "description": "Team meeting from message"
+                    },
+                    "reasoning": "Create calendar events for each extracted meeting"
+                }
+            ]
+        }
+    }
+] 
