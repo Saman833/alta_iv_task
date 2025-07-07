@@ -10,39 +10,64 @@ class AssistantService:
         self.agent_service = AgentService()
         self.content_table_service = ContentTableService(db)
         self.function_loader = FunctionLoader()
+        self.openai_client = OpenAIClient()
+        
     def get_assistant_response(self, user_message: str) -> str:
-        return self.openai_client.get_assistant_response(user_message)
-    def search_on_database(self, user_request: str) -> str:
-        print(f"🔍 Search request: '{user_request}'")
-        messages = self.content_table_service.get_public_summary()
-        print(f"📊 Total messages available: {len(messages)}")
-        
-        prompt={
-            "user_request": user_request,
-            "messages": messages
-        }
-        
-        print(f"🤖 Calling collect_requested_messages agent...")
-        response=self.agent_service.run_agent("collect_requested_messages",prompt)
-        print(f"📋 Agent response: {response}")
-        
-        if "matching_indices" in response:
-            matching_indices = response["matching_indices"]
-            print(f"🎯 Found {len(matching_indices)} matching indices: {matching_indices}")
-            messages_to_return=[messages[index] for index in matching_indices]
-            print(f"📤 Returning {len(messages_to_return)} messages")
-            return messages_to_return
-        else:
-            print(f"❌ No matching_indices in response: {response}")
+        try:
+            return self.openai_client.get_assistant_response(user_message)
+        except Exception as e:
+            print(f"❌ Error in get_assistant_response: {e}")
+            return "I'm having trouble processing your request right now."
+    def search_on_database(self, user_request: str) -> list:
+        try:
+            print(f"🔍 Search request: '{user_request}'")
+            messages = self.content_table_service.get_public_summary()
+            print(f"📊 Total messages available: {len(messages)}")
+            
+            prompt={
+                "user_request": user_request,
+                "messages": messages
+            }
+            
+            print(f"🤖 Calling collect_requested_messages agent...")
+            response=self.agent_service.run_agent("collect_requested_messages",prompt)
+            print(f"📋 Agent response: {response}")
+            
+            if "matching_indices" in response and isinstance(response["matching_indices"], list):
+                matching_indices = response["matching_indices"]
+                print(f"🎯 Found {len(matching_indices)} matching indices: {matching_indices}")
+                
+                # Validate indices are within bounds
+                valid_indices = [idx for idx in matching_indices if 0 <= idx < len(messages)]
+                if len(valid_indices) != len(matching_indices):
+                    print(f"⚠️ Some indices were out of bounds. Valid: {valid_indices}")
+                
+                messages_to_return = [messages[idx] for idx in valid_indices]
+                print(f"📤 Returning {len(messages_to_return)} messages")
+                return messages_to_return
+            else:
+                print(f"❌ No matching_indices in response: {response}")
+                return []
+        except Exception as e:
+            print(f"❌ Error in search_on_database: {e}")
             return []
     def get_summary_of_messages(self,user_request:str) -> str:
-        messages=self.content_table_service.get_public_summary()
-        prompt={
-            "user_request": user_request,
-            "messages": messages
-        }
-        response=self.agent_service.run_agent("summary_agent",prompt)
-        return response["summary"]
+        try:
+            messages=self.content_table_service.get_public_summary()
+            prompt={
+                "user_request": user_request,
+                "messages": messages
+            }
+            response=self.agent_service.run_agent("summary_agent",prompt)
+            
+            if "summary" in response:
+                return response["summary"]
+            else:
+                print(f"❌ No summary in response: {response}")
+                return "I checked your messages, but didn't find any content related to your request. If you want to look for something else, just let me know!"
+        except Exception as e:
+            print(f"❌ Error in get_summary_of_messages: {e}")
+            return "I'm having trouble generating a summary right now. Please try again."
     def agent_manager(self, user_request: str) -> dict:
         """
         Smart assistant manager that decides whether to call functions or respond conversationally.
@@ -63,7 +88,7 @@ class AssistantService:
                 function_results = []
                 for function in run_agent_response["selected_functions"]:
                     result = self.run_function(function["function_name"], function["parameters"])
-                    if result:
+                    if result is not None:  # Check for None instead of truthy
                         function_results.append({
                             "function_name": function["function_name"],
                             "result": result,
@@ -99,25 +124,36 @@ class AssistantService:
         response_parts = []
         
         for result in function_results:
-            if result["function_name"] == "search_on_database":
-                messages = result["result"]
-                if messages:
-                    response_parts.append(f"I found {len(messages)} messages related to your search:")
-                    for i, msg in enumerate(messages[:3], 1):  # Show first 3 messages
-                        content = msg.get('content_data', msg.get('content', 'No content'))
-                        response_parts.append(f"{i}. {content[:100]}...")
-                    if len(messages) > 3:
-                        response_parts.append(f"... and {len(messages) - 3} more messages.")
-                else:
-                    response_parts.append("I checked your messages, but didn't spot anything urgent or matching your search right now. If you want to look for something else, just let me know!")
-                    
-            elif result["function_name"] == "get_summary_of_messages":
-                summary = result["result"]
-                response_parts.append(f"Here's a summary based on your request: {summary}")
+            try:
+                if result["function_name"] == "search_on_database":
+                    messages = result["result"]
+                    if messages and isinstance(messages, list):
+                        response_parts.append(f"I found {len(messages)} messages related to your search:")
+                        for i, msg in enumerate(messages[:3], 1):  # Show first 3 messages
+                            try:
+                                content = msg.content_data if hasattr(msg, 'content_data') else 'No content'
+                                response_parts.append(f"{i}. {content[:100]}...")
+                            except Exception as e:
+                                print(f"❌ Error formatting message {i}: {e}")
+                                response_parts.append(f"{i}. [Message content unavailable]")
+                        if len(messages) > 3:
+                            response_parts.append(f"... and {len(messages) - 3} more messages.")
+                    else:
+                        response_parts.append("I checked your messages, but didn't spot anything matching your search right now. If you want to look for something else, just let me know!")
+                        
+                elif result["function_name"] == "get_summary_of_messages":
+                    summary = result["result"]
+                    if summary and isinstance(summary, str):
+                        response_parts.append(f"Here's a summary based on your request: {summary}")
+                    else:
+                        response_parts.append("I checked your messages, but didn't find any content related to your request. If you want to look for something else, just let me know!")
+            except Exception as e:
+                print(f"❌ Error formatting function result: {e}")
+                response_parts.append("I encountered an issue processing that request. Please try again.")
         
         return " ".join(response_parts)
 
-    def run_function(self, function_name: str, function_input: dict) -> str:
+    def run_function(self, function_name: str, function_input: dict):
         """
         Execute a function based on the function name and input parameters.
         
@@ -126,24 +162,31 @@ class AssistantService:
             function_input: Dictionary containing the function parameters
             
         Returns:
-            Result of the function execution
+            Result of the function execution (can be string, list, or other types)
         """
-        if function_name == "search_on_database":
-            user_request = function_input.get("user_request")
-            if user_request:
-                return self.search_on_database(user_request)
+        try:
+            if function_name == "search_on_database":
+                user_request = function_input.get("user_request")
+                if user_request:
+                    return self.search_on_database(user_request)
+                else:
+                    print("❌ Error: user_request parameter is required for search_on_database function")
+                    return []
+                    
+            elif function_name == "get_summary_of_messages":
+                user_request = function_input.get("user_request")
+                if user_request:
+                    return self.get_summary_of_messages(user_request)
+                else:
+                    print("❌ Error: user_request parameter is required for get_summary_of_messages function")
+                    return "I'm having trouble processing your request. Please try again."
+                    
             else:
-                return "Error: user_request parameter is required for search_on_database function"
-                
-        elif function_name == "get_summary_of_messages":
-            user_request = function_input.get("user_request")
-            if user_request:
-                return self.get_summary_of_messages(user_request)
-            else:
-                return "Error: user_request parameter is required for get_summary_of_messages function"
-                
-        else:
-            return f"Error: Unknown function '{function_name}'" 
+                print(f"❌ Error: Unknown function '{function_name}'")
+                return None
+        except Exception as e:
+            print(f"❌ Error in run_function: {e}")
+            return None 
        
 
         
