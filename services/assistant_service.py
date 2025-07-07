@@ -13,14 +13,28 @@ class AssistantService:
     def get_assistant_response(self, user_message: str) -> str:
         return self.openai_client.get_assistant_response(user_message)
     def search_on_database(self, user_request: str) -> str:
+        print(f"🔍 Search request: '{user_request}'")
         messages = self.content_table_service.get_public_summary()
+        print(f"📊 Total messages available: {len(messages)}")
+        
         prompt={
             "user_request": user_request,
             "messages": messages
         }
+        
+        print(f"🤖 Calling collect_requested_messages agent...")
         response=self.agent_service.run_agent("collect_requested_messages",prompt)
-        messages_to_return=[messages[index] for index in response["matching_indices"]]
-        return messages_to_return
+        print(f"📋 Agent response: {response}")
+        
+        if "matching_indices" in response:
+            matching_indices = response["matching_indices"]
+            print(f"🎯 Found {len(matching_indices)} matching indices: {matching_indices}")
+            messages_to_return=[messages[index] for index in matching_indices]
+            print(f"📤 Returning {len(messages_to_return)} messages")
+            return messages_to_return
+        else:
+            print(f"❌ No matching_indices in response: {response}")
+            return []
     def get_summary_of_messages(self,user_request:str) -> str:
         messages=self.content_table_service.get_public_summary()
         prompt={
@@ -78,9 +92,9 @@ class AssistantService:
             }
     
     def _format_function_response(self, function_results: list, original_request: str) -> str:
-        """Format function results into a natural language response"""
+        """Format function results into a natural language, friendly response"""
         if not function_results:
-            return "I couldn't find any relevant information for your request."
+            return "I looked through your messages, but didn't find anything matching your request right now. If you want to look for something else, just let me know!"
         
         response_parts = []
         
@@ -90,11 +104,12 @@ class AssistantService:
                 if messages:
                     response_parts.append(f"I found {len(messages)} messages related to your search:")
                     for i, msg in enumerate(messages[:3], 1):  # Show first 3 messages
-                        response_parts.append(f"{i}. {msg.get('content', 'No content')[:100]}...")
+                        content = msg.get('content_data', msg.get('content', 'No content'))
+                        response_parts.append(f"{i}. {content[:100]}...")
                     if len(messages) > 3:
                         response_parts.append(f"... and {len(messages) - 3} more messages.")
                 else:
-                    response_parts.append("I couldn't find any messages matching your search criteria.")
+                    response_parts.append("I checked your messages, but didn't spot anything urgent or matching your search right now. If you want to look for something else, just let me know!")
                     
             elif result["function_name"] == "get_summary_of_messages":
                 summary = result["result"]

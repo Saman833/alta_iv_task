@@ -1,10 +1,10 @@
 [
     {
         "input": {
-            "user_request": "give me the ones that are for today",
+            "user_request": "show me urgent messages",
             "messages": [
                 {
-                    "id": "msg-001",
+                    "id": 1,
                     "source_id": "email-123",
                     "content_type": "text",
                     "category": "meeting",
@@ -14,23 +14,25 @@
                     "source": "email",
                     "timestamp": "2024-01-15T10:00:00Z",
                     "created_at": "2024-01-15T10:00:00Z",
-                    "updated_at": "2024-01-15T10:00:00Z"
+                    "updated_at": "2024-01-15T10:00:00Z",
+                    "entities": []
                 },
                 {
-                    "id": "msg-002",
+                    "id": 2,
                     "source_id": "telegram-456",
                     "content_type": "text",
                     "category": "information",
                     "subject": null,
-                    "content_data": "URGENT: Server down!",
-                    "content_html": "<p>URGENT: Server down!</p>",
+                    "content_data": "URGENT: Server down! Need immediate attention.",
+                    "content_html": "<p>URGENT: Server down! Need immediate attention.</p>",
                     "source": "telegram",
                     "timestamp": "2024-01-15T14:30:00Z",
                     "created_at": "2024-01-15T14:30:00Z",
-                    "updated_at": "2024-01-15T14:30:00Z"
+                    "updated_at": "2024-01-15T14:30:00Z",
+                    "entities": []
                 },
                 {
-                    "id": "msg-003",
+                    "id": 3,
                     "source_id": "email-789",
                     "content_type": "text",
                     "category": "information",
@@ -40,13 +42,14 @@
                     "source": "email",
                     "timestamp": "2024-01-10T09:00:00Z",
                     "created_at": "2024-01-10T09:00:00Z",
-                    "updated_at": "2024-01-10T09:00:00Z"
+                    "updated_at": "2024-01-10T09:00:00Z",
+                    "entities": []
                 }
             ]
         },
         "output": {
-            "matching_indices": [0, 1],
-            "total_matches": 2
+            "matching_indices": [1],
+            "total_matches": 1
         }
     },
     {
