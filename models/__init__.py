@@ -5,6 +5,8 @@ Base = declarative_base()
 
 from .content import Content, ContentType, Source, Category
 from .entity import Entity, EntityType
+from .file import File, FileType
+from .table import Table
 
 __all__ = [
     'Base',
@@ -13,5 +15,8 @@ __all__ = [
     'EntityType',
     'Source',
     'Category',
-    'Entity'
+    'Entity',
+    'File',
+    'FileType',
+    'Table'
 ] 

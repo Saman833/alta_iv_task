@@ -16,3 +16,4 @@ google-auth==2.40.3
 pytest
 pytest-asyncio
 psycopg2-binary
+python-multipart

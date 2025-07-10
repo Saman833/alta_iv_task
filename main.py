@@ -8,6 +8,7 @@ from sources.telegram.telegram_poller import TelegramPoller
 from db import SessionLocal
 from routes.content_table_router import router as content_table_router
 from routes.conversational_ai_router import router as conversational_ai_router
+from routes.file_router import router as file_router
 
 
 app = FastAPI(title="Altair Code Backend", version="1.0.0")
@@ -23,6 +24,7 @@ app.add_middleware(
 
 app.include_router(content_table_router)
 app.include_router(conversational_ai_router)
+app.include_router(file_router)
 
 
 
@@ -55,12 +57,12 @@ async def startup_event():
     # email_poller_thread.start()
     
 
-    telegram_poller = TelegramPoller(message_service)
-    telegram_poller_thread = threading.Thread(
-        target=telegram_poller.start_polling,
-        daemon=True
-    )
-    telegram_poller_thread.start()
+    # telegram_poller = TelegramPoller(message_service)
+    # telegram_poller_thread = threading.Thread(
+    #     target=telegram_poller.start_polling,
+    #     daemon=True
+    # )
+    # telegram_poller_thread.start()
 
 @app.on_event("shutdown")
 async def shutdown_event():
