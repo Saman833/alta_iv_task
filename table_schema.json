@@ -1,0 +1,504 @@
+{
+  "alembic_version": {
+    "table_name": "alembic_version",
+    "columns": [
+      {
+        "name": "version_num",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": 1
+      }
+    ]
+  },
+  "content": {
+    "table_name": "content",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "source_id",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "content_type",
+        "type": "VARCHAR(5)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "category",
+        "type": "VARCHAR(11)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "subject",
+        "type": "VARCHAR(255)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "content_data",
+        "type": "TEXT",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "content_html",
+        "type": "TEXT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "source",
+        "type": "VARCHAR(8)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "timestamp",
+        "type": "DATETIME",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "updated_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "csv_table_231cd743_c616_40f6_b0c4_deae52051078": {
+    "table_name": "csv_table_231cd743_c616_40f6_b0c4_deae52051078",
+    "columns": [
+      {
+        "name": "row_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(50)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "updated_at",
+        "type": "VARCHAR(50)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "product_id",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "product_name",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "category",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "price",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "review_score",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "review_count",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_1",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_2",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_3",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_4",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_5",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_6",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_7",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_8",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_9",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_10",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_11",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_12",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0": {
+    "table_name": "csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0",
+    "columns": [
+      {
+        "name": "row_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(50)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "updated_at",
+        "type": "VARCHAR(50)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Campaign_ID",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Target_Audience",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Campaign_Goal",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Duration",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Channel_Used",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Conversion_Rate",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Acquisition_Cost",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "ROI",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Location",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Language",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Clicks",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Impressions",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Engagement_Score",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Customer_Segment",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Date",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "Company",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "entity": {
+    "table_name": "entity",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "content_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "entity_type",
+        "type": "VARCHAR(7)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "entity_value",
+        "type": "TEXT",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "file": {
+    "table_name": "file",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "file_name",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "detail_summary",
+        "type": "TEXT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "folder_id",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "file_type",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "file_size",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "user_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "file_created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "folder": {
+    "table_name": "folder",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "folder_name",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "detail_summary",
+        "type": "TEXT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "user_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "folder_created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "table": {
+    "table_name": "table",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "table_name",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "folder_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "user_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "table_description",
+        "type": "TEXT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "table_created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "table_updated_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  }
+}

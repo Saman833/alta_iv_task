@@ -1,0 +1,98 @@
+{
+  "type": "object",
+  "properties": {
+    "original_user_prompt": {
+      "type": "string",
+      "description": "The original user request or question that needs enhancement",
+      "example": "Show me some data about customers"
+    },
+    "file_summaries": {
+      "type": "array",
+      "description": "Complete list of ALL file summaries from file_summary_agent for all available tables in the database",
+      "items": {
+        "type": "object",
+        "properties": {
+          "table_name": {
+            "type": "string",
+            "description": "Name of the database table (usually csv_table_xxx format)"
+          },
+          "original_file_name": {
+            "type": "string",
+            "description": "Original CSV file name"
+          },
+          "file_summary": {
+            "type": "object",
+            "description": "Complete file summary from file_summary_agent",
+            "properties": {
+              "file_name": {"type": "string"},
+              "overview": {"type": "string"},
+              "business_domain": {"type": "string"},
+              "data_structure": {
+                "type": "object",
+                "properties": {
+                  "total_columns": {"type": "integer"},
+                  "total_rows_analyzed": {"type": "integer"},
+                  "estimated_total_rows": {"type": "integer"},
+                  "key_columns": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {"type": "string"},
+                        "inferred_type": {"type": "string"},
+                        "description": {"type": "string"}
+                      }
+                    }
+                  }
+                }
+              },
+              "content_analysis": {"type": "object"},
+              "data_quality": {"type": "object"},
+              "insights": {
+                "type": "object",
+                "properties": {
+                  "key_findings": {"type": "array"},
+                  "potential_use_cases": {"type": "array"},
+                  "analysis_opportunities": {"type": "array"}
+                }
+              },
+              "recommendations": {"type": "object"}
+            }
+          }
+        },
+        "required": ["table_name", "original_file_name", "file_summary"]
+      },
+      "minItems": 1
+    },
+    "context_information": {
+      "type": "object",
+      "description": "Additional context to help enhance the prompt",
+      "properties": {
+        "user_role": {
+          "type": "string",
+          "description": "User's role or department (e.g., 'Marketing Manager', 'Data Analyst', 'Business Owner')"
+        },
+        "business_objective": {
+          "type": "string",
+          "description": "High-level business objective or goal behind the request"
+        },
+        "urgency_level": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "How urgently the user needs the analysis"
+        },
+        "technical_level": {
+          "type": "string",
+          "enum": ["beginner", "intermediate", "advanced"],
+          "description": "User's technical/analytical skill level"
+        },
+        "decision_context": {
+          "type": "string",
+          "description": "What decision or action this analysis will inform"
+        }
+      }
+    }
+  },
+  "required": ["original_user_prompt", "file_summaries"],
+  "additionalProperties": false
+} 

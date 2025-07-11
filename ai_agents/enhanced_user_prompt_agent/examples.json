@@ -1,0 +1,356 @@
+{
+  "examples": [
+    {
+      "input": {
+        "original_user_prompt": "Show me some data about customers",
+        "file_summaries": [
+          {
+            "table_name": "csv_table_001",
+            "original_file_name": "customer_transactions.csv",
+            "file_summary": {
+              "file_name": "customer_transactions.csv",
+              "overview": "Customer transaction data with purchase history, amounts, and customer demographics",
+              "business_domain": "E-commerce Sales",
+              "data_structure": {
+                "total_columns": 8,
+                "total_rows_analyzed": 100,
+                "estimated_total_rows": 5000,
+                "key_columns": [
+                  {"name": "customer_id", "inferred_type": "Customer Identifier", "description": "Unique identifier for each customer"},
+                  {"name": "purchase_amount", "inferred_type": "Currency", "description": "Amount spent in each transaction"},
+                  {"name": "purchase_date", "inferred_type": "Date", "description": "When the transaction occurred"},
+                  {"name": "product_category", "inferred_type": "Category", "description": "Type of product purchased"}
+                ]
+              },
+              "insights": {
+                "key_findings": ["Multiple transactions per customer", "Various product categories available"],
+                "potential_use_cases": ["Customer segmentation", "Revenue analysis", "Purchase behavior patterns"],
+                "analysis_opportunities": ["Identify high-value customers", "Analyze purchasing trends over time", "Product category performance"]
+              }
+            }
+          },
+          {
+            "table_name": "csv_table_002",
+            "original_file_name": "customer_demographics.csv",
+            "file_summary": {
+              "file_name": "customer_demographics.csv",
+              "overview": "Customer demographic information including age, location, and registration data",
+              "business_domain": "Customer Management",
+              "data_structure": {
+                "total_columns": 6,
+                "total_rows_analyzed": 80,
+                "estimated_total_rows": 1200,
+                "key_columns": [
+                  {"name": "customer_id", "inferred_type": "Customer Identifier", "description": "Links to transaction data"},
+                  {"name": "age", "inferred_type": "Numeric", "description": "Customer age"},
+                  {"name": "location", "inferred_type": "Geographic", "description": "Customer location/city"},
+                  {"name": "registration_date", "inferred_type": "Date", "description": "When customer joined"}
+                ]
+              },
+              "insights": {
+                "potential_use_cases": ["Customer profiling", "Geographic analysis", "Demographic segmentation"],
+                "analysis_opportunities": ["Age-based purchasing patterns", "Geographic revenue distribution", "Customer lifetime analysis"]
+              }
+            }
+          }
+        ],
+        "context_information": {
+          "user_role": "Marketing Manager",
+          "business_objective": "Improve customer targeting",
+          "technical_level": "beginner"
+        }
+      },
+      "output": {
+        "enhanced_prompt": {
+          "primary_question": "Identify our most valuable customer segments by analyzing purchase behavior patterns, demographics, and lifetime value to improve marketing targeting strategies",
+          "analytical_context": {
+            "business_purpose": "Improve marketing ROI by identifying and understanding high-value customer segments for more targeted campaigns and personalized messaging",
+            "expected_outcome": "Create data-driven customer segments with clear characteristics (demographics, behavior, value) that can be used to optimize marketing spend and messaging",
+            "success_criteria": "Discover 3-5 distinct customer segments with actionable characteristics, including their average value, preferred products, and demographic profiles"
+          },
+          "data_scope": {
+            "primary_tables": ["csv_table_001 (customer_transactions)", "csv_table_002 (customer_demographics)"],
+            "key_metrics": ["total_purchase_amount", "transaction_frequency", "average_order_value", "customer_lifetime_value", "recency_of_purchase"],
+            "analysis_dimensions": ["age_groups", "geographic_location", "product_categories", "purchase_timing", "customer_tenure"],
+            "cross_table_opportunities": ["Join transaction and demographic data on customer_id to analyze spending patterns by age and location"]
+          },
+          "enhancement_explanation": {
+            "original_issues": [
+              "Request was too vague ('show me some data')",
+              "No specific business objective or use case defined",
+              "No indication of what insights or actions were needed",
+              "Didn't leverage the rich data available across multiple tables"
+            ],
+            "improvements_made": [
+              "Focused on customer segmentation as a high-value marketing use case",
+              "Specified concrete metrics and dimensions for analysis",
+              "Added clear business context and success criteria",
+              "Identified cross-table analysis opportunities",
+              "Aligned with user's marketing role and beginner technical level"
+            ],
+            "data_alignment": "The enhanced prompt leverages both transaction history and demographic data to create comprehensive customer profiles, utilizing key columns like customer_id for joins and meaningful metrics like purchase_amount and age for segmentation",
+            "analytical_value": "This approach will provide actionable customer segments that directly support marketing decisions, rather than just displaying raw data"
+          },
+          "suggested_follow_ups": [
+            {
+              "question": "What are the seasonal purchasing patterns for each customer segment?",
+              "rationale": "Understanding timing patterns would help optimize campaign scheduling and promotional timing",
+              "priority": "high"
+            },
+            {
+              "question": "Which product categories are most popular within each customer segment?",
+              "rationale": "Product preferences by segment would enable more targeted product recommendations and inventory planning",
+              "priority": "high"
+            },
+            {
+              "question": "How do customer acquisition dates correlate with long-term value across segments?",
+              "rationale": "This could reveal whether certain time periods attract higher-value customers, informing acquisition strategies",
+              "priority": "medium"
+            }
+          ],
+          "alternative_approaches": [
+            {
+              "approach": "Focus specifically on geographic revenue analysis to identify high-potential markets",
+              "benefits": "Could reveal untapped geographic opportunities and help optimize regional marketing spend",
+              "trade_offs": "Less comprehensive than full segmentation but simpler to implement and act upon"
+            },
+            {
+              "approach": "Analyze customer churn patterns and at-risk segments",
+              "benefits": "Could help retain existing valuable customers rather than just acquire new ones",
+              "trade_offs": "Requires defining churn metrics and may need more historical data than available"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "original_user_prompt": "I want to see trends",
+        "file_summaries": [
+          {
+            "table_name": "csv_table_003",
+            "original_file_name": "daily_sales_data.csv",
+            "file_summary": {
+              "file_name": "daily_sales_data.csv",
+              "overview": "Daily sales performance data with revenue, units sold, and promotional activities",
+              "business_domain": "Sales Performance",
+              "data_structure": {
+                "total_columns": 10,
+                "total_rows_analyzed": 90,
+                "estimated_total_rows": 365,
+                "key_columns": [
+                  {"name": "date", "inferred_type": "Date", "description": "Daily date records"},
+                  {"name": "revenue", "inferred_type": "Currency", "description": "Daily total revenue"},
+                  {"name": "units_sold", "inferred_type": "Numeric", "description": "Number of units sold per day"},
+                  {"name": "promotion_active", "inferred_type": "Boolean", "description": "Whether promotion was running"},
+                  {"name": "day_of_week", "inferred_type": "Category", "description": "Day of the week"}
+                ]
+              },
+              "insights": {
+                "potential_use_cases": ["Revenue forecasting", "Promotional effectiveness", "Seasonal analysis"],
+                "analysis_opportunities": ["Weekly/monthly patterns", "Promotion impact analysis", "Revenue growth trends"]
+              }
+            }
+          },
+          {
+            "table_name": "csv_table_004",
+            "original_file_name": "website_traffic.csv",
+            "file_summary": {
+              "file_name": "website_traffic.csv",
+              "overview": "Daily website traffic metrics including visitors, page views, and conversion rates",
+              "business_domain": "Digital Marketing",
+              "data_structure": {
+                "total_columns": 8,
+                "total_rows_analyzed": 85,
+                "estimated_total_rows": 365,
+                "key_columns": [
+                  {"name": "date", "inferred_type": "Date", "description": "Daily date records"},
+                  {"name": "unique_visitors", "inferred_type": "Numeric", "description": "Number of unique daily visitors"},
+                  {"name": "page_views", "inferred_type": "Numeric", "description": "Total daily page views"},
+                  {"name": "conversion_rate", "inferred_type": "Percentage", "description": "Daily conversion rate"}
+                ]
+              },
+              "insights": {
+                "potential_use_cases": ["Traffic analysis", "Conversion optimization", "Marketing performance"],
+                "analysis_opportunities": ["Traffic-to-sales correlation", "Conversion trends", "Seasonal traffic patterns"]
+              }
+            }
+          }
+        ],
+        "context_information": {
+          "user_role": "Business Owner",
+          "business_objective": "Understand business performance",
+          "urgency_level": "medium",
+          "technical_level": "intermediate"
+        }
+      },
+      "output": {
+        "enhanced_prompt": {
+          "primary_question": "Analyze sales revenue and website traffic trends over time to identify seasonal patterns, growth trajectories, and the relationship between marketing efforts and business performance",
+          "analytical_context": {
+            "business_purpose": "Understand overall business performance trends to make informed decisions about resource allocation, marketing investment, and growth strategies",
+            "expected_outcome": "Clear insights into revenue growth patterns, seasonal fluctuations, and how website performance correlates with sales results",
+            "success_criteria": "Identify key trend patterns (weekly, monthly, seasonal), measure growth rates, and quantify the relationship between traffic and revenue"
+          },
+          "data_scope": {
+            "primary_tables": ["csv_table_003 (daily_sales_data)", "csv_table_004 (website_traffic)"],
+            "key_metrics": ["revenue_growth_rate", "units_sold_trends", "unique_visitors_trends", "conversion_rate_changes", "promotion_effectiveness"],
+            "analysis_dimensions": ["time_periods (daily, weekly, monthly)", "day_of_week_patterns", "promotional_periods", "seasonal_cycles"],
+            "cross_table_opportunities": ["Correlate daily traffic metrics with sales performance to understand conversion funnel effectiveness"]
+          },
+          "enhancement_explanation": {
+            "original_issues": [
+              "Extremely vague request with no specific focus",
+              "No indication of what type of trends or which metrics to analyze",
+              "No business context or decision-making purpose",
+              "Didn't specify time periods or dimensions of interest"
+            ],
+            "improvements_made": [
+              "Focused on revenue and traffic trends as key business performance indicators",
+              "Specified time-based analysis dimensions (daily, weekly, seasonal)",
+              "Added correlation analysis between traffic and sales",
+              "Included promotional impact assessment",
+              "Aligned with business owner's need to understand overall performance"
+            ],
+            "data_alignment": "The enhanced prompt leverages both sales and traffic data with shared date dimensions, enabling comprehensive business performance analysis across customer acquisition and revenue generation",
+            "analytical_value": "This approach provides strategic insights into business performance drivers rather than just displaying trend charts"
+          },
+          "suggested_follow_ups": [
+            {
+              "question": "What is the impact of promotional activities on both traffic and sales conversion rates?",
+              "rationale": "Understanding promotion effectiveness across the full funnel would optimize marketing spend",
+              "priority": "high"
+            },
+            {
+              "question": "Are there specific days of the week or times of month that consistently perform better?",
+              "rationale": "Identifying optimal timing patterns could help schedule marketing campaigns and inventory management",
+              "priority": "high"
+            },
+            {
+              "question": "How has the visitor-to-sale conversion efficiency changed over time?",
+              "rationale": "Tracking conversion efficiency trends could reveal website optimization opportunities or market changes",
+              "priority": "medium"
+            }
+          ],
+          "alternative_approaches": [
+            {
+              "approach": "Focus specifically on promotional campaign effectiveness analysis",
+              "benefits": "Could provide clear ROI insights for marketing spend optimization",
+              "trade_offs": "Narrower scope but more actionable for immediate marketing decisions"
+            },
+            {
+              "approach": "Concentrate on forecasting future performance based on historical trends",
+              "benefits": "Would provide predictive insights for business planning and goal setting",
+              "trade_offs": "Requires more sophisticated analysis but offers strategic planning value"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": {
+        "original_user_prompt": "Find problems in the data",
+        "file_summaries": [
+          {
+            "table_name": "csv_table_005",
+            "original_file_name": "inventory_records.csv",
+            "file_summary": {
+              "file_name": "inventory_records.csv",
+              "overview": "Product inventory tracking with stock levels, reorder points, and supplier information",
+              "business_domain": "Supply Chain Management",
+              "data_structure": {
+                "total_columns": 12,
+                "total_rows_analyzed": 150,
+                "estimated_total_rows": 2500,
+                "key_columns": [
+                  {"name": "product_id", "inferred_type": "Product Identifier", "description": "Unique product identifier"},
+                  {"name": "current_stock", "inferred_type": "Numeric", "description": "Current inventory level"},
+                  {"name": "reorder_point", "inferred_type": "Numeric", "description": "Stock level that triggers reorder"},
+                  {"name": "lead_time_days", "inferred_type": "Numeric", "description": "Supplier delivery time"},
+                  {"name": "last_updated", "inferred_type": "Date", "description": "When record was last updated"}
+                ]
+              },
+              "data_quality": {
+                "quality_score": "Good",
+                "issues_found": ["Some missing lead times", "Inconsistent update frequencies"],
+                "completeness": "Most fields populated but some gaps in supplier data"
+              },
+              "insights": {
+                "potential_use_cases": ["Inventory optimization", "Stockout prevention", "Supplier performance analysis"],
+                "analysis_opportunities": ["Identify stockout risks", "Optimize reorder points", "Analyze supplier reliability"]
+              }
+            }
+          }
+        ],
+        "context_information": {
+          "user_role": "Operations Manager",
+          "business_objective": "Improve inventory management",
+          "urgency_level": "high",
+          "technical_level": "intermediate"
+        }
+      },
+      "output": {
+        "enhanced_prompt": {
+          "primary_question": "Identify inventory management risks and operational inefficiencies by analyzing stock levels, reorder patterns, and data quality issues that could lead to stockouts or excess inventory",
+          "analytical_context": {
+            "business_purpose": "Prevent stockouts and optimize inventory investment by identifying products at risk, inefficient reorder points, and data quality issues affecting inventory decisions",
+            "expected_outcome": "A prioritized list of inventory risks including products below reorder points, outdated records, and suboptimal stock management patterns",
+            "success_criteria": "Identify immediate stockout risks, quantify potential impact, and highlight data quality issues that need attention for better inventory management"
+          },
+          "data_scope": {
+            "primary_tables": ["csv_table_005 (inventory_records)"],
+            "key_metrics": ["current_stock_vs_reorder_point", "days_since_last_update", "stock_coverage_days", "stockout_risk_score"],
+            "analysis_dimensions": ["product_categories", "supplier_performance", "stock_status_categories", "data_freshness_levels"],
+            "cross_table_opportunities": ["Could be enhanced by joining with sales data to calculate turnover rates and demand patterns"]
+          },
+          "enhancement_explanation": {
+            "original_issues": [
+              "Vague request for 'problems' without specific context",
+              "No indication of what types of issues to prioritize",
+              "No business impact or urgency consideration",
+              "Didn't leverage the specific inventory management domain"
+            ],
+            "improvements_made": [
+              "Focused on business-critical inventory risks and operational issues",
+              "Specified concrete metrics for risk assessment",
+              "Added urgency prioritization for immediate action",
+              "Included data quality assessment for operational reliability",
+              "Aligned with operations manager's need for actionable insights"
+            ],
+            "data_alignment": "The enhanced prompt leverages key inventory metrics like stock levels and reorder points while addressing identified data quality issues like missing lead times and inconsistent updates",
+            "analytical_value": "This approach identifies actionable problems that directly impact business operations rather than just listing data inconsistencies"
+          },
+          "suggested_follow_ups": [
+            {
+              "question": "Which products have the highest financial impact if they stock out?",
+              "rationale": "Prioritizing critical products for immediate attention would minimize business disruption",
+              "priority": "high"
+            },
+            {
+              "question": "Are there patterns in data quality issues by supplier or product category?",
+              "rationale": "Systematic data quality problems could indicate process issues requiring operational changes",
+              "priority": "high"
+            },
+            {
+              "question": "How do current reorder points compare to optimal levels based on demand patterns?",
+              "rationale": "Optimizing reorder points could reduce both stockouts and excess inventory costs",
+              "priority": "medium"
+            }
+          ],
+          "alternative_approaches": [
+            {
+              "approach": "Focus specifically on data quality audit and improvement recommendations",
+              "benefits": "Would provide clear action items for improving data reliability and operational processes",
+              "trade_offs": "Less immediate business impact but important for long-term operational excellence"
+            },
+            {
+              "approach": "Analyze supplier performance and lead time reliability patterns",
+              "benefits": "Could identify supplier issues contributing to inventory problems and support vendor management decisions",
+              "trade_offs": "Requires supplier performance focus but may reveal systemic supply chain issues"
+            }
+          ]
+        }
+      }
+    }
+  ]
+} 

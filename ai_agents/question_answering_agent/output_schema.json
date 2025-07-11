@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "answer_response": {
+      "type": "object",
+      "properties": {
+        "direct_answer": {
+          "type": "string",
+          "description": "Clear, concise answer to the client's question"
+        },
+        "detailed_reasoning": {
+          "type": "string", 
+          "description": "Comprehensive explanation of how this conclusion was reached using the available data"
+        },
+        "supporting_evidence": {
+          "type": "array",
+          "description": "Specific data points and query results that support this answer",
+          "items": {
+            "type": "object",
+            "properties": {
+              "data_source": {
+                "type": "string",
+                "description": "Which query or data source this evidence comes from"
+              },
+              "evidence": {
+                "type": "string",
+                "description": "The specific data point or finding"
+              },
+              "relevance": {
+                "type": "string",
+                "description": "How this evidence relates to answering the question"
+              }
+            }
+          }
+        },
+        "confidence_level": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Confidence level in this answer based on available data quality and completeness"
+        },
+        "confidence_reasoning": {
+          "type": "string",
+          "description": "Explanation of why this confidence level was assigned"
+        },
+        "data_limitations": {
+          "type": "array",
+          "description": "Any limitations in the available data that might affect the answer",
+          "items": {
+            "type": "string"
+          }
+        },
+        "additional_analysis_suggestions": {
+          "type": "array",
+          "description": "Suggestions for additional queries or analysis that could provide more complete answers",
+          "items": {
+            "type": "object",
+            "properties": {
+              "suggested_analysis": {
+                "type": "string",
+                "description": "What additional analysis could be performed"
+              },
+              "expected_benefit": {
+                "type": "string",
+                "description": "How this would improve the answer quality"
+              }
+            }
+          }
+        }
+      },
+      "required": ["direct_answer", "detailed_reasoning", "supporting_evidence", "confidence_level", "confidence_reasoning"]
+    }
+  },
+  "required": ["answer_response"]
+} 

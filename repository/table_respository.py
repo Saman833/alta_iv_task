@@ -16,3 +16,7 @@ class TableRepository:
     def get_all_tables(self, user_id) -> List[Table]:
         return self.session.query(Table).filter(Table.user_id == user_id).all()
     
+    def get_all_tables_global(self) -> List[Table]:
+        """Get all tables across all users"""
+        return self.session.query(Table).all()
+    

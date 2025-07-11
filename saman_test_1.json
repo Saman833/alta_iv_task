@@ -1,0 +1,1154 @@
+{
+  "pipeline_info": {
+    "user_request": "Which product shows high growth and a high share of total sales?",
+    "pipeline_type": "Complete Analytics + Question Answering",
+    "timestamp": "2025-07-10 14:45:59",
+    "analytics_queries_executed": 3,
+    "questions_answered": 4,
+    "success_rate": 100.0
+  },
+  "analytics_summary": {
+    "total_queries": 3,
+    "successful_queries": 3,
+    "insights_discovered": [
+      "Iteration 1: Identify top products based on total sales and their contribution to overall market share. - Found 5 records",
+      "Iteration 2: To obtain a detailed breakdown of the performance metrics for each advertising campaign, segmented by channel used and campaign goals. - Found 100 records",
+      "Iteration 3: Identify top-performing social media channels based on ROI, conversion rates, and acquisition costs to highlight key insights. - Found 3 records"
+    ],
+    "query_history": [
+      {
+        "query": "SELECT product_id, product_name, (SUM(sales_month_1) + SUM(sales_month_2) + SUM(sales_month_3) + SUM(sales_month_4) + SUM(sales_month_5) + SUM(sales_month_6) + SUM(sales_month_7) + SUM(sales_month_8) + SUM(sales_month_9) + SUM(sales_month_10) + SUM(sales_month_11) + SUM(sales_month_12)) as total_sales, (SUM(sales_month_1) + SUM(sales_month_2) + SUM(sales_month_3) + SUM(sales_month_4) + SUM(sales_month_5) + SUM(sales_month_6) + SUM(sales_month_7) + SUM(sales_month_8) + SUM(sales_month_9) + SUM(sales_month_10) + SUM(sales_month_11) + SUM(sales_month_12)) / (SELECT SUM(sales_month_1 + sales_month_2 + sales_month_3 + sales_month_4 + sales_month_5 + sales_month_6 + sales_month_7 + sales_month_8 + sales_month_9 + sales_month_10 + sales_month_11 + sales_month_12) FROM csv_table_231cd743_c616_40f6_b0c4_deae52051078) * 100 as market_share FROM csv_table_231cd743_c616_40f6_b0c4_deae52051078 GROUP BY product_id, product_name HAVING total_sales > 1000 ORDER BY total_sales DESC LIMIT 5",
+        "result": {
+          "success": true,
+          "rows": [
+            {
+              "product_id": "224",
+              "product_name": "Product_224",
+              "total_sales": 9151,
+              "market_share": 0
+            },
+            {
+              "product_id": "286",
+              "product_name": "Product_286",
+              "total_sales": 8921,
+              "market_share": 0
+            },
+            {
+              "product_id": "734",
+              "product_name": "Product_734",
+              "total_sales": 8914,
+              "market_share": 0
+            },
+            {
+              "product_id": "905",
+              "product_name": "Product_905",
+              "total_sales": 8783,
+              "market_share": 0
+            },
+            {
+              "product_id": "180",
+              "product_name": "Product_180",
+              "total_sales": 8775,
+              "market_share": 0
+            }
+          ],
+          "columns": [
+            "product_id",
+            "product_name",
+            "total_sales",
+            "market_share"
+          ],
+          "row_count": 5
+        },
+        "purpose": "Identify top products based on total sales and their contribution to overall market share."
+      },
+      {
+        "query": "SELECT Campaign_ID, Channel_Used, AVG(ROI) as avg_ROI, AVG(Conversion_Rate) as avg_conversion_rate, AVG(Acquisition_Cost) as avg_acquisition_cost, AVG(Engagement_Score) as avg_engagement_score FROM csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0 GROUP BY Campaign_ID, Channel_Used ORDER BY avg_ROI DESC LIMIT 100",
+        "result": {
+          "success": true,
+          "rows": [
+            {
+              "Campaign_ID": "100794",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "105507",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.03,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "106504",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.09,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 2.0
+            },
+            {
+              "Campaign_ID": "109529",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.01,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "114610",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.14,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "141051",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "156680",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 2.0
+            },
+            {
+              "Campaign_ID": "162830",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "169354",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.13,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "171907",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.05,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "171983",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.04,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "179163",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.04,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 9.0
+            },
+            {
+              "Campaign_ID": "179175",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.04,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "179521",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.12,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "187629",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "187771",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.12,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 7.0
+            },
+            {
+              "Campaign_ID": "206358",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.12,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 7.0
+            },
+            {
+              "Campaign_ID": "207900",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.13,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "216122",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.03,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "218243",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.13,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "222208",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.15,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "229680",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "236285",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.13,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "238215",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "246523",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.12,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "265850",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "280607",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "302630",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "303945",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "356505",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 10.0
+            },
+            {
+              "Campaign_ID": "368818",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 5.0
+            },
+            {
+              "Campaign_ID": "378012",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.09,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "378747",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.01,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 2.0
+            },
+            {
+              "Campaign_ID": "380367",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.13,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "389849",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.04,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 5.0
+            },
+            {
+              "Campaign_ID": "396783",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.03,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 9.0
+            },
+            {
+              "Campaign_ID": "402907",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.1,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "403888",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 10.0
+            },
+            {
+              "Campaign_ID": "407567",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "409241",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 2.0
+            },
+            {
+              "Campaign_ID": "415830",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "421107",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "430828",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "464503",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.14,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "466385",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.01,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "469387",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "478788",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 5.0
+            },
+            {
+              "Campaign_ID": "487561",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "524327",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 9.0
+            },
+            {
+              "Campaign_ID": "532867",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.15,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 2.0
+            },
+            {
+              "Campaign_ID": "553112",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "562492",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 7.0
+            },
+            {
+              "Campaign_ID": "569446",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 9.0
+            },
+            {
+              "Campaign_ID": "570155",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "583996",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.04,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "602394",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "605154",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 5.0
+            },
+            {
+              "Campaign_ID": "607966",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 7.0
+            },
+            {
+              "Campaign_ID": "634675",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.03,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "643748",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 10.0
+            },
+            {
+              "Campaign_ID": "650224",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.14,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 9.0
+            },
+            {
+              "Campaign_ID": "662443",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.05,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "672162",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "672273",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.1,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "684073",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.12,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "684293",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.13,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 7.0
+            },
+            {
+              "Campaign_ID": "688415",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 7.0
+            },
+            {
+              "Campaign_ID": "705930",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.09,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "710784",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 10.0
+            },
+            {
+              "Campaign_ID": "719367",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "724305",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.05,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "742216",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 7.0
+            },
+            {
+              "Campaign_ID": "743515",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.03,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "749914",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.05,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "757214",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 5.0
+            },
+            {
+              "Campaign_ID": "762175",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "765055",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.04,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "770363",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.09,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "777660",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.04,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "777906",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 6.0
+            },
+            {
+              "Campaign_ID": "784555",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.11,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "789076",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.1,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 5.0
+            },
+            {
+              "Campaign_ID": "795110",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 1.0
+            },
+            {
+              "Campaign_ID": "798646",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.05,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 4.0
+            },
+            {
+              "Campaign_ID": "802583",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.05,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 2.0
+            },
+            {
+              "Campaign_ID": "803769",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "813968",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "841495",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.05,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "848036",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.1,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 2.0
+            },
+            {
+              "Campaign_ID": "851141",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.06,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 10.0
+            },
+            {
+              "Campaign_ID": "851738",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.03,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "852875",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 9.0
+            },
+            {
+              "Campaign_ID": "860464",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.08,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 9.0
+            },
+            {
+              "Campaign_ID": "862370",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 9.0
+            },
+            {
+              "Campaign_ID": "866177",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 8.0
+            },
+            {
+              "Campaign_ID": "872159",
+              "Channel_Used": "Twitter",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.12,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 5.0
+            },
+            {
+              "Campaign_ID": "879341",
+              "Channel_Used": "Facebook",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.02,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 3.0
+            },
+            {
+              "Campaign_ID": "879462",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 2.0
+            },
+            {
+              "Campaign_ID": "889138",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 10.0
+            },
+            {
+              "Campaign_ID": "893115",
+              "Channel_Used": "Instagram",
+              "avg_ROI": 8.0,
+              "avg_conversion_rate": 0.07,
+              "avg_acquisition_cost": 0.0,
+              "avg_engagement_score": 5.0
+            }
+          ],
+          "columns": [
+            "Campaign_ID",
+            "Channel_Used",
+            "avg_ROI",
+            "avg_conversion_rate",
+            "avg_acquisition_cost",
+            "avg_engagement_score"
+          ],
+          "row_count": 100
+        },
+        "purpose": "To obtain a detailed breakdown of the performance metrics for each advertising campaign, segmented by channel used and campaign goals."
+      },
+      {
+        "query": "SELECT Channel_Used, AVG(ROI) as avg_ROI, AVG(Conversion_Rate) as avg_conversion_rate, AVG(Acquisition_Cost) as avg_acquisition_cost FROM csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0 GROUP BY Channel_Used ORDER BY avg_ROI DESC LIMIT 3",
+        "result": {
+          "success": true,
+          "rows": [
+            {
+              "Channel_Used": "Instagram",
+              "avg_ROI": 4.00878590165245,
+              "avg_conversion_rate": 0.07976431738594694,
+              "avg_acquisition_cost": 0.0
+            },
+            {
+              "Channel_Used": "Twitter",
+              "avg_ROI": 4.002236212878222,
+              "avg_conversion_rate": 0.0803632807790972,
+              "avg_acquisition_cost": 0.0
+            },
+            {
+              "Channel_Used": "Facebook",
+              "avg_ROI": 3.986929514129066,
+              "avg_conversion_rate": 0.07987001756162357,
+              "avg_acquisition_cost": 0.0
+            }
+          ],
+          "columns": [
+            "Channel_Used",
+            "avg_ROI",
+            "avg_conversion_rate",
+            "avg_acquisition_cost"
+          ],
+          "row_count": 3
+        },
+        "purpose": "Identify top-performing social media channels based on ROI, conversion rates, and acquisition costs to highlight key insights."
+      }
+    ]
+  },
+  "question_answers": {
+    "session_info": {
+      "total_questions": 4,
+      "analytics_queries_used": 3,
+      "timestamp": "2025-07-10 14:45:18",
+      "successful_answers": 4,
+      "high_confidence_answers": 4,
+      "success_rate": 100.0
+    },
+    "answers": [
+      {
+        "success": true,
+        "client_question": "What are the main insights from this analysis?",
+        "direct_answer": "The main insights from the analysis focus on product sales and advertising campaign performance. The top five products by total sales are Product_224, Product_286, Product_734, Product_905, and Product_180, all with over 8,000 sales. In advertising, Instagram, Twitter, and Facebook are the top-performing channels with similar average ROI around 8.0, but Instagram shows a slightly higher conversion rate at 0.0798, compared to 0.0804 for Twitter and 0.0799 for Facebook.",
+        "detailed_reasoning": "The analysis reveals key aspects of performance in both product sales and advertising effectiveness. The first dataset highlights products that are performing well, all exceeding 8,000 in sales, indicating strong market interest. However, the market share for these products was noted as 0, possibly indicating either calculation errors or issues related to the total sales reference. The second part analyzed social media advertising campaigns, identifying that all three major platforms\u2014Instagram, Twitter, and Facebook\u2014achieved similar levels of ROI (8) but differ slightly in terms of their effectiveness when measured by conversion rates and engagement scores. These discrepancies could inform future marketing efforts and budget allocations.",
+        "supporting_evidence": [
+          {
+            "data_source": "Top products sales query",
+            "evidence": "Top products are Product_224 (9151 sales), Product_286 (8921 sales), Product_734 (8914 sales), Product_905 (8783 sales), Product_180 (8775 sales)",
+            "relevance": "Indicates which products are leading in sales volume, important for inventory and strategic focus."
+          },
+          {
+            "data_source": "Social media campaign performance query",
+            "evidence": "Avg ROI for Instagram: 8.0, Twitter: 8.0, Facebook: 8.0; Instagram has the highest conversion rate of 0.0798",
+            "relevance": "Shows the relative effectiveness of different advertising channels, aiding in future marketing strategies."
+          }
+        ],
+        "confidence_level": "high",
+        "confidence_reasoning": "The conclusions drawn are based on comprehensive data analysis from multiple data sources, with the product sales and campaign performance metrics providing clear insights into the current market landscape.",
+        "data_limitations": [
+          "Market share for the top products was reported as 0, indicating potential issues with calculating total market sales.",
+          "The analysis is based on historical data and does not account for current market trends or external factors that may influence sales."
+        ],
+        "additional_analysis_suggestions": [
+          {
+            "suggested_analysis": "Investigate the reasons behind the reported 0 market share for the top products to ensure accurate insights.",
+            "expected_benefit": "This may uncover data quality issues or reflect on market positioning that requires strategic responses."
+          },
+          {
+            "suggested_analysis": "Analyze past year\u2019s data to compare product performance trends over time, particularly for those with high sales.",
+            "expected_benefit": "Understanding growth patterns in product sales can help in demand forecasting and inventory management."
+          }
+        ],
+        "data_sources_used": 3,
+        "timestamp": "2025-07-10 14:45:29",
+        "question_number": 1
+      },
+      {
+        "success": true,
+        "client_question": "What patterns or trends should we be aware of?",
+        "direct_answer": "The key patterns to be aware of involve high sales performance from specific products and strong ROI from certain advertising channels.",
+        "detailed_reasoning": "The analysis shows that the top five products have total sales significantly exceeding 1000 units: Product_224 (9151), Product_286 (8921), Product_734 (8914), Product_905 (8783), and Product_180 (8775). Despite these products performing well in terms of sales, their reported market share is zero, indicating a potential growth area against competitors. Additionally, advertising channels like Instagram and Twitter yield an average ROI of around 4, which suggests these channels are performing well in terms of cost-effectiveness and efficiency in conversions.",
+        "supporting_evidence": [
+          {
+            "data_source": "Top products sales query",
+            "evidence": "Top products: Product_224 - 9151 sales, Product_286 - 8921 sales, Product_734 - 8914 sales, Product_905 - 8783 sales, Product_180 - 8775 sales",
+            "relevance": "Highlights the most popular products contributing to sales volume."
+          },
+          {
+            "data_source": "Advertising channel performance query",
+            "evidence": "Instagram - avg ROI 4.01, Twitter - avg ROI 4.00, Facebook - avg ROI 3.99",
+            "relevance": "Demonstrates the effectiveness of various channels in generating returns on investment."
+          }
+        ],
+        "confidence_level": "high",
+        "confidence_reasoning": "Confidence is high because the data from both sales and advertising performance consist of aggregations over a significant period and includes a diverse set of products and campaigns. This comprehensive analysis provides a solid basis for decision-making.",
+        "data_limitations": [
+          "Market share calculations are not populated, which could indicate incomplete market data.",
+          "Average metrics for campaigns do not consider qualitative factors or broader market conditions."
+        ],
+        "additional_analysis_suggestions": [
+          {
+            "suggested_analysis": "Investigate market share for top-selling products to identify competitive positioning.",
+            "expected_benefit": "Understanding market dynamics will allow the company to target growth opportunities."
+          },
+          {
+            "suggested_analysis": "Conduct a deeper analysis of engagement scores across campaigns to capture qualitative insights.",
+            "expected_benefit": "This could uncover factors impacting conversion rates and help refine targeting strategies."
+          }
+        ],
+        "data_sources_used": 3,
+        "timestamp": "2025-07-10 14:45:38",
+        "question_number": 2
+      },
+      {
+        "success": true,
+        "client_question": "What are the key findings and their business implications?",
+        "direct_answer": "The key findings from the analysis indicate that 'Product_224' leads sales with 9,151 units sold, while Instagram is the top performing marketing channel with an average ROI of 8.0 and an average conversion rate of 0.06.",
+        "detailed_reasoning": "The analysis shows that 'Product_224' has significantly outperformed other products in total sales, contributing to overall revenue. With Instagram as the leading channel for advertisement, it demonstrates effectiveness in driving sales through higher conversion rates and ROI compared to other channels like Facebook and Twitter. However, there is a noted lack of market share data for these products, indicating a potential area for further exploration.",
+        "supporting_evidence": [
+          {
+            "data_source": "Sales performance query",
+            "evidence": "Top product: Product_224 with total sales of 9151 units",
+            "relevance": "Demonstrates leadership in product sales, indicating robust demand."
+          },
+          {
+            "data_source": "Campaign performance query",
+            "evidence": "Instagram: avg_ROI = 8.0, avg_conversion_rate = 0.06",
+            "relevance": "Highlights the effectiveness of Instagram as a marketing channel compared to others."
+          },
+          {
+            "data_source": "Sales comparison query",
+            "evidence": "Top products have sales above 1000, leading their segments.",
+            "relevance": "Establishes a clear threshold for marketability and engagement among these products."
+          }
+        ],
+        "confidence_level": "high",
+        "confidence_reasoning": "High confidence is derived from a comprehensive analysis of both product sales and marketing campaign performance across multiple channels, establishing definitive leaders in product popularity and advertisement efficiency.",
+        "data_limitations": [
+          "Market share figures for the top-selling products are absent, which limits understanding of their competitive positioning.",
+          "Data does not encompass customer feedback or satisfaction related to products."
+        ],
+        "additional_analysis_suggestions": [
+          {
+            "suggested_analysis": "Conduct market share analysis to determine competitive standing of the top products.",
+            "expected_benefit": "Understanding where these products stand against competitors could refine marketing strategies."
+          },
+          {
+            "suggested_analysis": "Analyze customer demographics for those engaging with top-performing channels.",
+            "expected_benefit": "This will help tailor future campaigns to specific audience segments, enhancing effectiveness."
+          },
+          {
+            "suggested_analysis": "Explore seasonal variations in product sales to identify growth opportunities.",
+            "expected_benefit": "This could highlight optimal timing for campaigns, potentially boosting sales further."
+          }
+        ],
+        "data_sources_used": 3,
+        "timestamp": "2025-07-10 14:45:49",
+        "question_number": 3
+      },
+      {
+        "success": true,
+        "client_question": "What recommendations do you have based on this data?",
+        "direct_answer": "Based on the data, I recommend focusing on enhancing the marketing strategies for the top-performing products and advertising channels. Specifically, consider allocating more resources to 'Product_224', 'Product_286', and 'Product_734' as they lead in sales with totals above 8,900 units.",
+        "detailed_reasoning": "The analysis revealed that 'Product_224', 'Product_286', and 'Product_734' are the top three products in terms of sales, each exceeding 8,900 units sold. Since these products already demonstrate high demand, increasing their visibility through strategic marketing could generate even more sales. Additionally, the advertising performance metrics indicate that Instagram and Twitter have the highest average ROI (4.01 and 4.00 respectively), suggesting they are effective channels for reaching potential customers. Thus, strengthening campaigns on these platforms could yield significant returns.",
+        "supporting_evidence": [
+          {
+            "data_source": "Top products sales query",
+            "evidence": "Product_224: 9,151 total sales, Product_286: 8,921 total sales, Product_734: 8,914 total sales",
+            "relevance": "Indicates that these products are in high demand in the e-commerce marketplace."
+          },
+          {
+            "data_source": "Channel performance metrics query",
+            "evidence": "Instagram: avg_ROI of 4.01, Twitter: avg_ROI of 4.00",
+            "relevance": "Shows that these channels provide good returns, justifying increased investment."
+          }
+        ],
+        "confidence_level": "high",
+        "confidence_reasoning": "The recommendations are backed by robust sales data demonstrating the popularity of specific products and advertising performance metrics indicating effective channels. The patterns observed are consistent across several successful queries, providing a strong basis for the recommendations.",
+        "data_limitations": [],
+        "additional_analysis_suggestions": [
+          {
+            "suggested_analysis": "Conduct a competitive analysis to compare the performance of these products against similar ones in the market.",
+            "expected_benefit": "Would inform strategic positioning and highlight potential areas for differentiation."
+          },
+          {
+            "suggested_analysis": "Evaluate the customer demographics engaging with the successful advertising campaigns.",
+            "expected_benefit": "Understanding the audience can enhance targeting efforts, tailoring promotions to better meet the needs of potential customers."
+          }
+        ],
+        "data_sources_used": 3,
+        "timestamp": "2025-07-10 14:45:58",
+        "question_number": 4
+      }
+    ]
+  },
+  "key_insights": [
+    {
+      "question": "What are the main insights from this analysis?",
+      "key_finding": "The main insights from the analysis focus on product sales and advertising campaign performance. The top five products by total sales are Product_224, Product_286, Product_734, Product_905, and Product_180, all with over 8,000 sales. In advertising, Instagram, Twitter, and Facebook are the top-performing channels with similar average ROI around 8.0, but Instagram shows a slightly higher conversion rate at 0.0798, compared to 0.0804 for Twitter and 0.0799 for Facebook.",
+      "confidence": "high"
+    },
+    {
+      "question": "What patterns or trends should we be aware of?",
+      "key_finding": "The key patterns to be aware of involve high sales performance from specific products and strong ROI from certain advertising channels.",
+      "confidence": "high"
+    },
+    {
+      "question": "What are the key findings and their business implications?",
+      "key_finding": "The key findings from the analysis indicate that 'Product_224' leads sales with 9,151 units sold, while Instagram is the top performing marketing channel with an average ROI of 8.0 and an average conversion rate of 0.06.",
+      "confidence": "high"
+    },
+    {
+      "question": "What recommendations do you have based on this data?",
+      "key_finding": "Based on the data, I recommend focusing on enhancing the marketing strategies for the top-performing products and advertising channels. Specifically, consider allocating more resources to 'Product_224', 'Product_286', and 'Product_734' as they lead in sales with totals above 8,900 units.",
+      "confidence": "high"
+    }
+  ],
+  "business_recommendations": [
+    {
+      "analysis": "Investigate the reasons behind the reported 0 market share for the top products to ensure accurate insights.",
+      "benefit": "This may uncover data quality issues or reflect on market positioning that requires strategic responses.",
+      "source_question": "What are the main insights from this analysis?"
+    },
+    {
+      "analysis": "Analyze past year\u2019s data to compare product performance trends over time, particularly for those with high sales.",
+      "benefit": "Understanding growth patterns in product sales can help in demand forecasting and inventory management.",
+      "source_question": "What are the main insights from this analysis?"
+    },
+    {
+      "analysis": "Investigate market share for top-selling products to identify competitive positioning.",
+      "benefit": "Understanding market dynamics will allow the company to target growth opportunities.",
+      "source_question": "What patterns or trends should we be aware of?"
+    },
+    {
+      "analysis": "Conduct a deeper analysis of engagement scores across campaigns to capture qualitative insights.",
+      "benefit": "This could uncover factors impacting conversion rates and help refine targeting strategies.",
+      "source_question": "What patterns or trends should we be aware of?"
+    },
+    {
+      "analysis": "Conduct market share analysis to determine competitive standing of the top products.",
+      "benefit": "Understanding where these products stand against competitors could refine marketing strategies.",
+      "source_question": "What are the key findings and their business implications?"
+    },
+    {
+      "analysis": "Analyze customer demographics for those engaging with top-performing channels.",
+      "benefit": "This will help tailor future campaigns to specific audience segments, enhancing effectiveness.",
+      "source_question": "What are the key findings and their business implications?"
+    },
+    {
+      "analysis": "Explore seasonal variations in product sales to identify growth opportunities.",
+      "benefit": "This could highlight optimal timing for campaigns, potentially boosting sales further.",
+      "source_question": "What are the key findings and their business implications?"
+    },
+    {
+      "analysis": "Conduct a competitive analysis to compare the performance of these products against similar ones in the market.",
+      "benefit": "Would inform strategic positioning and highlight potential areas for differentiation.",
+      "source_question": "What recommendations do you have based on this data?"
+    },
+    {
+      "analysis": "Evaluate the customer demographics engaging with the successful advertising campaigns.",
+      "benefit": "Understanding the audience can enhance targeting efforts, tailoring promotions to better meet the needs of potential customers.",
+      "source_question": "What recommendations do you have based on this data?"
+    }
+  ]
+}

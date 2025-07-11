@@ -1,0 +1,159 @@
+{
+  "type": "object",
+  "properties": {
+    "original_user_input": {
+      "type": "string",
+      "description": "The user's original request before enhancement (supports both English and Russian)",
+      "example": "Which product shows high growth and a high share of total sales?"
+    },
+    "enhanced_user_prompt": {
+      "type": "object",
+      "description": "The enhanced prompt output from enhanced_user_prompt_agent",
+      "properties": {
+        "primary_question": {
+          "type": "string",
+          "description": "The main enhanced analytical question, clear and specific"
+        },
+        "analytical_context": {
+          "type": "object",
+          "properties": {
+            "business_purpose": {"type": "string"},
+            "expected_outcome": {"type": "string"},
+            "success_criteria": {"type": "string"}
+          },
+          "required": ["business_purpose", "expected_outcome", "success_criteria"]
+        },
+        "data_scope": {
+          "type": "object",
+          "properties": {
+            "primary_tables": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "key_metrics": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "analysis_dimensions": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "cross_table_opportunities": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          },
+          "required": ["primary_tables", "key_metrics"]
+        },
+        "suggested_follow_ups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": {"type": "string"},
+              "rationale": {"type": "string"},
+              "priority": {"type": "string", "enum": ["high", "medium", "low"]}
+            }
+          }
+        }
+      },
+      "required": ["primary_question", "analytical_context", "data_scope"]
+    },
+    "file_summaries": {
+      "type": "array",
+      "description": "Complete list of ALL file summaries from file_summary_agent for all available tables in the database",
+      "items": {
+        "type": "object",
+        "properties": {
+          "table_name": {
+            "type": "string",
+            "description": "Name of the database table (usually csv_table_xxx format)"
+          },
+          "original_file_name": {
+            "type": "string",
+            "description": "Original CSV file name"
+          },
+          "file_summary": {
+            "type": "object",
+            "description": "Complete file summary from file_summary_agent",
+            "properties": {
+              "overview": {"type": "string"},
+              "business_domain": {"type": "string"},
+              "data_structure": {"type": "object"},
+              "content_analysis": {"type": "object"},
+              "insights": {"type": "object"}
+            }
+          }
+        },
+        "required": ["table_name", "original_file_name", "file_summary"]
+      },
+      "minItems": 1,
+      "description_note": "This array should contain summaries for ALL available tables, allowing the agent to understand the complete data landscape and identify cross-table analysis opportunities"
+    },
+    "previous_queries": {
+      "type": "array",
+      "description": "History of previous queries and their results to build upon",
+      "items": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The SQLite query that was executed"
+          },
+          "result": {
+            "type": "object",
+            "description": "The result returned from the database",
+            "properties": {
+              "success": {"type": "boolean"},
+              "rows": {"type": "array"},
+              "columns": {"type": "array"},
+              "row_count": {"type": "integer"},
+              "error": {"type": "string"}
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "When this query was executed"
+          },
+          "purpose": {
+            "type": "string",
+            "description": "What this query was trying to discover"
+          }
+        },
+        "required": ["query", "result"]
+      }
+    },
+    "analysis_context": {
+      "type": "object",
+      "description": "Additional context for the analysis",
+      "properties": {
+        "analysis_goal": {
+          "type": "string",
+          "description": "The specific analytical goal (exploration, pattern_discovery, insight_generation, validation)"
+        },
+        "focus_areas": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Specific areas or columns to focus the analysis on"
+        },
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "max_rows": {
+              "type": "integer",
+              "description": "Maximum number of rows to return in queries",
+              "default": 100
+            },
+            "preferred_tables": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Tables to prioritize in analysis"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["original_user_input", "enhanced_user_prompt", "file_summaries"],
+  "additionalProperties": false
+} 

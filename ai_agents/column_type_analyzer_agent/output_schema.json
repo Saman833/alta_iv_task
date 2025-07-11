@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "column_types": {
+      "type": "object",
+      "description": "Mapping of column names to their recommended SQLAlchemy types",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["Integer", "Float", "String", "DateTime", "Boolean", "Text"],
+        "description": "Recommended SQLAlchemy column type"
+      }
+    }
+  },
+  "required": ["column_types"]
+} 

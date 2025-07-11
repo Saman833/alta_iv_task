@@ -1,0 +1,177 @@
+{
+  "examples": [
+    {
+      "input": {
+        "original_user_question": "What are our most valuable customer segments and how should we target them?",
+        "analytics_work": {
+          "queries_executed": [
+            {
+              "query": "SELECT COUNT(*) as total_customers, COUNT(DISTINCT customer_id) as unique_customers FROM csv_table_001",
+              "purpose": "Understand customer base size",
+              "result": {
+                "success": true,
+                "rows": [[5000, 1200]],
+                "columns": ["total_customers", "unique_customers"],
+                "row_count": 1
+              }
+            },
+            {
+              "query": "SELECT customer_id, COUNT(*) as transaction_count, SUM(CAST(purchase_amount AS REAL)) as total_spent, AVG(CAST(purchase_amount AS REAL)) as avg_purchase FROM csv_table_001 GROUP BY customer_id ORDER BY total_spent DESC LIMIT 50",
+              "purpose": "Identify high-value customers",
+              "result": {
+                "success": true,
+                "rows": [["CUST_001", 15, 8500.50, 566.70], ["CUST_002", 8, 4200.25, 525.03]],
+                "columns": ["customer_id", "transaction_count", "total_spent", "avg_purchase"],
+                "row_count": 50
+              }
+            },
+            {
+              "query": "SELECT age_group, COUNT(*) as customer_count, AVG(CAST(total_spent AS REAL)) as avg_value FROM (SELECT c.customer_id, CASE WHEN d.age < 30 THEN 'Young' WHEN d.age < 50 THEN 'Middle' ELSE 'Senior' END as age_group, SUM(CAST(c.purchase_amount AS REAL)) as total_spent FROM csv_table_001 c JOIN csv_table_002 d ON c.customer_id = d.customer_id GROUP BY c.customer_id, age_group) GROUP BY age_group",
+              "purpose": "Analyze customer value by age segments",
+              "result": {
+                "success": true,
+                "rows": [["Young", 450, 1200.50], ["Middle", 600, 2800.75], ["Senior", 150, 4200.25]],
+                "columns": ["age_group", "customer_count", "avg_value"],
+                "row_count": 3
+              }
+            }
+          ],
+          "key_insights_discovered": [
+            "Senior customers (50+) have highest average value ($4,200) despite being smallest segment",
+            "Middle-aged customers (30-49) represent largest segment with good value ($2,800)",
+            "Young customers (under 30) have lowest average value ($1,200) but largest volume"
+          ],
+          "analysis_progression": "Started with customer base overview, then identified high-value individuals, finally analyzed demographic patterns"
+        },
+        "question_analysis": {
+          "direct_answer": "Your most valuable customer segments are Senior customers (highest average value $4,200) and Middle-aged customers (largest segment with $2,800 average value). Young customers have lowest value but highest volume.",
+          "supporting_evidence": [
+            {
+              "data_source": "Customer value analysis",
+              "evidence": "Senior customers: 150 customers, $4,200 average value; Middle: 600 customers, $2,800 average value",
+              "relevance": "Shows clear value hierarchy by age segment"
+            }
+          ],
+          "confidence_level": "high",
+          "limitations": ["Analysis based on historical data only", "No information about customer acquisition costs"]
+        },
+        "file_context": [
+          {
+            "table_name": "csv_table_001",
+            "original_file_name": "customer_transactions.csv",
+            "file_summary": {
+              "overview": "Customer transaction data with purchase history and amounts",
+              "business_domain": "E-commerce Sales"
+            }
+          },
+          {
+            "table_name": "csv_table_002",
+            "original_file_name": "customer_demographics.csv",
+            "file_summary": {
+              "overview": "Customer demographic information including age and location",
+              "business_domain": "Customer Management"
+            }
+          }
+        ],
+        "conversation_context": {
+          "total_queries": 3,
+          "successful_queries": 3,
+          "analysis_depth": "comprehensive",
+          "user_satisfaction_indicators": ["Clear segmentation identified", "Actionable insights provided"]
+        }
+      },
+      "output": {
+        "final_response": {
+          "executive_summary": "We've identified three distinct customer segments with clear value characteristics: Senior customers (50+) are your highest-value segment with $4,200 average spending, Middle-aged customers (30-49) represent your largest segment with solid $2,800 average value, and Young customers (under 30) have the lowest average value ($1,200) but highest volume. This segmentation provides clear targeting opportunities for personalized marketing strategies.",
+          "detailed_analysis": {
+            "methodology": "Analyzed 1,200 unique customers across 5,000 transactions, combining transaction data with demographic information to create value-based segments by age groups.",
+            "key_findings": [
+              {
+                "finding": "Senior customers (50+) are highest-value segment",
+                "business_impact": "Target for premium products and high-value promotions",
+                "supporting_data": "150 customers with $4,200 average value, 3.5x higher than young customers"
+              },
+              {
+                "finding": "Middle-aged customers (30-49) are largest segment with good value",
+                "business_impact": "Focus on retention and cross-selling opportunities",
+                "supporting_data": "600 customers with $2,800 average value, representing 50% of customer base"
+              },
+              {
+                "finding": "Young customers (under 30) have lowest value but highest volume",
+                "business_impact": "Develop strategies to increase average order value and lifetime value",
+                "supporting_data": "450 customers with $1,200 average value, 37.5% of customer base"
+              }
+            ],
+            "data_quality_assessment": "High-quality data with complete transaction history and demographic information for 1,200 customers over 13-month period."
+          },
+          "actionable_recommendations": [
+            {
+              "recommendation": "Launch premium product line targeting Senior customers with personalized messaging",
+              "expected_outcome": "Increase average order value by 20-30% in Senior segment",
+              "implementation_priority": "high",
+              "estimated_impact": "Potential $250K additional revenue from Senior segment"
+            },
+            {
+              "recommendation": "Develop loyalty program for Middle-aged customers with tiered benefits",
+              "expected_outcome": "Improve retention rates and increase repeat purchase frequency",
+              "implementation_priority": "high",
+              "estimated_impact": "Potential $500K additional revenue from improved retention"
+            },
+            {
+              "recommendation": "Create onboarding and education programs for Young customers",
+              "expected_outcome": "Increase average order value and customer lifetime value",
+              "implementation_priority": "medium",
+              "estimated_impact": "Potential $300K additional revenue from value increase"
+            }
+          ],
+          "risk_assessment": {
+            "data_limitations": [
+              "Analysis based on historical data only, may not reflect current trends",
+              "No information about customer acquisition costs or profitability by segment",
+              "Limited demographic data beyond age groups"
+            ],
+            "assumptions": [
+              "Customer behavior patterns will continue",
+              "Age-based segmentation is appropriate for targeting",
+              "Historical spending patterns predict future behavior"
+            ],
+            "confidence_level": "high",
+            "confidence_reasoning": "Strong data foundation with 1,200 customers and 5,000 transactions over 13 months, clear patterns across segments, and consistent demographic data."
+          },
+          "next_steps": {
+            "immediate_actions": [
+              "Develop segment-specific marketing campaigns",
+              "Create customer journey maps for each segment",
+              "Set up tracking metrics for segment performance"
+            ],
+            "follow_up_analysis": [
+              {
+                "analysis_type": "Customer lifetime value analysis by segment",
+                "expected_benefit": "Better understanding of long-term customer value",
+                "timeline": "2-3 weeks"
+              },
+              {
+                "analysis_type": "Seasonal spending patterns by segment",
+                "expected_benefit": "Optimize campaign timing and product launches",
+                "timeline": "1-2 weeks"
+              }
+            ],
+            "monitoring_metrics": [
+              "Average order value by segment",
+              "Customer retention rates by segment",
+              "Revenue growth by segment",
+              "Campaign performance by segment"
+            ]
+          },
+          "business_impact_summary": "This customer segmentation analysis provides a clear roadmap for targeted marketing strategies that could generate $1+ million in additional revenue through personalized approaches to each segment's unique characteristics and value potential."
+        },
+        "response_metadata": {
+          "analysis_completeness": "comprehensive",
+          "data_sources_used": ["customer_transactions.csv", "customer_demographics.csv"],
+          "query_efficiency": "high - 3 targeted queries provided complete segmentation",
+          "user_question_addressed": true
+        }
+      }
+    }
+  ]
+} 

@@ -7,6 +7,9 @@ from services.telegram_voice_service import TelegramVoiceService
 from services.classification_service import ClassificationService
 from services.agent_service import AgentService
 from clients.elevenlabs_client import ElevenLabsClient
+from clients.telegram_messager import TelegramMessager
+from config import config
+from services.autonomous_analytics_service import AutonomousAnalyticsService
 class MessageService:
     """
         this function is the core of the message processing pipeline 
@@ -26,25 +29,33 @@ class MessageService:
         self.telegram_voice_service = TelegramVoiceService()
         self.classification_service = ClassificationService()
         self.agent_service = AgentService()
+        self.telegram_messager = TelegramMessager(config.TELEGRAM_BOT_TOKEN)
         self.elevenlabs_client = ElevenLabsClient()
+        self.analytics_service = AutonomousAnalyticsService(db)
 
     def process_message(self, source: str, raw_data: dict):
         parser = self.parser_factory.get_parser(source, raw_data)
         
         if not parser:
             raise ValueError(f"No parser found for source: {source}")
-        
+        chat_id = raw_data['message']['chat']['id']
         parsed_data = parser.parse(raw_data)
         if parsed_data['type'] == 'voice' and parsed_data['content_data']['source'] == Source.TELEGRAM: 
             parsed_data = self.telegram_voice_service.process_voice_message(parsed_data)
         elif parsed_data['type'] != 'text':
             raise ValueError(f"Unsupported message type: {parsed_data['type']}")
-        
-        content = self.create_content_message(parsed_data)
-        if content is None:
-            print(f"Skipping duplicate message from {source}")
-            return None
-        
+        if parsed_data['content_data']['source'] == Source.TELEGRAM: 
+            # Get the text content from the correct field
+            text_content = parsed_data['content_data']['content_data']
+            result = self.analytics_service.analyze_user_request_autonomously(text_content)
+            if isinstance(result, dict) and "final_user_response" in result:
+                self.telegram_messager.send_message(chat_id, result["final_user_response"])
+            else:
+                self.telegram_messager.send_message(chat_id, "Unable to generate answer. Please try again.")
+
+
+        return None
+
         # Pass the parsed content data directly to avoid issues with SQLAlchemy object serialization
         category = self.classification_service.extract_category(**parsed_data['content_data'])
         content = self.update_content(content, {'category': category})

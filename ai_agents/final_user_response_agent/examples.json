@@ -1,0 +1,161 @@
+{
+  "examples": [
+    {
+      "input": {
+        "user_question": "What are the main trends in my sales data?",
+        "analytics_results": {
+          "total_queries_executed": 4,
+          "successful_queries": 4,
+          "query_results": [
+            {
+              "query": "SELECT COUNT(*) as total_records FROM sales_data",
+              "purpose": "Get total record count",
+              "result": {
+                "success": true,
+                "rows": [{"total_records": 15420}],
+                "columns": ["total_records"],
+                "row_count": 1,
+                "data_summary": "Found 15,420 total sales records"
+              }
+            },
+            {
+              "query": "SELECT AVG(sales_amount) as avg_sale FROM sales_data",
+              "purpose": "Calculate average sale amount",
+              "result": {
+                "success": true,
+                "rows": [{"avg_sale": 1250.50}],
+                "columns": ["avg_sale"],
+                "row_count": 1,
+                "data_summary": "Average sale amount is $1,250.50"
+              }
+            },
+            {
+              "query": "SELECT product_category, COUNT(*) as sales_count FROM sales_data GROUP BY product_category ORDER BY sales_count DESC LIMIT 5",
+              "purpose": "Find top selling product categories",
+              "result": {
+                "success": true,
+                "rows": [
+                  {"product_category": "Electronics", "sales_count": 5420},
+                  {"product_category": "Clothing", "sales_count": 3890},
+                  {"product_category": "Home & Garden", "sales_count": 2150},
+                  {"product_category": "Sports", "sales_count": 1890},
+                  {"product_category": "Books", "sales_count": 2070}
+                ],
+                "columns": ["product_category", "sales_count"],
+                "row_count": 5,
+                "data_summary": "Electronics is the top category with 5,420 sales"
+              }
+            }
+          ],
+          "key_insights": [
+            "Total of 15,420 sales records analyzed",
+            "Average sale amount is $1,250.50",
+            "Electronics is the top category with 5,420 sales (35% of total)",
+            "Clothing is second with 3,890 sales (25% of total)"
+          ],
+          "data_quality_metrics": {
+            "total_records_analyzed": 15420,
+            "data_completeness": "High - 98% of records have complete data",
+            "confidence_level": "High"
+          }
+        },
+        "question_answering_response": "Based on the analysis of 15,420 sales records, your main trends show Electronics as the dominant category with 35% of sales, followed by Clothing at 25%. The average sale amount is $1,250.50, indicating healthy transaction values.",
+        "research_plan": "Analyzed sales data through multiple queries to identify volume, value, and category distribution trends",
+        "file_summaries": [
+          {
+            "table_name": "sales_data",
+            "original_file_name": "sales_data.csv",
+            "file_summary": {
+              "overview": "Comprehensive sales data with product categories, amounts, and dates",
+              "business_domain": "Retail/E-commerce",
+              "data_structure": {"columns": ["date", "product_category", "sales_amount", "customer_id"]}
+            }
+          }
+        ]
+      },
+      "output": {
+        "final_user_response": "## Sales Data Analysis Results\n\n**Direct Answer:** Your sales data shows strong performance with Electronics dominating as your top category, accounting for 35% of all sales.\n\n**Key Findings with Proof:**\n- **Total Sales Volume:** 15,420 records analyzed with 98% data completeness\n- **Top Category:** Electronics leads with 5,420 sales (35% of total)\n- **Second Place:** Clothing follows with 3,890 sales (25% of total)\n- **Average Transaction Value:** $1,250.50 per sale\n- **Data Quality:** High confidence level based on comprehensive analysis\n\n**Business Impact:**\nYour Electronics category is your strongest performer, generating over one-third of your sales. The healthy average transaction value of $1,250.50 indicates good customer spending patterns.\n\n**Recommendations:**\n1. **Focus on Electronics:** Consider expanding your Electronics inventory and marketing\n2. **Clothing Opportunity:** With 25% of sales, Clothing shows strong potential for growth\n3. **Cross-selling:** Leverage Electronics success to promote complementary Clothing items\n\n**Data Confidence:** High confidence level based on analysis of 15,420 records with 98% data completeness.\n\n**Limitations:** Analysis based on available sales data; external factors like seasonality may affect trends.",
+        "response_metadata": {
+          "confidence_level": "High",
+          "data_sources_used": ["sales_data"],
+          "key_metrics_included": ["15,420 total records", "35% Electronics sales", "$1,250.50 average sale", "98% data completeness"],
+          "limitations": ["Based on available data only", "Seasonal factors not analyzed"],
+          "recommendations_count": 3
+        }
+      }
+    },
+    {
+      "input": {
+        "user_question": "How are my customer satisfaction scores performing?",
+        "analytics_results": {
+          "total_queries_executed": 3,
+          "successful_queries": 3,
+          "query_results": [
+            {
+              "query": "SELECT AVG(satisfaction_score) as avg_score FROM customer_feedback",
+              "purpose": "Calculate average satisfaction score",
+              "result": {
+                "success": true,
+                "rows": [{"avg_score": 4.2}],
+                "columns": ["avg_score"],
+                "row_count": 1,
+                "data_summary": "Average satisfaction score is 4.2 out of 5"
+              }
+            },
+            {
+              "query": "SELECT satisfaction_level, COUNT(*) as count FROM customer_feedback GROUP BY satisfaction_level ORDER BY count DESC",
+              "purpose": "Distribution of satisfaction levels",
+              "result": {
+                "success": true,
+                "rows": [
+                  {"satisfaction_level": "Very Satisfied", "count": 1250},
+                  {"satisfaction_level": "Satisfied", "count": 890},
+                  {"satisfaction_level": "Neutral", "count": 320},
+                  {"satisfaction_level": "Dissatisfied", "count": 95},
+                  {"satisfaction_level": "Very Dissatisfied", "count": 45}
+                ],
+                "columns": ["satisfaction_level", "count"],
+                "row_count": 5,
+                "data_summary": "Most customers are Very Satisfied (1,250) or Satisfied (890)"
+              }
+            }
+          ],
+          "key_insights": [
+            "Average satisfaction score is 4.2 out of 5",
+            "2,600 customers (85%) are Satisfied or Very Satisfied",
+            "Only 140 customers (5%) are Dissatisfied or Very Dissatisfied",
+            "Strong positive sentiment with 1,250 Very Satisfied customers"
+          ],
+          "data_quality_metrics": {
+            "total_records_analyzed": 2600,
+            "data_completeness": "High - 95% of records have valid scores",
+            "confidence_level": "High"
+          }
+        },
+        "question_answering_response": "Your customer satisfaction scores are performing very well with an average score of 4.2 out of 5. 85% of customers are Satisfied or Very Satisfied, showing strong positive sentiment.",
+        "research_plan": "Analyzed customer feedback data to assess satisfaction levels and distribution",
+        "file_summaries": [
+          {
+            "table_name": "customer_feedback",
+            "original_file_name": "customer_feedback.csv",
+            "file_summary": {
+              "overview": "Customer satisfaction feedback with scores and comments",
+              "business_domain": "Customer Service",
+              "data_structure": {"columns": ["customer_id", "satisfaction_score", "satisfaction_level", "feedback_date"]}
+            }
+          }
+        ]
+      },
+      "output": {
+        "final_user_response": "## Customer Satisfaction Analysis\n\n**Direct Answer:** Your customer satisfaction scores are performing excellently with an average score of 4.2 out of 5, indicating strong customer satisfaction.\n\n**Key Metrics with Proof:**\n- **Average Score:** 4.2 out of 5 (based on 2,600 customer responses)\n- **Positive Sentiment:** 2,600 customers (85%) are Satisfied or Very Satisfied\n- **Top Performance:** 1,250 customers (48%) are Very Satisfied\n- **Low Dissatisfaction:** Only 140 customers (5%) are Dissatisfied or Very Dissatisfied\n- **Data Quality:** 95% of records have valid scores\n\n**Performance Assessment:**\nYour customer satisfaction is in the excellent range. The high percentage of Very Satisfied customers (48%) indicates exceptional service quality. The low dissatisfaction rate (5%) shows effective problem resolution.\n\n**Recommendations:**\n1. **Maintain Excellence:** Continue current service practices that drive high satisfaction\n2. **Address Dissatisfied Customers:** Focus on the 140 dissatisfied customers for improvement\n3. **Leverage Positive Feedback:** Use satisfied customer testimonials for marketing\n\n**Confidence Level:** High confidence based on analysis of 2,600 customer responses with 95% data completeness.\n\n**Limitations:** Analysis based on self-reported satisfaction scores; external validation not included.",
+        "response_metadata": {
+          "confidence_level": "High",
+          "data_sources_used": ["customer_feedback"],
+          "key_metrics_included": ["4.2 average score", "85% satisfied customers", "48% very satisfied", "5% dissatisfied"],
+          "limitations": ["Self-reported data", "No external validation"],
+          "recommendations_count": 3
+        }
+      }
+    }
+  ]
+} 

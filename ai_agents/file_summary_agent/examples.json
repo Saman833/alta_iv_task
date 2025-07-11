@@ -1,0 +1,253 @@
+{
+  "examples": [
+    {
+      "input": {
+        "file_name": "user_sessions.csv",
+        "sample_data": [
+          {
+            "user_id": "123e4567-e89b-12d3-a456-426614174000",
+            "session_id": "sess_001",
+            "login_time": "2024-01-15T09:30:00Z",
+            "logout_time": "2024-01-15T10:45:00Z",
+            "pages_visited": "5",
+            "device_type": "mobile",
+            "browser": "Chrome",
+            "location": "New York"
+          },
+          {
+            "user_id": "987fcdeb-51a2-43d1-b345-556677889900",
+            "session_id": "sess_002",
+            "login_time": "2024-01-15T14:20:00Z",
+            "logout_time": "2024-01-15T14:35:00Z",
+            "pages_visited": "3",
+            "device_type": "desktop",
+            "browser": "Firefox",
+            "location": "London"
+          }
+        ],
+        "column_info": {
+          "column_names": ["user_id", "session_id", "login_time", "logout_time", "pages_visited", "device_type", "browser", "location"],
+          "total_rows": 15000,
+          "total_columns": 8
+        }
+      },
+      "output": {
+        "file_summary": {
+          "file_name": "user_sessions.csv",
+          "overview": "This file contains user session data tracking user interactions on a web platform, including login/logout times, device information, and browsing behavior.",
+          "business_domain": "Web Analytics / Digital Platform",
+          "data_structure": {
+            "total_columns": 8,
+            "total_rows_analyzed": 2,
+            "estimated_total_rows": 15000,
+            "key_columns": [
+              {
+                "name": "user_id",
+                "inferred_type": "UUID Identifier",
+                "description": "Unique identifier for each user"
+              },
+              {
+                "name": "session_id",
+                "inferred_type": "Session Identifier",
+                "description": "Unique identifier for each user session"
+              },
+              {
+                "name": "login_time",
+                "inferred_type": "Timestamp",
+                "description": "When the user logged into the platform"
+              },
+              {
+                "name": "pages_visited",
+                "inferred_type": "Numeric Count",
+                "description": "Number of pages visited during the session"
+              },
+              {
+                "name": "device_type",
+                "inferred_type": "Category",
+                "description": "Type of device used (mobile, desktop, tablet)"
+              }
+            ]
+          },
+          "content_analysis": {
+            "data_patterns": [
+              "Sessions have clear start and end times",
+              "Users access platform from different devices and browsers",
+              "Geographic distribution of users across different locations",
+              "Session durations vary significantly (15 minutes to 1+ hours)"
+            ],
+            "data_relationships": [
+              "Each user_id can have multiple session_ids over time",
+              "Login_time always precedes logout_time for valid sessions",
+              "Pages_visited correlates with session duration"
+            ],
+            "value_distributions": "Mix of mobile and desktop users, various browsers represented, global user base with time zone considerations"
+          },
+          "data_quality": {
+            "quality_score": "Good",
+            "issues_found": [
+              "All timestamps appear to be in UTC format"
+            ],
+            "completeness": "All required fields are populated in the sample data"
+          },
+          "insights": {
+            "key_findings": [
+              "Platform has active users across different time zones",
+              "Users engage with multiple pages per session",
+              "Cross-platform usage (mobile and desktop)",
+              "Session durations indicate engaged user behavior"
+            ],
+            "potential_use_cases": [
+              "User behavior analysis and segmentation",
+              "Device preference analysis",
+              "Geographic usage patterns",
+              "Session duration optimization",
+              "Browser compatibility analysis"
+            ],
+            "analysis_opportunities": [
+              "Identify peak usage times and geographic patterns",
+              "Analyze session duration vs engagement metrics",
+              "Compare user behavior across device types",
+              "Track user retention and session frequency"
+            ]
+          },
+          "recommendations": {
+            "data_preparation": [
+              "Convert timestamps to appropriate time zones for analysis",
+              "Calculate session duration as a derived field",
+              "Standardize location data for geographic analysis"
+            ],
+            "analysis_approaches": [
+              "Time series analysis for usage patterns",
+              "Cohort analysis for user retention",
+              "Device/browser performance comparison",
+              "Geographic heat mapping"
+            ],
+            "tools_and_methods": [
+              "Use data visualization tools for session flow analysis",
+              "Implement user journey mapping",
+              "Apply statistical analysis for behavior patterns",
+              "Create dashboards for real-time monitoring"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "file_name": "sales_transactions.csv",
+        "sample_data": [
+          {
+            "transaction_id": "TXN_001",
+            "customer_id": "CUST_12345",
+            "product_name": "Wireless Headphones",
+            "category": "Electronics",
+            "quantity": "2",
+            "unit_price": "99.99",
+            "total_amount": "199.98",
+            "transaction_date": "2024-01-15",
+            "payment_method": "Credit Card",
+            "sales_rep": "John Smith"
+          }
+        ],
+        "column_info": {
+          "column_names": ["transaction_id", "customer_id", "product_name", "category", "quantity", "unit_price", "total_amount", "transaction_date", "payment_method", "sales_rep"],
+          "total_rows": 50000,
+          "total_columns": 10
+        }
+      },
+      "output": {
+        "file_summary": {
+          "file_name": "sales_transactions.csv",
+          "overview": "This file contains detailed sales transaction records including customer information, product details, pricing, and sales representative data for business performance analysis.",
+          "business_domain": "Retail / E-commerce Sales",
+          "data_structure": {
+            "total_columns": 10,
+            "total_rows_analyzed": 1,
+            "estimated_total_rows": 50000,
+            "key_columns": [
+              {
+                "name": "transaction_id",
+                "inferred_type": "Transaction Identifier",
+                "description": "Unique identifier for each sales transaction"
+              },
+              {
+                "name": "customer_id",
+                "inferred_type": "Customer Identifier",
+                "description": "Unique identifier linking to customer records"
+              },
+              {
+                "name": "total_amount",
+                "inferred_type": "Currency/Decimal",
+                "description": "Final transaction amount in monetary value"
+              },
+              {
+                "name": "category",
+                "inferred_type": "Product Category",
+                "description": "Classification of the sold product"
+              }
+            ]
+          },
+          "content_analysis": {
+            "data_patterns": [
+              "Each transaction has complete product and pricing information",
+              "Sales representatives are tracked for each transaction",
+              "Multiple payment methods are supported",
+              "Product categories provide business segmentation"
+            ],
+            "data_relationships": [
+              "Total_amount should equal quantity × unit_price",
+              "Customer_id links to customer database",
+              "Sales_rep can be used for performance tracking"
+            ],
+            "value_distributions": "Product-focused transactions with consistent pricing structure and sales attribution"
+          },
+          "data_quality": {
+            "quality_score": "Excellent",
+            "issues_found": [],
+            "completeness": "All transaction fields are properly populated"
+          },
+          "insights": {
+            "key_findings": [
+              "Comprehensive transaction tracking system",
+              "Sales rep attribution enables performance analysis",
+              "Product categorization supports business intelligence",
+              "Multiple payment methods indicate customer flexibility"
+            ],
+            "potential_use_cases": [
+              "Sales performance analysis by representative",
+              "Product category profitability analysis",
+              "Customer purchasing behavior analysis",
+              "Revenue forecasting and trends",
+              "Payment method preference analysis"
+            ],
+            "analysis_opportunities": [
+              "Identify top-performing sales representatives",
+              "Analyze seasonal sales patterns by category",
+              "Track customer lifetime value",
+              "Optimize pricing strategies based on transaction data"
+            ]
+          },
+          "recommendations": {
+            "data_preparation": [
+              "Validate total_amount calculations",
+              "Standardize product category naming",
+              "Ensure date formats are consistent for time series analysis"
+            ],
+            "analysis_approaches": [
+              "Revenue analysis by time periods and categories",
+              "Sales representative performance dashboards",
+              "Customer segmentation based on purchase behavior",
+              "Product mix analysis and optimization"
+            ],
+            "tools_and_methods": [
+              "Business intelligence dashboards for sales tracking",
+              "Statistical analysis for sales forecasting",
+              "Customer relationship management integration",
+              "Financial reporting and analytics tools"
+            ]
+          }
+        }
+      }
+    }
+  ]
+} 

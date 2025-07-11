@@ -1,0 +1,23 @@
+{
+  "examples": [
+    {
+      "input": {
+        "columns": ["product_id", "product_name", "price", "sales_month_1", "category"],
+        "sample_data": [
+          {"product_id": "1", "product_name": "Laptop", "price": "999.99", "sales_month_1": "150", "category": "Electronics"},
+          {"product_id": "2", "product_name": "Mouse", "price": "25.50", "sales_month_1": "300", "category": "Electronics"},
+          {"product_id": "3", "product_name": "Desk", "price": "299.99", "sales_month_1": "50", "category": "Furniture"}
+        ]
+      },
+      "output": {
+        "column_types": {
+          "product_id": "Integer",
+          "product_name": "String",
+          "price": "Float",
+          "sales_month_1": "Integer",
+          "category": "String"
+        }
+      }
+    }
+  ]
+} 

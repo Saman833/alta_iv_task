@@ -27,6 +27,7 @@ async def create_folder(
     folder_request: CreateFolderRequest,
     db: Session = Depends(get_db)
 ):
+    
     """
     Create a new folder
     """

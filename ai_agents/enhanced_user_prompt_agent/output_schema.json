@@ -1,0 +1,148 @@
+{
+  "type": "object",
+  "properties": {
+    "enhanced_prompt": {
+      "type": "object",
+      "properties": {
+        "primary_question": {
+          "type": "string",
+          "description": "The main enhanced analytical question, clear and specific"
+        },
+        "analytical_context": {
+          "type": "object",
+          "properties": {
+            "business_purpose": {
+              "type": "string",
+              "description": "Clear explanation of the business purpose behind this analysis"
+            },
+            "expected_outcome": {
+              "type": "string",
+              "description": "What decisions or actions this analysis should enable"
+            },
+            "success_criteria": {
+              "type": "string",
+              "description": "What would make this analysis successful and valuable"
+            }
+          },
+          "required": ["business_purpose", "expected_outcome", "success_criteria"]
+        },
+        "data_scope": {
+          "type": "object",
+          "properties": {
+            "primary_tables": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Main tables that should be analyzed for this question"
+            },
+            "key_metrics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Specific metrics, columns, or calculations to focus on"
+            },
+            "analysis_dimensions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Dimensions to segment or group analysis by (time, category, etc.)"
+            },
+            "cross_table_opportunities": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Opportunities to combine data across multiple tables"
+            }
+          },
+          "required": ["primary_tables", "key_metrics"]
+        },
+        "enhancement_explanation": {
+          "type": "object",
+          "properties": {
+            "original_issues": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Problems or limitations identified in the original prompt"
+            },
+            "improvements_made": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Specific enhancements made to improve the prompt"
+            },
+            "data_alignment": {
+              "type": "string",
+              "description": "How the enhanced prompt better aligns with available data"
+            },
+            "analytical_value": {
+              "type": "string",
+              "description": "Why this enhanced version will provide more valuable insights"
+            }
+          },
+          "required": ["original_issues", "improvements_made", "data_alignment", "analytical_value"]
+        },
+        "suggested_follow_ups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string",
+                "description": "A follow-up analytical question"
+              },
+              "rationale": {
+                "type": "string",
+                "description": "Why this follow-up would be valuable"
+              },
+              "priority": {
+                "type": "string",
+                "enum": ["high", "medium", "low"],
+                "description": "Priority level for this follow-up"
+              }
+            },
+            "required": ["question", "rationale", "priority"]
+          },
+          "description": "Additional questions that would complement the main analysis"
+        },
+        "alternative_approaches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "approach": {
+                "type": "string",
+                "description": "Alternative way to address the user's underlying need"
+              },
+              "benefits": {
+                "type": "string",
+                "description": "Advantages of this alternative approach"
+              },
+              "trade_offs": {
+                "type": "string",
+                "description": "What would be different or limited compared to the main approach"
+              }
+            },
+            "required": ["approach", "benefits", "trade_offs"]
+          },
+          "description": "Alternative analytical approaches that might also address the user's needs"
+        }
+      },
+      "required": [
+        "primary_question",
+        "analytical_context",
+        "data_scope",
+        "enhancement_explanation",
+        "suggested_follow_ups"
+      ]
+    }
+  },
+  "required": ["enhanced_prompt"],
+  "additionalProperties": false
+} 

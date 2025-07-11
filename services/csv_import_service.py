@@ -1,12 +1,13 @@
 import csv
 import io
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, text, MetaData, Table as SQLTable, Column, String, Text, DateTime
+from sqlalchemy import create_engine, text, MetaData, Table as SQLTable, Column, String, Text, DateTime, Integer, Float, Boolean
 from sqlalchemy.exc import SQLAlchemyError
 from typing import List, Dict, Any, Optional
 import uuid
 from datetime import datetime
 import json
+from services.agent_service import AgentService
 
 class CSVImportService:
     def __init__(self, db: Session):
@@ -51,10 +52,17 @@ class CSVImportService:
             if 'updated_at' not in fieldnames:
                 columns.append(Column('updated_at', String(50), nullable=True))
             
+            # Get sample data for column type analysis
+            csv_reader_for_sample = csv.DictReader(io.StringIO(csv_content))
+            sample_data = list(csv_reader_for_sample)
+            
             # Add columns based on CSV headers
             for field in fieldnames:
+                # Get sample data for this column
+                field_sample_data = [row.get(field, '') for row in sample_data[:20]]
+                
                 # Determine column type based on field name and sample data
-                column_type = self._determine_column_type(field)
+                column_type = self._determine_column_type(field, field_sample_data)
                 # All CSV columns are nullable for analytics flexibility
                 columns.append(Column(field, column_type, nullable=True))
             
@@ -77,13 +85,87 @@ class CSVImportService:
             self.db.rollback()
             raise ValueError(f"Failed to create dynamic table: {str(e)}")
     
-    def _determine_column_type(self, field_name: str) -> Any:
+    def _determine_column_type(self, field_name: str, sample_data: List[str] = None) -> Any:
         """
-        Determine the appropriate SQLAlchemy column type based on field name
-        All columns will be String type for simplicity
+        Determine the appropriate SQLAlchemy column type using the column type analyzer agent
         """
-        # Make all columns String type to avoid data type issues
-        return String(500)  # Using String with reasonable length limit
+        try:
+            # Use agent service to analyze column type
+            agent_service = AgentService()
+            
+            # Prepare sample data for analysis (first 20 rows)
+            sample_rows = sample_data[:20] if sample_data else []
+            
+            # Call the column type analyzer agent
+            result = agent_service.call_agent(
+                agent_name="column_type_analyzer_agent",
+                input_data={
+                    "column_name": field_name,
+                    "sample_data": sample_rows
+                }
+            )
+            
+            # Parse the agent response to get the recommended type
+            if result and "column_type" in result:
+                type_name = result["column_type"]
+                
+                # Map type names to SQLAlchemy types
+                type_mapping = {
+                    "Integer": Integer,
+                    "Float": Float,
+                    "String": String(500),
+                    "Text": Text,
+                    "DateTime": DateTime,
+                    "Boolean": Boolean
+                }
+                
+                return type_mapping.get(type_name, String(500))
+            
+            # Fallback to String if agent fails
+            return String(500)
+            
+        except Exception as e:
+            # Fallback to String type if agent analysis fails
+            return String(500)
+    
+    def _convert_value_for_column_type(self, value: str, field_name: str) -> Any:
+        """
+        Convert CSV value to appropriate type based on column type
+        """
+        if not value or value.strip() == '':
+            return None
+        
+        try:
+            # Get column type for this field
+            column_type = self._determine_column_type(field_name)
+            
+            # Convert based on type
+            if column_type == Integer:
+                return int(value)
+            elif column_type == Float:
+                return float(value)
+            elif column_type == Boolean:
+                # Handle various boolean representations
+                value_lower = value.lower().strip()
+                if value_lower in ['true', '1', 'yes', 'y']:
+                    return True
+                elif value_lower in ['false', '0', 'no', 'n']:
+                    return False
+                else:
+                    return None
+            elif column_type == DateTime:
+                # Try to parse datetime
+                try:
+                    return datetime.fromisoformat(value)
+                except:
+                    return value  # Keep as string if parsing fails
+            else:
+                # String or Text type
+                return value
+                
+        except (ValueError, TypeError):
+            # If conversion fails, return as string
+            return value
     
     def _import_csv_data(self, table: SQLTable, csv_content: str, fieldnames: List[str]) -> None:
         """
@@ -107,8 +189,8 @@ class CSVImportService:
                 
                 for field in fieldnames:
                     value = row.get(field, '')
-                    # Store all values as strings (or None if empty)
-                    cleaned_row[field] = value if value else None
+                    # Convert value based on column type
+                    cleaned_row[field] = self._convert_value_for_column_type(value, field)
                 
                 rows_to_insert.append(cleaned_row)
             

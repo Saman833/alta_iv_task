@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "properties": {
+    "file_name": {
+      "type": "string",
+      "description": "Name of the CSV file being analyzed",
+      "example": "user_behavior_data.csv"
+    },
+    "sample_data": {
+      "type": "array",
+      "description": "Sample rows from the CSV file (up to 100 rows)",
+      "items": {
+        "type": "object",
+        "description": "A single row of data with column names as keys"
+      },
+      "maxItems": 100,
+      "minItems": 1
+    },
+    "column_info": {
+      "type": "object",
+      "description": "Additional information about columns",
+      "properties": {
+        "column_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of all column names in the CSV"
+        },
+        "total_rows": {
+          "type": "integer",
+          "description": "Total number of rows in the complete CSV file"
+        },
+        "total_columns": {
+          "type": "integer",
+          "description": "Total number of columns in the CSV file"
+        }
+      }
+    }
+  },
+  "required": ["file_name", "sample_data"],
+  "additionalProperties": false
+} 

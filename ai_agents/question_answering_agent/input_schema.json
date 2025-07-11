@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "properties": {
+    "client_question": {
+      "type": "string",
+      "description": "The question posed by the client that needs to be answered using available analytics data"
+    },
+    "analytics_history": {
+      "type": "array",
+      "description": "Complete history of analytics queries and their results",
+      "items": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The SQL query that was executed"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "success": {
+                "type": "boolean",
+                "description": "Whether the query executed successfully"
+              },
+              "rows": {
+                "type": "array",
+                "description": "The data rows returned by the query"
+              },
+              "columns": {
+                "type": "array",
+                "description": "Column names from the query result"
+              },
+              "row_count": {
+                "type": "integer",
+                "description": "Number of rows returned"
+              }
+            }
+          },
+          "purpose": {
+            "type": "string",
+            "description": "What this query was trying to accomplish"
+          }
+        }
+      }
+    },
+    "file_summaries": {
+      "type": "array",
+      "description": "Summaries of the data files that were analyzed",
+      "items": {
+        "type": "object",
+        "properties": {
+          "table_name": {
+            "type": "string",
+            "description": "Name of the database table"
+          },
+          "original_file_name": {
+            "type": "string", 
+            "description": "Original name of the data file"
+          },
+          "file_summary": {
+            "type": "object",
+            "properties": {
+              "overview": {
+                "type": "string",
+                "description": "Brief description of the data contents"
+              },
+              "business_domain": {
+                "type": "string",
+                "description": "Business domain this data relates to"
+              }
+            }
+          }
+        }
+      }
+    },
+    "conversation_context": {
+      "type": "object",
+      "description": "Additional context about the analytics session",
+      "properties": {
+        "insights_discovered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key insights that have been discovered during analysis"
+        },
+        "successful_queries": {
+          "type": "integer",
+          "description": "Number of successful queries executed"
+        },
+        "total_queries": {
+          "type": "integer", 
+          "description": "Total number of queries attempted"
+        }
+      }
+    }
+  },
+  "required": ["client_question", "analytics_history", "file_summaries", "conversation_context"]
+} 

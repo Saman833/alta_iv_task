@@ -1,0 +1,168 @@
+{
+  "type": "object",
+  "properties": {
+    "file_summary": {
+      "type": "object",
+      "properties": {
+        "file_name": {
+          "type": "string",
+          "description": "Name of the analyzed file"
+        },
+        "overview": {
+          "type": "string",
+          "description": "High-level overview of what this file contains"
+        },
+        "business_domain": {
+          "type": "string",
+          "description": "Inferred business domain or industry (e.g., 'E-commerce', 'Healthcare', 'Finance')"
+        },
+        "data_structure": {
+          "type": "object",
+          "properties": {
+            "total_columns": {
+              "type": "integer",
+              "description": "Number of columns in the dataset"
+            },
+            "total_rows_analyzed": {
+              "type": "integer",
+              "description": "Number of rows analyzed in the sample"
+            },
+            "estimated_total_rows": {
+              "type": "integer",
+              "description": "Total rows in the complete file if provided"
+            },
+            "key_columns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Column name"
+                  },
+                  "inferred_type": {
+                    "type": "string",
+                    "description": "Inferred data type (e.g., 'ID', 'Date', 'Text', 'Number', 'Category')"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of what this column represents"
+                  }
+                }
+              },
+              "description": "Analysis of important columns"
+            }
+          }
+        },
+        "content_analysis": {
+          "type": "object",
+          "properties": {
+            "data_patterns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Observed patterns in the data"
+            },
+            "data_relationships": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Relationships between different columns or data points"
+            },
+            "value_distributions": {
+              "type": "string",
+              "description": "Overview of how values are distributed across key columns"
+            }
+          }
+        },
+        "data_quality": {
+          "type": "object",
+          "properties": {
+            "quality_score": {
+              "type": "string",
+              "enum": ["Excellent", "Good", "Fair", "Poor"],
+              "description": "Overall data quality assessment"
+            },
+            "issues_found": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of data quality issues identified"
+            },
+            "completeness": {
+              "type": "string",
+              "description": "Assessment of data completeness"
+            }
+          }
+        },
+        "insights": {
+          "type": "object",
+          "properties": {
+            "key_findings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Important findings or insights from the data"
+            },
+            "potential_use_cases": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Suggested use cases for this data"
+            },
+            "analysis_opportunities": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Specific analytical opportunities or questions this data could answer"
+            }
+          }
+        },
+        "recommendations": {
+          "type": "object",
+          "properties": {
+            "data_preparation": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Recommended data preparation steps"
+            },
+            "analysis_approaches": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Suggested analytical approaches"
+            },
+            "tools_and_methods": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Recommended tools or methods for analysis"
+            }
+          }
+        }
+      },
+      "required": [
+        "file_name",
+        "overview",
+        "business_domain",
+        "data_structure",
+        "content_analysis",
+        "data_quality",
+        "insights",
+        "recommendations"
+      ]
+    }
+  },
+  "required": ["file_summary"],
+  "additionalProperties": false
+} 

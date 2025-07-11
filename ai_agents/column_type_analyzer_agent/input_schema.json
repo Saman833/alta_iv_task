@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "columns": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of column names"
+    },
+    "sample_data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Sample data rows (first 20 rows)"
+      },
+      "description": "First 20 rows of data to analyze"
+    }
+  },
+  "required": ["columns", "sample_data"]
+} 

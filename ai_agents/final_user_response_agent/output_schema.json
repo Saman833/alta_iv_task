@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "final_user_response": {
+      "type": "string",
+      "description": "The complete, final response that users will see. This should be a well-structured text that directly answers the user's question with proof, metrics, and actionable insights. This is the ONLY response the user will read."
+    },
+    "response_metadata": {
+      "type": "object",
+      "properties": {
+        "confidence_level": {
+          "type": "string",
+          "description": "Confidence level in the response (High/Medium/Low)"
+        },
+        "data_sources_used": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "key_metrics_included": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "limitations": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "recommendations_count": {
+          "type": "integer",
+          "description": "Number of actionable recommendations provided"
+        }
+      }
+    }
+  },
+  "required": ["final_user_response"]
+} 

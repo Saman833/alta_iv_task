@@ -1,0 +1,123 @@
+{
+  "type": "object",
+  "properties": {
+    "research_analysis": {
+      "type": "object",
+      "properties": {
+        "user_question_understanding": {
+          "type": "string",
+          "description": "Your understanding of what the user wants to know (supports both English and Russian)"
+        },
+        "current_knowledge": {
+          "type": "string",
+          "description": "What you already know from previous queries and metadata analysis"
+        },
+        "knowledge_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Specific information you still need to find"
+        },
+        "research_strategy": {
+          "type": "string",
+          "description": "Your planned 5-step research approach to find the missing information"
+        },
+        "expected_outcome": {
+          "type": "string",
+          "description": "What comprehensive answer you expect to provide after all 5 research steps"
+        }
+      },
+      "required": ["user_question_understanding", "current_knowledge", "knowledge_gaps", "research_strategy", "expected_outcome"]
+    },
+    "five_step_research_plan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step_number": {
+            "type": "integer",
+            "description": "Step number (1-5)"
+          },
+          "step_name": {
+            "type": "string",
+            "description": "Dynamic name for this research step based on current needs"
+          },
+          "step_purpose": {
+            "type": "string",
+            "description": "What this step will accomplish and why it's needed"
+          },
+          "step_rationale": {
+            "type": "string",
+            "description": "Detailed explanation of why this step is needed based on previous results and current gaps"
+          },
+          "deepening_strategy": {
+            "type": "string",
+            "description": "How this step goes deeper than previous steps to resolve specific concerns"
+          },
+          "query": {
+            "type": "string",
+            "description": "The SQLite query to execute for this step"
+          },
+          "expected_findings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Specific information you expect to find from this step and how it resolves knowledge gaps"
+          },
+          "expected_insights": {
+            "type": "string",
+            "description": "What specific insights you expect to gain from this step"
+          },
+          "research_phase": {
+            "type": "string",
+            "enum": ["broad_exploration", "gap_identification", "deep_investigation", "targeted_analysis", "synthesis_resolution"],
+            "description": "Phase of research this step belongs to"
+          },
+          "adaptive_reasoning": {
+            "type": "string",
+            "description": "How this step adapts your research direction based on previous findings"
+          }
+        },
+        "required": ["step_number", "step_name", "step_purpose", "step_rationale", "deepening_strategy", "query", "expected_findings", "expected_insights", "research_phase", "adaptive_reasoning"]
+      },
+      "minItems": 5,
+      "maxItems": 5,
+      "description": "Exactly 5 research steps, each dynamically decided based on previous results"
+    },
+    "comprehensive_research": {
+      "type": "object",
+      "properties": {
+        "research_summary": {
+          "type": "string",
+          "description": "Summary of the complete 5-step research approach"
+        },
+        "research_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key research questions that need to be answered across the 5 steps"
+        },
+        "research_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "What specific research is required to find the missing information"
+        },
+        "expected_comprehensive_answer": {
+          "type": "string",
+          "description": "What comprehensive answer you expect to provide after all 5 research steps are executed"
+        },
+        "step_progression_logic": {
+          "type": "string",
+          "description": "How the 5 steps build upon each other to progressively deepen the analysis"
+        }
+      },
+      "required": ["research_summary", "research_questions", "research_requirements", "expected_comprehensive_answer", "step_progression_logic"]
+    }
+  },
+  "required": ["research_analysis", "five_step_research_plan", "comprehensive_research"]
+} 

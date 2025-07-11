@@ -1,0 +1,183 @@
+{
+  "examples": [
+    {
+      "input": {
+        "original_user_input": "Show me insights about my data and suggest analysis approaches",
+        "file_summaries": [
+          {
+            "table_name": "csv_table_231cd743_c616_40f6_b0c4_deae52051078",
+            "original_file_name": "ecommerce_sales_analysis.csv",
+            "file_summary": {
+              "overview": "Product sales data with monthly sales figures, product categories, pricing, and customer reviews",
+              "business_domain": "E-commerce Sales",
+              "data_structure": {
+                "total_columns": 21,
+                "key_columns": [
+                  {"name": "product_id", "inferred_type": "Product Identifier"},
+                  {"name": "product_name", "inferred_type": "Text"},
+                  {"name": "category", "inferred_type": "Category"},
+                  {"name": "price", "inferred_type": "Currency"},
+                  {"name": "review_score", "inferred_type": "Rating"},
+                  {"name": "sales_month_1", "inferred_type": "Monthly Sales"}
+                ]
+              },
+              "insights": {
+                "potential_use_cases": ["Product performance analysis", "Sales trend analysis", "Category optimization", "Pricing strategy"]
+              }
+            }
+          },
+          {
+            "table_name": "csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0",
+            "original_file_name": "Social_Media_Advertising.csv",
+            "file_summary": {
+              "overview": "Social media advertising campaign data with performance metrics, targeting, and ROI analysis",
+              "business_domain": "Digital Marketing",
+              "data_structure": {
+                "total_columns": 19,
+                "key_columns": [
+                  {"name": "Campaign_ID", "inferred_type": "Campaign Identifier"},
+                  {"name": "Target_Audience", "inferred_type": "Demographic"},
+                  {"name": "Channel_Used", "inferred_type": "Platform"},
+                  {"name": "Conversion_Rate", "inferred_type": "Percentage"},
+                  {"name": "ROI", "inferred_type": "Return on Investment"},
+                  {"name": "Clicks", "inferred_type": "Engagement Metric"}
+                ]
+              },
+              "insights": {
+                "potential_use_cases": ["Campaign performance analysis", "ROI optimization", "Audience targeting", "Channel effectiveness"]
+              }
+            }
+          }
+        ],
+        "previous_queries": [],
+        "analysis_context": {
+          "analysis_goal": "comprehensive_database_research",
+          "constraints": {"max_rows": 100},
+          "autonomous_mode": true,
+          "research_mode": true
+        }
+      },
+      "output": {
+        "research_analysis": {
+          "user_question_understanding": "The user wants comprehensive insights about their data and suggestions for analysis approaches. They have product sales data and social media advertising data available.",
+          "current_knowledge": "I have access to two main datasets: product sales data with monthly sales figures and social media advertising campaign data with performance metrics.",
+          "knowledge_gaps": [
+            "Overall data quality and completeness",
+            "Key performance indicators and trends",
+            "Correlation between advertising campaigns and product sales",
+            "Optimal analysis approaches for different business objectives",
+            "Data-driven recommendations for improvement"
+          ],
+          "research_strategy": "I will conduct a 5-step dynamic research process: 1) Data overview and quality assessment, 2) Key performance indicator analysis, 3) Deep dive into top performers, 4) Cross-dataset correlation analysis, 5) Synthesis and recommendation generation.",
+          "expected_outcome": "A comprehensive analysis with actionable insights about data quality, performance trends, optimization opportunities, and recommended analysis approaches for different business objectives."
+        },
+        "five_step_research_plan": [
+          {
+            "step_number": 1,
+            "step_name": "Data Overview and Quality Assessment",
+            "step_purpose": "Understand the scope, quality, and basic patterns in both datasets to establish foundation for deeper analysis",
+            "step_rationale": "Starting with broad exploration to understand data completeness, identify any quality issues, and establish baseline metrics for both product sales and advertising campaigns",
+            "deepening_strategy": "This step provides the foundation - I'll assess data quality, completeness, and basic patterns to identify what's available for deeper analysis",
+            "query": "SELECT 'product_sales' as dataset, COUNT(*) as total_records, COUNT(DISTINCT product_id) as unique_products, COUNT(DISTINCT category) as categories FROM csv_table_231cd743_c616_40f6_b0c4_deae52051078 UNION ALL SELECT 'advertising' as dataset, COUNT(*) as total_records, COUNT(DISTINCT Campaign_ID) as unique_campaigns, COUNT(DISTINCT Channel_Used) as channels FROM csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0",
+            "expected_findings": [
+              "Total number of records in each dataset",
+              "Data completeness and coverage",
+              "Number of unique products and campaigns",
+              "Available categories and channels for analysis"
+            ],
+            "expected_insights": "Baseline understanding of data scope, quality, and available dimensions for analysis",
+            "research_phase": "broad_exploration",
+            "adaptive_reasoning": "This initial exploration will guide my next steps - if I find data quality issues, I'll focus on those; if data looks good, I'll proceed to performance analysis"
+          },
+          {
+            "step_number": 2,
+            "step_name": "Key Performance Indicator Analysis",
+            "step_purpose": "Analyze key metrics to identify top performers, trends, and areas of concern in both datasets",
+            "step_rationale": "Based on the data overview, I'll now dive deeper into performance metrics to understand what's working well and what needs attention",
+            "deepening_strategy": "Moving from broad overview to specific performance analysis - I'll identify top products by sales and top campaigns by ROI to understand success patterns",
+            "query": "SELECT 'top_products' as analysis_type, product_name, category, CAST(price AS REAL) as price, CAST(review_score AS REAL) as avg_rating, (CAST(sales_month_1 AS REAL) + CAST(sales_month_2 AS REAL) + CAST(sales_month_3 AS REAL)) as q1_sales FROM csv_table_231cd743_c616_40f6_b0c4_deae52051078 WHERE CAST(review_score AS REAL) > 0 ORDER BY q1_sales DESC LIMIT 10 UNION ALL SELECT 'top_campaigns' as analysis_type, Campaign_ID, Channel_Used, CAST(ROI AS REAL) as roi, CAST(Conversion_Rate AS REAL) as conversion_rate, Target_Audience FROM csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0 WHERE CAST(ROI AS REAL) > 0 ORDER BY CAST(ROI AS REAL) DESC LIMIT 10",
+            "expected_findings": [
+              "Top performing products by sales volume",
+              "Top performing campaigns by ROI",
+              "Correlation between product ratings and sales",
+              "Most effective advertising channels and target audiences"
+            ],
+            "expected_insights": "Identification of high-performing products and campaigns, understanding of success factors and optimization opportunities",
+            "research_phase": "gap_identification",
+            "adaptive_reasoning": "Based on the performance analysis, I'll identify which areas need deeper investigation - if certain categories perform poorly, I'll focus there; if certain channels excel, I'll investigate why"
+          },
+          {
+            "step_number": 3,
+            "step_name": "Deep Dive into Performance Patterns",
+            "step_purpose": "Investigate specific patterns and anomalies discovered in the performance analysis to understand underlying factors",
+            "step_rationale": "Now that I've identified top performers and potential issues, I need to understand the underlying factors driving these patterns",
+            "deepening_strategy": "Going deeper into specific performance patterns - analyzing category performance, seasonal trends, and campaign effectiveness by audience segments",
+            "query": "SELECT category, COUNT(*) as product_count, AVG(CAST(price AS REAL)) as avg_price, AVG(CAST(review_score AS REAL)) as avg_rating, SUM(CAST(sales_month_1 AS REAL) + CAST(sales_month_2 AS REAL) + CAST(sales_month_3 AS REAL)) as total_q1_sales FROM csv_table_231cd743_c616_40f6_b0c4_deae52051078 WHERE CAST(review_score AS REAL) > 0 GROUP BY category ORDER BY total_q1_sales DESC LIMIT 5 UNION ALL SELECT Target_Audience, COUNT(*) as campaign_count, AVG(CAST(ROI AS REAL)) as avg_roi, AVG(CAST(Conversion_Rate AS REAL)) as avg_conversion, Channel_Used FROM csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0 WHERE CAST(ROI AS REAL) > 0 GROUP BY Target_Audience, Channel_Used ORDER BY avg_roi DESC LIMIT 5",
+            "expected_findings": [
+              "Category performance analysis with pricing and rating patterns",
+              "Audience targeting effectiveness by channel",
+              "Seasonal sales patterns and trends",
+              "Optimal price points and target audience combinations"
+            ],
+            "expected_insights": "Understanding of category dynamics, audience targeting effectiveness, and optimization opportunities for both products and campaigns",
+            "research_phase": "deep_investigation",
+            "adaptive_reasoning": "Based on the patterns I discover, I'll focus on the most promising opportunities - if certain categories show high potential, I'll investigate further; if certain audience-channel combinations work well, I'll analyze why"
+          },
+          {
+            "step_number": 4,
+            "step_name": "Cross-Dataset Correlation Analysis",
+            "step_purpose": "Analyze potential correlations between advertising campaign performance and product sales to identify integrated insights",
+            "step_rationale": "With deep understanding of both datasets, I can now investigate potential relationships between advertising effectiveness and product performance",
+            "deepening_strategy": "Moving from single-dataset analysis to cross-dataset correlation - looking for patterns that span both advertising and sales data",
+            "query": "SELECT 'product_performance_by_category' as analysis_type, category, COUNT(*) as product_count, AVG(CAST(price AS REAL)) as avg_price, AVG(CAST(review_score AS REAL)) as avg_rating FROM csv_table_231cd743_c616_40f6_b0c4_deae52051078 WHERE CAST(review_score AS REAL) > 0 GROUP BY category UNION ALL SELECT 'campaign_performance_by_channel' as analysis_type, Channel_Used, COUNT(*) as campaign_count, AVG(CAST(ROI AS REAL)) as avg_roi, AVG(CAST(Conversion_Rate AS REAL)) as avg_conversion FROM csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0 WHERE CAST(ROI AS REAL) > 0 GROUP BY Channel_Used ORDER BY avg_roi DESC",
+            "expected_findings": [
+              "Product category performance patterns",
+              "Advertising channel effectiveness comparison",
+              "Potential alignment between product categories and advertising channels",
+              "Optimization opportunities for integrated marketing strategies"
+            ],
+            "expected_insights": "Integrated understanding of how product performance relates to advertising effectiveness, enabling data-driven marketing strategy recommendations",
+            "research_phase": "targeted_analysis",
+            "adaptive_reasoning": "Based on the cross-dataset analysis, I'll identify the most promising integrated opportunities and focus my final synthesis on actionable recommendations"
+          },
+          {
+            "step_number": 5,
+            "step_name": "Synthesis and Strategic Recommendations",
+            "step_purpose": "Synthesize all findings into comprehensive insights and provide strategic recommendations for data analysis approaches",
+            "step_rationale": "With comprehensive understanding of both datasets and their relationships, I can now provide strategic recommendations for ongoing analysis and optimization",
+            "deepening_strategy": "Final synthesis step that combines all previous findings into actionable strategic insights and recommended analysis approaches",
+            "query": "SELECT 'comprehensive_summary' as analysis_type, 'product_sales' as dataset, COUNT(*) as total_products, COUNT(DISTINCT category) as categories, AVG(CAST(review_score AS REAL)) as overall_rating FROM csv_table_231cd743_c616_40f6_b0c4_deae52051078 WHERE CAST(review_score AS REAL) > 0 UNION ALL SELECT 'comprehensive_summary' as analysis_type, 'advertising' as dataset, COUNT(*) as total_campaigns, COUNT(DISTINCT Channel_Used) as channels, AVG(CAST(ROI AS REAL)) as overall_roi FROM csv_table_85cc25ed_5b1a_41dc_bdfe_f89fe7832fb0 WHERE CAST(ROI AS REAL) > 0",
+            "expected_findings": [
+              "Overall dataset health and completeness",
+              "Key performance benchmarks and trends",
+              "Strategic optimization opportunities",
+              "Recommended analysis approaches for different business objectives"
+            ],
+            "expected_insights": "Comprehensive strategic insights with actionable recommendations for data analysis, optimization opportunities, and ongoing monitoring approaches",
+            "research_phase": "synthesis_resolution",
+            "adaptive_reasoning": "This final step synthesizes all previous findings into a comprehensive strategic view, providing the user with actionable insights and recommended analysis approaches"
+          }
+        ],
+        "comprehensive_research": {
+          "research_summary": "Conducted a comprehensive 5-step dynamic research process that progressed from data overview to strategic synthesis, analyzing both product sales and advertising campaign data to provide actionable insights and recommendations.",
+          "research_questions": [
+            "What is the overall quality and scope of the available data?",
+            "Which products and campaigns are performing best and why?",
+            "What patterns exist in category performance and audience targeting?",
+            "How do advertising campaigns correlate with product performance?",
+            "What strategic recommendations can be made for ongoing analysis and optimization?"
+          ],
+          "research_requirements": [
+            "Data quality assessment and completeness analysis",
+            "Performance benchmarking and trend identification",
+            "Pattern analysis across categories and audiences",
+            "Cross-dataset correlation investigation",
+            "Strategic synthesis and recommendation generation"
+          ],
+          "expected_comprehensive_answer": "A comprehensive analysis providing insights into data quality, performance trends, optimization opportunities, and recommended analysis approaches for different business objectives, enabling data-driven decision making.",
+          "step_progression_logic": "The 5 steps build progressively: Step 1 establishes data foundation, Step 2 identifies performance patterns, Step 3 investigates underlying factors, Step 4 explores cross-dataset relationships, and Step 5 synthesizes everything into strategic recommendations."
+        }
+      }
+    }
+  ]
+} 

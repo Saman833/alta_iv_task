@@ -21,6 +21,7 @@ class TelegramPoller:
         response = requests.get(f"{self.api_url}/getUpdates", params=params)
         try:
             data = response.json()
+            print(data)
         except Exception as e:
             print(f"Error decoding Telegram API response: {e}")
             return []

@@ -1,0 +1,110 @@
+{
+  "type": "object",
+  "properties": {
+    "final_response": {
+      "type": "object",
+      "properties": {
+        "executive_summary": {
+          "type": "string",
+          "description": "2-3 key findings with clear business impact, written for executives and stakeholders"
+        },
+        "detailed_analysis": {
+          "type": "object",
+          "properties": {
+            "methodology": {
+              "type": "string",
+              "description": "Brief explanation of how the analysis was conducted"
+            },
+            "key_findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "finding": {"type": "string"},
+                  "business_impact": {"type": "string"},
+                  "supporting_data": {"type": "string"}
+                }
+              }
+            },
+            "data_quality_assessment": {
+              "type": "string",
+              "description": "Assessment of data quality and reliability"
+            }
+          }
+        },
+        "actionable_recommendations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "recommendation": {"type": "string"},
+              "expected_outcome": {"type": "string"},
+              "implementation_priority": {"type": "string", "enum": ["high", "medium", "low"]},
+              "estimated_impact": {"type": "string"}
+            }
+          }
+        },
+        "risk_assessment": {
+          "type": "object",
+          "properties": {
+            "data_limitations": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "assumptions": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "confidence_level": {"type": "string"},
+            "confidence_reasoning": {"type": "string"}
+          }
+        },
+        "next_steps": {
+          "type": "object",
+          "properties": {
+            "immediate_actions": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "follow_up_analysis": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "analysis_type": {"type": "string"},
+                  "expected_benefit": {"type": "string"},
+                  "timeline": {"type": "string"}
+                }
+              }
+            },
+            "monitoring_metrics": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        },
+            "business_impact_summary": {
+      "type": "string",
+      "description": "Overall assessment of business impact and value of the analysis"
+    },
+    "comprehensive_text_response": {
+      "type": "string",
+      "description": "A complete, well-structured text response that synthesizes all findings and provides a comprehensive answer to the user's original question. This should be the main response that users will read."
+    }
+      }
+    },
+    "response_metadata": {
+      "type": "object",
+      "properties": {
+        "analysis_completeness": {"type": "string"},
+        "data_sources_used": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "query_efficiency": {"type": "string"},
+        "user_question_addressed": {"type": "boolean"}
+      }
+    }
+  },
+  "required": ["final_response", "comprehensive_text_response"]
+} 

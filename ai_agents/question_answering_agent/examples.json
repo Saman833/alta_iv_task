@@ -1,0 +1,163 @@
+{
+  "examples": [
+    {
+      "input": {
+        "client_question": "What are our most popular product categories?",
+        "analytics_history": [
+          {
+            "query": "SELECT category, COUNT(*) as total_orders FROM csv_table_orders GROUP BY category ORDER BY total_orders DESC",
+            "result": {
+              "success": true,
+              "rows": [["Electronics", 245], ["Clothing", 189], ["Books", 156], ["Home & Garden", 98]],
+              "columns": ["category", "total_orders"],
+              "row_count": 4
+            },
+            "purpose": "Analyze product category popularity by order volume"
+          },
+          {
+            "query": "SELECT category, SUM(CAST(total_amount AS REAL)) as revenue FROM csv_table_orders GROUP BY category ORDER BY revenue DESC",
+            "result": {
+              "success": true,
+              "rows": [["Electronics", 45230.50], ["Clothing", 28440.75], ["Home & Garden", 15600.25], ["Books", 12890.00]],
+              "columns": ["category", "revenue"],
+              "row_count": 4
+            },
+            "purpose": "Analyze product category performance by revenue"
+          }
+        ],
+        "file_summaries": [
+          {
+            "table_name": "csv_table_orders",
+            "original_file_name": "customer_orders.csv",
+            "file_summary": {
+              "overview": "Customer order data with product categories, quantities, and amounts",
+              "business_domain": "E-commerce Sales"
+            }
+          }
+        ],
+        "conversation_context": {
+          "insights_discovered": ["Electronics dominates both order volume and revenue", "Books category has lowest revenue despite moderate order count"],
+          "successful_queries": 2,
+          "total_queries": 2
+        }
+      },
+      "output": {
+        "answer_response": {
+          "direct_answer": "Electronics is your most popular product category, leading in both order volume (245 orders) and revenue ($45,230.50), followed by Clothing with 189 orders and $28,440.75 in revenue.",
+          "detailed_reasoning": "Based on analysis of your order data, I examined popularity from two key perspectives: order volume (how many orders) and revenue generated (financial impact). Electronics clearly dominates both metrics, representing 35.6% of total orders and 44.2% of total revenue. Clothing ranks second with strong performance in both areas. Interestingly, while Books ranks third in order volume (156 orders), it generates the lowest revenue ($12,890), suggesting lower average order values. Home & Garden has fewer orders (98) but generates more revenue than Books, indicating higher-value transactions.",
+          "supporting_evidence": [
+            {
+              "data_source": "Category order volume query",
+              "evidence": "Electronics: 245 orders, Clothing: 189 orders, Books: 156 orders, Home & Garden: 98 orders",
+              "relevance": "Shows popularity by customer demand and purchase frequency"
+            },
+            {
+              "data_source": "Category revenue query", 
+              "evidence": "Electronics: $45,230.50, Clothing: $28,440.75, Home & Garden: $15,600.25, Books: $12,890.00",
+              "relevance": "Shows financial impact and business value of each category"
+            }
+          ],
+          "confidence_level": "high",
+          "confidence_reasoning": "High confidence based on complete order data analysis covering both volume and revenue metrics. The data shows consistent patterns across multiple measures, and we have sufficient sample sizes for reliable conclusions.",
+          "data_limitations": [
+            "Analysis based on historical orders only, doesn't account for current inventory or seasonal trends",
+            "No information about profit margins or costs per category"
+          ],
+          "additional_analysis_suggestions": [
+            {
+              "suggested_analysis": "Analyze category performance by time period to identify seasonal trends",
+              "expected_benefit": "Would help optimize inventory and marketing timing for peak demand periods"
+            },
+            {
+              "suggested_analysis": "Calculate average order value and profit margins by category",
+              "expected_benefit": "Would provide better understanding of category profitability beyond just revenue"
+            }
+          ],
+          "focus_validation": "This answer directly addresses the user's question about most popular product categories by providing clear rankings and supporting evidence, without exploring unrelated topics like customer demographics or seasonal patterns"
+        }
+      }
+    },
+    {
+      "input": {
+        "client_question": "Are there any concerning trends in our customer behavior?",
+        "analytics_history": [
+          {
+            "query": "SELECT DATE(order_date) as order_day, COUNT(*) as daily_orders FROM csv_table_orders WHERE order_date >= date('now', '-30 days') GROUP BY DATE(order_date) ORDER BY order_day",
+            "result": {
+              "success": true,
+              "rows": [["2024-01-01", 12], ["2024-01-02", 15], ["2024-01-03", 8], ["2024-01-04", 6], ["2024-01-05", 4]],
+              "columns": ["order_day", "daily_orders"],
+              "row_count": 30
+            },
+            "purpose": "Analyze recent daily order trends"
+          },
+          {
+            "query": "SELECT customer_id, COUNT(*) as order_count, MAX(order_date) as last_order FROM csv_table_orders GROUP BY customer_id HAVING order_count >= 5 ORDER BY last_order DESC",
+            "result": {
+              "success": true,
+              "rows": [["CUST_001", 8, "2024-01-01"], ["CUST_002", 6, "2023-12-15"], ["CUST_003", 7, "2023-12-10"]],
+              "columns": ["customer_id", "order_count", "last_order"],
+              "row_count": 25
+            },
+            "purpose": "Identify high-value customers and their recent activity"
+          }
+        ],
+        "file_summaries": [
+          {
+            "table_name": "csv_table_orders",
+            "original_file_name": "customer_orders.csv", 
+            "file_summary": {
+              "overview": "Customer order data with dates, customer IDs, and order details",
+              "business_domain": "E-commerce Customer Management"
+            }
+          }
+        ],
+        "conversation_context": {
+          "insights_discovered": ["Daily order volume declining over past 30 days", "Several high-value customers haven't ordered recently"],
+          "successful_queries": 2,
+          "total_queries": 2
+        }
+      },
+      "output": {
+        "answer_response": {
+          "direct_answer": "Yes, there are two concerning trends: daily orders have declined significantly from 15 to 4 orders over the past month (73% decrease), and many of your high-value repeat customers haven't placed orders recently, with some inactive for over 3 weeks.",
+          "detailed_reasoning": "The data reveals a troubling pattern in customer behavior. First, daily order volume shows a steep decline from January 1st (15 orders) to January 5th (4 orders), representing a 73% drop in just 5 days. This trend continued across the 30-day period analyzed. Second, when examining your most loyal customers (those with 5+ orders), many haven't been active recently. For example, CUST_002 and CUST_003, who have 6 and 7 orders respectively, haven't ordered since December 15th and 10th. This suggests potential customer retention issues affecting both overall volume and your most valuable customer segment.",
+          "supporting_evidence": [
+            {
+              "data_source": "Daily order trends query",
+              "evidence": "Orders dropped from 15 per day to 4 per day over first 5 days of January",
+              "relevance": "Shows immediate and significant decline in customer purchasing behavior"
+            },
+            {
+              "data_source": "High-value customer activity query",
+              "evidence": "25 customers have 5+ orders, but many haven't ordered in 3+ weeks (e.g., CUST_002 last order Dec 15, CUST_003 last order Dec 10)",
+              "relevance": "Indicates retention problems among your most valuable customer segment"
+            }
+          ],
+          "confidence_level": "medium",
+          "confidence_reasoning": "Medium confidence because while the trends are clear and concerning, the analysis covers only 30 days which may include seasonal effects (post-holiday period). More historical context would strengthen the assessment.",
+          "data_limitations": [
+            "Limited to 30-day period, may not account for normal seasonal variations",
+            "No data on customer communication, marketing campaigns, or external factors",
+            "No information about customer satisfaction or feedback"
+          ],
+          "additional_analysis_suggestions": [
+            {
+              "suggested_analysis": "Compare current trends with same period from previous years to identify seasonal vs. actual declining patterns",
+              "expected_benefit": "Would help distinguish between normal post-holiday dips and genuine business concerns"
+            },
+            {
+              "suggested_analysis": "Analyze customer retention metrics and identify specific points where customers tend to churn",
+              "expected_benefit": "Would help develop targeted retention strategies for different customer segments"
+            },
+            {
+              "suggested_analysis": "Examine correlation between order trends and marketing activities, promotions, or external events",
+              "expected_benefit": "Would help identify root causes and actionable solutions for the decline"
+            }
+          ],
+          "focus_validation": "This answer directly addresses the user's question about concerning trends in customer behavior by identifying specific problems and providing supporting evidence, without exploring unrelated areas like product performance or inventory issues"
+        }
+      }
+    }
+  ]
+} 
