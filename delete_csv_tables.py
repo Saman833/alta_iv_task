@@ -1,26 +1,26 @@
 #!/usr/bin/env python3
 """
-Simple script to delete all CSV tables without confirmation
+Script to delete all tables that start with 'csv_'
 """
 
 from sqlalchemy import create_engine, text
 
 def delete_all_csv_tables():
-    """Delete all CSV tables (tables starting with 'csv_table_')"""
+    """Delete all tables that start with 'csv_'"""
     DATABASE_URL = "sqlite:///./test.db"
     engine = create_engine(DATABASE_URL)
     
-    print("🗑️  Deleting all CSV tables...")
-    print("=" * 40)
+    print("🗑️  Deleting all tables that start with 'csv_'...")
+    print("=" * 50)
     
     with engine.connect() as conn:
-        # Find all CSV tables
-        query = text("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'csv_table_%'")
+        # Find all tables that start with 'csv_'
+        query = text("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'csv_%'")
         result = conn.execute(query)
         csv_tables = [row[0] for row in result.fetchall()]
     
     if csv_tables:
-        print(f"Found {len(csv_tables)} CSV tables to delete:")
+        print(f"Found {len(csv_tables)} tables starting with 'csv_':")
         for table in csv_tables:
             print(f"  • {table}")
         
@@ -39,7 +39,7 @@ def delete_all_csv_tables():
         
         print(f"\n📊 Summary: Successfully deleted {deleted_count}/{len(csv_tables)} tables")
     else:
-        print("ℹ️  No CSV tables found.")
+        print("ℹ️  No tables found starting with 'csv_'.")
 
 if __name__ == "__main__":
     delete_all_csv_tables() 

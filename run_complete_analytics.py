@@ -33,39 +33,43 @@ def main():
         print(f'📝 User Question: {result.get("user_question", "N/A")}')
         print()
 
-        # Print research analysis summary
-        research_analysis = result.get("research_analysis")
-        if research_analysis:
-            print('📋 Research Analysis:')
-            print(f'   Understanding: {research_analysis.get("user_question_understanding", "")[:200]}')
-            print(f'   Current Knowledge: {research_analysis.get("current_knowledge", "")[:200]}')
-            print(f'   Knowledge Gaps: {research_analysis.get("knowledge_gaps", [])}')
-            print(f'   Strategy: {research_analysis.get("research_strategy", "")[:200]}')
+        # Print research plan summary
+        research_plan = result.get("research_plan", {})
+        if research_plan:
+            print('📋 Research Plan:')
+            if isinstance(research_plan, str):
+                print(f'   Analysis: {research_plan[:200]}')
+            else:
+                print(f'   Analysis: {str(research_plan)[:200]}')
             print()
 
-        # Print the 5-step research plan
-        five_step_plan = result.get("five_step_research_plan", [])
-        print('🔍 5-Step Research Plan:')
-        for step in five_step_plan:
-            print(f'   Step {step.get("step_number")}: {step.get("step_name")}')
-            print(f'      Purpose: {step.get("step_purpose")[:120]}')
-            print(f'      Rationale: {step.get("step_rationale")[:120]}')
-            print(f'      Deepening: {step.get("deepening_strategy")[:120]}')
-            print(f'      Query: {step.get("query")[:120]}')
-            print(f'      Expected Findings: {step.get("expected_findings", [])}')
-            print(f'      Insights: {step.get("expected_insights", "")[:120]}')
-            print(f'      Phase: {step.get("research_phase", "")}, Adaptive: {step.get("adaptive_reasoning", "")[:80]}')
+        # Print execution details
+        execution_details = result.get("execution_details", [])
+        if execution_details:
+            print('🔍 Execution Details:')
+            for i, execution in enumerate(execution_details, 1):
+                print(f'   Step {i}: {execution.get("step_name", "Unknown")}')
+                print(f'      Purpose: {execution.get("purpose", "")[:120]}')
+                print(f'      Query: {execution.get("query", "")[:120]}')
+                print(f'      Success: {execution.get("success", False)}')
+                if execution.get("result", {}).get("data", {}).get("rows"):
+                    rows = execution["result"]["data"]["rows"]
+                    print(f'      Results: {len(rows)} rows returned')
+                print()
+
+        # Print comprehensive insights
+        insights = result.get("comprehensive_insights", [])
+        if insights:
+            print('💡 Comprehensive Insights:')
+            for insight in insights:
+                print(f'   • {insight[:200]}')
             print()
 
-        # Print comprehensive research synthesis
-        comprehensive = result.get("comprehensive_research")
-        if comprehensive:
-            print('📝 Comprehensive Synthesis:')
-            print(f'   Summary: {comprehensive.get("research_summary", "")[:300]}')
-            print(f'   Key Questions: {comprehensive.get("research_questions", [])}')
-            print(f'   Requirements: {comprehensive.get("research_requirements", [])}')
-            print(f'   Expected Answer: {comprehensive.get("expected_comprehensive_answer", "")[:300]}')
-            print(f'   Step Progression: {comprehensive.get("step_progression_logic", "")[:200]}')
+        # Print final user response
+        final_response = result.get("final_user_response", "")
+        if final_response:
+            print('📝 Final User Response:')
+            print(f'   {final_response[:500]}')
             print()
 
         print('\n' + '=' * 70)

@@ -36,48 +36,59 @@ class AnalyticsService:
     def _get_all_file_summaries(self):
         """
         Retrieve ONLY CSV tables that start with csv_table_ and generate/return their summaries
-        VERY ACCURATE FILTERING: Only processes tables with csv_table_ prefix
+        ONLY PROCESSES EXISTING TABLES: First gets list of existing tables, then filters
         """
         try:
-            # Get all CSV files and their associated tables
-            tables = self.table_repository.get_all_tables_global()
+            # FIRST: Get list of existing tables from database
+            existing_tables_query = self.query_service.query("SELECT name FROM sqlite_master WHERE type='table'")
+            if not existing_tables_query["success"]:
+                print("❌ Could not get existing tables from database")
+                return []
+            
+            existing_tables = [row["name"] for row in existing_tables_query["data"]["rows"]]
+            csv_tables = [table for table in existing_tables if table.startswith("csv_table_")]
+            
+            print(f"📋 Found {len(existing_tables)} total tables, {len(csv_tables)} CSV tables")
+            
+            if not csv_tables:
+                print("ℹ️  No CSV tables found in database")
+                return []
+            
             file_summaries = []
             
-            for table in tables:
-                # Convert table ID to CSV table name format
-                csv_table_name = f"csv_table_{table.id.replace('-', '_')}"
+            # Process only existing CSV tables
+            for csv_table_name in csv_tables:
+                print(f"✅ Processing existing CSV table: {csv_table_name}")
                 
-                # TRIPLE CHECK: Must start with csv_table_ prefix
-                if not csv_table_name.startswith("csv_table_"):
-                    print(f"⏭️  Skipping {table.table_name} - doesn't start with csv_table_")
+                # Extract table ID from csv_table_name
+                table_id = csv_table_name.replace("csv_table_", "").replace("_", "-")
+                
+                # Get the table record from repository
+                table = self.table_repository.get_table_by_id(table_id)
+                if not table:
+                    print(f"⚠️  No table record found for {csv_table_name}, creating basic summary")
+                    # Create basic summary for existing table without repository record
+                    file_summary = self._generate_file_summary_for_existing_table(csv_table_name)
+                    file_summaries.append({
+                        "table_name": csv_table_name,
+                        "original_file_name": f"{csv_table_name}.csv",
+                        "file_summary": file_summary
+                    })
                     continue
-                
-                # VERIFICATION: Check if this table actually exists in the database with csv_table_ prefix
-                try:
-                    test_query = self.query_service.query(f'SELECT 1 FROM "{csv_table_name}" LIMIT 1')
-                    if not test_query["success"]:
-                        print(f"⏭️  Skipping {table.table_name} - no corresponding csv_table_ table found in DB")
-                        continue
-                except Exception:
-                    print(f"⏭️  Skipping {table.table_name} - no corresponding csv_table_ table found in DB")
-                    continue
-                
-                # FINAL CHECK: Query all tables and verify this one starts with csv_table_
-                verify_query = self.query_service.query(
-                    f"SELECT name FROM sqlite_master WHERE type='table' AND name = '{csv_table_name}'"
-                )
-                if not (verify_query["success"] and verify_query.get("data") and verify_query["data"].get("rows")):
-                    print(f"⏭️  Skipping {table.table_name} - table {csv_table_name} not found in sqlite_master")
-                    continue
-                
-                print(f"✅ Processing CSV table: {csv_table_name}")
                 
                 # Get the file associated with this table
                 files = self.file_repository.get_folder_files(table.folder_id)
                 csv_files = [f for f in files if f.file_type == FileType.CSV and f.file_name == table.table_name]
                 
                 if not csv_files:
-                    print(f"⏭️  No CSV file found for table {table.table_name}")
+                    print(f"⚠️  No CSV file found for table {table.table_name}, creating basic summary")
+                    # Create basic summary for existing table without file record
+                    file_summary = self._generate_file_summary_for_existing_table(csv_table_name)
+                    file_summaries.append({
+                        "table_name": csv_table_name,
+                        "original_file_name": f"{csv_table_name}.csv",
+                        "file_summary": file_summary
+                    })
                     continue
                     
                 file = csv_files[0]  # Get the first matching CSV file
@@ -121,6 +132,81 @@ class AnalyticsService:
             print(f"Error getting file summaries: {e}")
             # Return empty list if error occurs
             return []
+    
+    def _generate_file_summary_for_existing_table(self, csv_table_name: str):
+        """
+        Generate file summary for existing CSV table without file record
+        """
+        try:
+            print(f"📊 Generating summary for existing table: {csv_table_name}")
+            
+            # Get sample data from the table (first 100 rows)
+            query_result = self.query_service.query(
+                f'SELECT * FROM "{csv_table_name}" LIMIT 100'
+            )
+            
+            if not query_result["success"] or not query_result.get("data") or not query_result["data"].get("rows"):
+                print(f"⚠️  No data found in table {csv_table_name}")
+                return self._create_fallback_summary(f"{csv_table_name}.csv", "Empty table")
+            
+            # Format data for file_summary_agent
+            data = query_result["data"]
+            sample_data = data["rows"][:100]
+            columns = data["columns"]
+            
+            print(f"📋 Found {len(sample_data)} rows with {len(columns)} columns")
+            
+            # Create a robust fallback summary first
+            fallback_summary = self._create_smart_fallback_summary(f"{csv_table_name}.csv", columns, sample_data)
+            
+            # Try to call the AI agent with timeout
+            try:
+                print(f"🤖 Calling file_summary_agent for existing table...")
+                start_time = time.time()
+                
+                # Prepare enhanced input for file_summary_agent with actual schema
+                agent_input = {
+                    "file_name": f"{csv_table_name}.csv",
+                    "sample_data": sample_data,
+                    "column_info": {
+                        "column_names": columns,
+                        "total_rows": data["row_count"] if data.get("row_count") else len(sample_data),
+                        "total_columns": len(columns),
+                        "actual_schema": self._get_detailed_column_info(columns, sample_data),
+                        "sample_values": self._get_sample_values_per_column(columns, sample_data)
+                    }
+                }
+                
+                # Call file_summary_agent
+                summary_response = self.agent_service.run_agent("file_summary_agent", agent_input)
+                
+                end_time = time.time()
+                print(f"✅ AI agent completed in {end_time - start_time:.2f} seconds")
+                
+                if summary_response and "file_summary" in summary_response:
+                    ai_summary = summary_response["file_summary"]
+                    # Enhance AI summary with actual column information
+                    ai_summary["database_schema"] = {
+                        "table_name": csv_table_name,
+                        "available_columns": columns,
+                        "column_details": self._get_detailed_column_info(columns, sample_data),
+                        "sample_values": self._get_sample_values_per_column(columns, sample_data)
+                    }
+                    print(f"🎯 AI summary generated successfully with schema info")
+                    return ai_summary
+                else:
+                    print(f"⚠️  AI agent returned unexpected format, using enhanced fallback")
+                    return self._enhance_fallback_with_schema(fallback_summary, csv_table_name, columns, sample_data)
+                    
+            except Exception as ai_error:
+                print(f"❌ AI agent failed: {ai_error}")
+                print(f"🔄 Using enhanced fallback summary with schema")
+                return self._enhance_fallback_with_schema(fallback_summary, csv_table_name, columns, sample_data)
+                
+        except Exception as e:
+            print(f"Error generating file summary for existing table {csv_table_name}: {e}")
+            # Return minimal fallback summary
+            return self._create_fallback_summary(f"{csv_table_name}.csv", "Generation error")
     
     def _generate_file_summary(self, table_name: str, file_name: str):
         """

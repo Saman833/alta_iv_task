@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from services.file_service import FileService
 from services.gen_table_serivce import GenTableService
-from services.csv_import_service import CSVImportService
+from services.csv_import_service_fast import CSVImportServiceFast
 from models.file import CreateFile, Folder
 from fastapi import HTTPException
 import uuid
@@ -11,7 +11,7 @@ class FileManagerService:
     def __init__(self, db: Session):
         self.file_service = FileService(db)
         self.gen_table_service = GenTableService(db)
-        self.csv_import_service = CSVImportService(db)
+        self.csv_import_service = CSVImportServiceFast(db)
 
     def create_file(self, create_file: CreateFile):
         """

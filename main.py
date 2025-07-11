@@ -50,7 +50,9 @@ async def startup_event():
     db = SessionLocal()
     message_service = MessageService(db)
     
- 
+    # Temporarily disable Telegram poller to avoid asyncio conflicts
+    # Uncomment when Telegram integration is needed
+    # 
     # email_poller = EmailPoller(message_service)
     # email_poller_thread = threading.Thread(
     #     target=email_poller.start_polling,
@@ -58,13 +60,14 @@ async def startup_event():
     # )
     # email_poller_thread.start()
     
-
     telegram_poller = TelegramPoller(message_service)
     telegram_poller_thread = threading.Thread(
         target=telegram_poller.start_polling,
         daemon=True
     )
     telegram_poller_thread.start()
+    
+    print("✅ FastAPI startup completed without Telegram poller (disabled to avoid asyncio conflicts)")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -83,13 +86,14 @@ async def root():
 async def health_check():
     global email_poller_thread, telegram_poller_thread
     
-    email_status = "running" if email_poller_thread and email_poller_thread.is_alive() else "stopped"
-    telegram_status = "running" if telegram_poller_thread and telegram_poller_thread.is_alive() else "stopped"
+    email_status = "disabled" if email_poller_thread is None else ("running" if email_poller_thread.is_alive() else "stopped")
+    telegram_status = "disabled" if telegram_poller_thread is None else ("running" if telegram_poller_thread.is_alive() else "stopped")
     
     return {
         "status": "healthy",
         "email_poller_thread": email_status,
         "telegram_poller_thread": telegram_status,
+        "note": "Pollers disabled to avoid asyncio conflicts",
         "timestamp": time.time()
     }
 
