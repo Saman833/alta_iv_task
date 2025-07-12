@@ -1,0 +1,385 @@
+{
+  "alembic_version": {
+    "table_name": "alembic_version",
+    "columns": [
+      {
+        "name": "version_num",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": 1
+      }
+    ]
+  },
+  "content": {
+    "table_name": "content",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "source_id",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "content_type",
+        "type": "VARCHAR(5)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "category",
+        "type": "VARCHAR(11)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "subject",
+        "type": "VARCHAR(255)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "content_data",
+        "type": "TEXT",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "content_html",
+        "type": "TEXT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "source",
+        "type": "VARCHAR(8)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "timestamp",
+        "type": "DATETIME",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "updated_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "csv_table_e3c4eedd_c959_4e4d_a45d_56f9bc6b281c": {
+    "table_name": "csv_table_e3c4eedd_c959_4e4d_a45d_56f9bc6b281c",
+    "columns": [
+      {
+        "name": "row_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(50)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "updated_at",
+        "type": "VARCHAR(50)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "product_id",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "product_name",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "category",
+        "type": "VARCHAR(500)",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "price",
+        "type": "FLOAT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "review_score",
+        "type": "FLOAT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "review_count",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_1",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_2",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_3",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_4",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_5",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_6",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_7",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_8",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_9",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_10",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_11",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "sales_month_12",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "entity": {
+    "table_name": "entity",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "content_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "entity_type",
+        "type": "VARCHAR(7)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "entity_value",
+        "type": "TEXT",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "file": {
+    "table_name": "file",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "file_name",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "detail_summary",
+        "type": "TEXT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "folder_id",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "file_type",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "file_size",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "user_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "file_created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "folder": {
+    "table_name": "folder",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "folder_name",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "detail_summary",
+        "type": "TEXT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "user_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "folder_created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  },
+  "table": {
+    "table_name": "table",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 1
+      },
+      {
+        "name": "table_name",
+        "type": "VARCHAR(255)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "folder_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "user_id",
+        "type": "VARCHAR(36)",
+        "nullable": false,
+        "primary_key": 0
+      },
+      {
+        "name": "table_description",
+        "type": "TEXT",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "table_created_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      },
+      {
+        "name": "table_updated_at",
+        "type": "DATETIME",
+        "nullable": true,
+        "primary_key": 0
+      }
+    ]
+  }
+}

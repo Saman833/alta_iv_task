@@ -1,4 +1,3 @@
-from message_parsers.email.email_text_parser import EmailTextParser
 from message_parsers.telegram.telegram_text_parser import TelegramTextParser
 from message_parsers.telegram.telegram_voice_parser import TelegramVoiceParser
 
@@ -10,9 +9,7 @@ class ParserFactory:
         simply choose the right parser 
         """
         try : 
-            if source == 'email':
-                return EmailTextParser()
-            elif source == 'telegram' and raw_data['message'].get("voice"):
+            if source == 'telegram' and raw_data['message'].get("voice"):
                 return TelegramVoiceParser()
             elif source == 'telegram' and raw_data['message'].get("text"):
                 return TelegramTextParser()

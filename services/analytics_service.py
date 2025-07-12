@@ -64,7 +64,7 @@ class AnalyticsService:
                 table_id = csv_table_name.replace("csv_table_", "").replace("_", "-")
                 
                 # Get the table record from repository
-                table = self.table_repository.get_table_by_id(table_id)
+                table = self.table_repository.get_table(table_id)
                 if not table:
                     print(f"⚠️  No table record found for {csv_table_name}, creating basic summary")
                     # Create basic summary for existing table without repository record

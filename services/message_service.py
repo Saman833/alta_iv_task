@@ -6,7 +6,6 @@ from repository.entity_repository import EntityRepository
 from services.telegram_voice_service import TelegramVoiceService
 from services.classification_service import ClassificationService
 from services.agent_service import AgentService
-from clients.elevenlabs_client import ElevenLabsClient
 from clients.telegram_messager import TelegramMessager
 from config import config
 from services.autonomous_analytics_service import AutonomousAnalyticsService
@@ -30,7 +29,6 @@ class MessageService:
         self.classification_service = ClassificationService()
         self.agent_service = AgentService()
         self.telegram_messager = TelegramMessager(config.TELEGRAM_BOT_TOKEN)
-        self.elevenlabs_client = ElevenLabsClient()
         self.analytics_service = AutonomousAnalyticsService(db)
 
     def process_message(self, source: str, raw_data: dict):
@@ -53,7 +51,6 @@ class MessageService:
             else:
                 self.telegram_messager.send_message(chat_id, "Unable to generate answer. Please try again.")
 
-
         return None
 
         # Pass the parsed content data directly to avoid issues with SQLAlchemy object serialization
@@ -73,7 +70,7 @@ class MessageService:
             in belew is the message that the user sent to you and you need to inform Saman which is your boss so call him and explina to him the message content and why did you thinked you need to call him. 
             the message is : {message}
             """
-            self.start_a_call("", template_for_agent)
+            # ElevenLabs call logic removed
         return content
 
     def create_content_message(self, parsed_data: dict):
@@ -104,13 +101,7 @@ class MessageService:
         """
         last_source_id = self.content_repository.get_last_source_id(source=Source.TELEGRAM)
         return last_source_id + 1 if last_source_id else 30
-    def start_a_call(self, agent_prompt : str , prompt_for_agent : str):
-        from config import config
-        to_number = config.ELEVENLABS_TO_NUMBER
-        phone_number_id = config.ELEVENLABS_PHONE_NUMBER_ID
-        agent_id =self.elevenlabs_client.create_elevenlabs_agent(prompt_for_agent)
-        self.elevenlabs_client.connect_phone_number_to_agent_elevenlabs(phone_number_id, agent_id)
-        return self.elevenlabs_client.start_a_call(agent_id, phone_number_id, to_number)
+    # ElevenLabs call logic removed
         
         
     

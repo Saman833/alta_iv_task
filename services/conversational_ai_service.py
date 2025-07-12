@@ -6,7 +6,6 @@ import os
 from typing import List, Dict, Any
 from fastapi import WebSocket
 from clients.openai_client import OpenAIClient
-from clients.elevenlabs_client import ElevenLabsClient, ELEVENLABS_AVAILABLE
 from config import config
 from services.assistant_service import AssistantService
 from db import SessionLocal
@@ -19,7 +18,6 @@ class ConversationalAIService:
     
     def __init__(self):
         self.openai_client = OpenAIClient()
-        self.elevenlabs_client = ElevenLabsClient()
         
         # Initialize AssistantService for smart function handling
         self.db = SessionLocal()
@@ -135,42 +133,65 @@ class ConversationalAIService:
             print(f"🎤 Generating TTS for: '{text}'")
             
             # Check if ElevenLabs is available
-            if not ELEVENLABS_AVAILABLE:
-                print("❌ ElevenLabs not available")
-                return ""
+            # if not ELEVENLABS_AVAILABLE:
+            #     print("❌ ElevenLabs not available")
+            #     return ""
             
             # Check if client is available
-            if not self.elevenlabs_client.client:
-                print("❌ ElevenLabs client not initialized")
-                return ""
+            # if not self.elevenlabs_client.client:
+            #     print("❌ ElevenLabs client not initialized")
+            #     return ""
             
             # Use ElevenLabs text-to-speech with correct API
             print("🔧 Using ElevenLabs TTS API...")
             
             # Use the working approach from the tested code
-            audio_generator = self.elevenlabs_client.client.generate(
-                text=text,
-                voice="Rachel",
-                model="eleven_multilingual_v1"
-            )
+            # audio_generator = self.elevenlabs_client.client.generate(
+            #     text=text,
+            #     voice="Rachel",
+            #     model="eleven_multilingual_v1"
+            # )
             
             # Collect all audio chunks from the generator
-            audio_chunks = []
-            chunk_count = 0
-            for chunk in audio_generator:
-                audio_chunks.append(chunk)
-                chunk_count += 1
+            # audio_chunks = []
+            # chunk_count = 0
+            # for chunk in audio_generator:
+            #     audio_chunks.append(chunk)
+            #     chunk_count += 1
             
-            print(f"📦 Collected {chunk_count} audio chunks")
+            # print(f"📦 Collected {chunk_count} audio chunks")
             
             # Combine all chunks into a single bytes object
-            audio = b''.join(audio_chunks)
-            print(f"🔊 Total audio size: {len(audio)} bytes")
+            # audio = b''.join(audio_chunks)
+            # print(f"🔊 Total audio size: {len(audio)} bytes")
             
             # Convert to base64
-            audio_base64 = base64.b64encode(audio).decode()
-            print(f"✅ TTS generation successful, base64 length: {len(audio_base64)}")
-            return audio_base64
+            # audio_base64 = base64.b64encode(audio).decode()
+            # print(f"✅ TTS generation successful, base64 length: {len(audio_base64)}")
+            # return audio_base64
+            
+            # Fallback to OpenAI TTS if ElevenLabs is not available
+            print("🔧 Falling back to OpenAI TTS...")
+            if not hasattr(self.openai_client, 'client') or not self.openai_client.client:
+                print("❌ OpenAI client not initialized for TTS")
+                return ""
+            
+            response = self.openai_client.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=self.conversation_history + [{"role": "user", "content": text}],
+                max_tokens=100,
+                temperature=0.7,
+                response_format={"type": "text"}
+            )
+            
+            ai_response = response.choices[0].message.content.strip()
+            print(f"💬 Conversational response for TTS: '{ai_response}'")
+            
+            # Add AI response to history
+            self.conversation_history.append({"role": "assistant", "content": ai_response})
+            
+            # Convert to speech (OpenAI TTS is text-to-text, so no audio generation here)
+            return "" # No audio generated for OpenAI TTS
             
         except Exception as e:
             print(f"❌ TTS error: {e}")

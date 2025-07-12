@@ -3,30 +3,130 @@
   "properties": {
     "final_user_response": {
       "type": "string",
-      "description": "The complete, final response that users will see. This should be a well-structured text that directly answers the user's question with proof, metrics, and actionable insights. This is the ONLY response the user will read."
+      "description": "The complete, final response that users will see. This should be a well-structured text that directly answers the user's question with proof, metrics, and actionable insights. When uncertain about specific aspects, include related metrics and insights from available data. Include detailed reasoning and explanations of the analytical steps taken. This is the ONLY response the user will read."
     },
     "response_metadata": {
       "type": "object",
       "properties": {
         "confidence_level": {
           "type": "string",
-          "description": "Confidence level in the response (High/Medium/Low)"
+          "description": "Overall confidence level in the response (High/Medium/Low)"
         },
         "data_sources_used": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {"type": "string"},
+          "description": "List of data sources and tables used in the analysis"
         },
         "key_metrics_included": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {"type": "string"},
+          "description": "List of key metrics and numbers included in the response"
+        },
+        "related_metrics_generated": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Additional metrics and insights generated when uncertain about specific aspects"
         },
         "limitations": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {"type": "string"},
+          "description": "List of data limitations, assumptions, or areas of uncertainty"
         },
         "recommendations_count": {
           "type": "integer",
           "description": "Number of actionable recommendations provided"
+        },
+        "confidence_breakdown": {
+          "type": "object",
+          "properties": {
+            "overall_confidence": {
+              "type": "string",
+              "description": "Overall confidence level (High/Medium/Low)"
+            },
+            "data_quality_confidence": {
+              "type": "string",
+              "description": "Confidence in data quality and completeness"
+            },
+            "analysis_confidence": {
+              "type": "string",
+              "description": "Confidence in the analytical approach and findings"
+            },
+            "recommendations_confidence": {
+              "type": "string",
+              "description": "Confidence in the recommendations provided"
+            }
+          }
+        },
+        "intelligent_insights": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Additional insights and patterns identified from available data"
+        },
+        "areas_of_uncertainty": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Specific areas where the analysis has limitations or uncertainty"
+        },
+        "suggested_additional_data": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Additional data that would improve the analysis if available"
+        },
+        "analytical_methodology": {
+          "type": "object",
+          "properties": {
+            "approach_used": {
+              "type": "string",
+              "description": "Description of the overall analytical approach and methodology"
+            },
+            "steps_taken": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "List of specific analytical steps and processes followed"
+            },
+            "reasoning_explained": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Key reasoning and decision points in the analysis"
+            },
+            "statistical_methods": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Statistical or analytical methods used in the analysis"
+            },
+            "assumptions_made": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Key assumptions made during the analysis and their impact"
+            }
+          }
+        },
+        "step_by_step_process": {
+          "type": "object",
+          "properties": {
+            "data_exploration": {
+              "type": "string",
+              "description": "How the data was initially explored and understood"
+            },
+            "analysis_phases": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Different phases of the analysis process"
+            },
+            "key_decisions": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Important analytical decisions made during the process"
+            },
+            "insight_generation": {
+              "type": "string",
+              "description": "How insights were generated from the analysis"
+            },
+            "conclusion_drawing": {
+              "type": "string",
+              "description": "How final conclusions were drawn from the data"
+            }
+          }
         }
       }
     }

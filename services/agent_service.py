@@ -18,7 +18,6 @@ class AgentService:
             return json.loads(response)
         except json.JSONDecodeError as e:
             raise ValueError(f"Failed to parse agent response as JSON: {e}. Response: {response}")
-    
     def _clean_input_data(self, input_data: dict) -> dict:
         """Clean input data to handle encoding issues."""
         cleaned_data = {}

@@ -1,10 +1,5 @@
 {
-    "email_poller_scope": "https://www.googleapis.com/auth/gmail.modify",
-    "email_poller_credentials_path": "sources/email/credentials.json",
-    "email_poller_token_path": "sources/email/token.json",
-    "email_poller_sleep_time": 60,
     "telegram_poller_sleep_time": 10,
     "telegram_api_url": "https://api.telegram.org/bot",
     "telegram_file_api_url": "https://api.telegram.org/file/bot"
-    
 }
